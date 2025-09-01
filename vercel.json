@@ -1,1 +1,5 @@
-{ "crons": [ { "path": "/api/reindex", "schedule": "0 23 * * *" } ] }
+{
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
+  "framework": "nextjs"
+}
