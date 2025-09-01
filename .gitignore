@@ -1,0 +1,12 @@
+# Node / Next
+node_modules
+.next
+out
+# Env
+.env
+.env.*
+!.env.example
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
