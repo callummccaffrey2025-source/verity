@@ -1,11 +1,61 @@
 {
   "name": "Verity — All Pages",
   "items": [
-    { "title": "Home",       "subtitle": "Landing",            "href": "/",                           "meta": { "role": "core" } },
-    { "title": "Bills",      "subtitle": "Latest bills",       "href": "/bills",                       "meta": { "status": "stub" } },
-    { "title": "MPs",        "subtitle": "Members directory",  "href": "/mps",                         "meta": { "status": "stub" } },
-    { "title": "Ownership",  "subtitle": "Media ownership AU", "href": "/ownership",                   "meta": { "status": "stub" } },
-    { "title": "Briefing: Budget 2025", "subtitle": "Example briefing", "href": "/briefings/budget-2025", "meta": { "status": "stub" } },
-    { "title": "Search",     "subtitle": "Semantic & keyword", "href": "/search",                      "meta": { "status": "stub" } }
+    {
+      "title": "Home",
+      "subtitle": "Landing",
+      "href": "/",
+      "meta": {
+        "role": "core"
+      }
+    },
+    {
+      "title": "Bills",
+      "subtitle": "Latest bills",
+      "href": "/bills",
+      "meta": {
+        "status": "stub"
+      }
+    },
+    {
+      "title": "MPs",
+      "subtitle": "Members directory",
+      "href": "/mps",
+      "meta": {
+        "status": "stub"
+      }
+    },
+    {
+      "title": "Ownership",
+      "subtitle": "Media ownership AU",
+      "href": "/ownership",
+      "meta": {
+        "status": "stub"
+      }
+    },
+    {
+      "title": "Briefing: Budget 2025",
+      "subtitle": "Example briefing",
+      "href": "/briefings/budget-2025",
+      "meta": {
+        "status": "stub"
+      }
+    },
+    {
+      "title": "Search",
+      "subtitle": "Semantic & keyword",
+      "href": "/search",
+      "meta": {
+        "status": "stub"
+      }
+    },
+    {
+      "title": "Personalisation",
+      "subtitle": "Citizen / Power / Journalist",
+      "href": "/previews/personalisation",
+      "meta": {
+        "status": "live"
+      }
+    }
   ]
 }
