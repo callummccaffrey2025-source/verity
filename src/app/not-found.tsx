@@ -1,21 +1,17 @@
-import Link from "next/link";
-
-export default function NotFound() {
+export default function NotFound(){
   return (
-    <main className="mx-auto max-w-3xl px-4 py-24 text-center">
-      <h1 className="text-5xl md:text-6xl font-serif font-extrabold">Can’t find that page</h1>
-      <p className="mt-3 text-neutral-400">Try searching or jump to a popular section.</p>
-
-      <form action="/search" className="mx-auto mt-6 flex max-w-md gap-2">
-        <input name="q" placeholder="Search Verity…" className="w-full rounded-md border border-white/10 bg-white/5 px-3 py-2" />
-        <button className="btn-primary">Search</button>
+    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center">
+      <h1 className="text-4xl md:text-5xl font-extrabold brand">Can’t find that page</h1>
+      <p className="text-zinc-400 mt-3">Try searching or jump to a popular section.</p>
+      <form action="/search" className="mt-6 flex items-center gap-2">
+        <input name="q" placeholder="Search Verity..." className="bg-zinc-900 border border-zinc-700 rounded px-3 py-2 w-72" />
+        <button className="brand-bg rounded px-4 py-2 text-sm font-medium hover:opacity-90">Search</button>
       </form>
-
-      <div className="mt-8 flex items-center justify-center gap-3">
-        <Link className="btn-ghost" href="/product">See product</Link>
-        <Link className="btn-ghost" href="/pricing">Pricing</Link>
-        <Link className="btn-ghost" href="/explainer/privacy-amendment-2025">Explainers</Link>
+      <div className="mt-6 text-sm">
+        <a href="/" className="mr-4">See product</a>
+        <a href="/pricing" className="mr-4">Pricing</a>
+        <a href="/ground">Explainers</a>
       </div>
-    </main>
+    </div>
   );
 }
