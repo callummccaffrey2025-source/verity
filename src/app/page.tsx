@@ -1,9 +1,9 @@
+import PageHeader from "@/components/PageHeader";
 export const dynamic = "force-static";
-export default function Page(){
+export default function Home() {
   return (
     <div>
-      <h1 className="text-2xl font-bold">Home</h1>
-      <p className="text-zinc-400 mt-2">Truth-first briefings, bills, MPs, ownership.</p>
+      <PageHeader title="Home" subtitle="Truth-first briefings, bills, MPs, ownership." />
     </div>
   );
 }

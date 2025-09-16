@@ -1,9 +1,4 @@
-export const dynamic = "force-static";
-export default function Page(){
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Bills</h1>
-      <p className="text-zinc-400 mt-2">Latest bills</p>
-    </div>
-  );
+import PageHeader from "@/components/PageHeader";
+export default function Bills() {
+  return (<div><PageHeader title="Bills" subtitle="Latest bills" /></div>);
 }
