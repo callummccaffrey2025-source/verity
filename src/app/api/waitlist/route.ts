@@ -1,14 +1,14 @@
-export const runtime = "edge";
-import { rateLimit } from "@/lib/limiter";
-
+import { NextResponse } from "next/server";
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for") || "local";
-  if (!rateLimit(`waitlist:${ip}`).ok) return new Response("rate_limited", { status: 429 });
-
-  const { email = "", consent = false, website = "" } = await req.json().catch(() => ({}));
-  if (website) return new Response("ok", { status: 202 }); // honeypot
-  if (!email || !email.includes("@")) return new Response(JSON.stringify({ error: "invalid_email" }), { status: 400 });
-
-  console.log("[WAITLIST]", email, consent);
-  return new Response(null, { status: 202 });
+  try {
+    const { email } = await req.json();
+    if (!email || typeof email !== "string" || !email.includes("@")) {
+      return NextResponse.json({ ok:false, error:"invalid email" }, { status: 400 });
+    }
+    // TODO: forward to Supabase/HubSpot/etc.
+    console.log("WAITLIST", { email, ts: Date.now() });
+    return NextResponse.json({ ok:true });
+  } catch {
+    return NextResponse.json({ ok:false, error:"bad request" }, { status: 400 });
+  }
 }
