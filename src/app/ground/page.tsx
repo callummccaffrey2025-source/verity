@@ -1,50 +1,48 @@
-import NewsCard from "@/components/NewsCard";
 import { loadJSON } from "@/utils/load";
+import NewsCard, { Story } from "@/components/ground/NewsCard";
 
-type GroundData = {
-  topics: string[];
-  stories: {
-    title: string; excerpt?: string; url: string; source: string;
-    stance?: "left"|"center"|"right"|"neutral"; published_at: string; tags?: string[];
-  }[];
-};
+type GroundData = { topics: string[]; stories: Story[] };
 
 export const revalidate = 0;
 
-export default async function Ground() {
-  const data = await loadJSON<GroundData>("/data/ground.json");
+export default async function Ground({ searchParams }: { searchParams: { topic?: string } }) {
+  const data = await loadJSON<GroundData>("/data/ground-pro.json");
+  const topic = searchParams.topic && data.topics.includes(searchParams.topic) ? searchParams.topic : "For you";
+  const stories = data.stories.filter(s => topic === "For you" || s.topic === topic);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-      {/* Left rail (topics) */}
-      <aside className="lg:col-span-2">
-        <h2 className="text-sm font-semibold text-zinc-300 mb-2">Topics</h2>
-        <ul className="space-y-1">
-          {data.topics.map(t => (
-            <li key={t}>
-              <a href={`/ground?topic=${encodeURIComponent(t)}`} className="block rounded px-2 py-1 text-sm hover:bg-zinc-900/60">{t}</a>
-            </li>
-          ))}
-        </ul>
-      </aside>
+    <div>
+      {/* Hero */}
+      <div className="mb-4">
+        <div className="text-[36px] md:text-[44px] font-extrabold leading-tight">Today’s coverage, without the spin</div>
+        <div className="text-zinc-400 mt-2">Side-by-side receipts. Ownership context. Bias at a glance.</div>
+      </div>
 
-      {/* Main feed */}
-      <section className="lg:col-span-7 space-y-4">
-        {data.stories.map((s, i) => <NewsCard key={i} story={s} />)}
+      {/* Topic pills */}
+      <div className="mb-6 flex flex-wrap gap-2">
+        {data.topics.map(t => {
+          const active = t === topic;
+          return (
+            <a
+              key={t}
+              href={`/ground?topic=${encodeURIComponent(t)}`}
+              className={
+                "px-3 py-1.5 rounded-full text-sm border " +
+                (active
+                  ? "border-emerald-600 bg-emerald-900/20 text-emerald-300"
+                  : "border-zinc-800 bg-zinc-900/30 text-zinc-300 hover:border-emerald-700/60")
+              }
+            >
+              {t}
+            </a>
+          );
+        })}
+      </div>
+
+      {/* Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {stories.map((s, i) => <NewsCard key={i} story={s} />)}
       </section>
-
-      {/* Right rail (compare coverage / highlights) */}
-      <aside className="lg:col-span-3">
-        <div className="rounded-2xl border brand-border p-4">
-          <h3 className="text-sm font-semibold text-zinc-300">Compare coverage</h3>
-          <p className="text-xs text-zinc-400 mt-1">Pick a topic on the left to see multi-source coverage patterns.</p>
-          <div className="mt-3 text-xs text-zinc-400">
-            <div>• Budget (12 sources)</div>
-            <div>• Energy (9 sources)</div>
-            <div>• Privacy (6 sources)</div>
-          </div>
-        </div>
-      </aside>
     </div>
   );
 }

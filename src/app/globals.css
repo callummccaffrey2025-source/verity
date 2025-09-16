@@ -1,38 +1,36 @@
 @import "tailwindcss";
 
-/* --- Brand tokens --- */
+/* Brand tokens */
 :root {
   color-scheme: dark;
-  --bg: #000000;                /* black */
-  --surface: #0b0f14;           /* near-black surface */
-  --muted: #a1a1aa;             /* zinc-400 */
-  --text: #e5e7eb;              /* zinc-200/100 mix */
-  --brand: #10b981;             /* emerald-500 */
-  --brand-600: #059669;         /* emerald-600 */
-  --brand-300: #6ee7b7;         /* emerald-300 for subtle accents */
+  --bg: #000000;
+  --surface: #0b0f14;
+  --surface-2: #0f151b;
+  --text: #e5e7eb;
+  --muted: #a1a1aa;
+  --brand: #10b981;   /* emerald-500 */
+  --brand-600: #059669;
+  --brand-300: #6ee7b7;
+  --error: #ef4444;
+  --left: #60a5fa;    /* blue-400 */
+  --center: #a1a1aa;  /* zinc-400 */
+  --right: #f87171;   /* red-400 */
 }
-
-/* --- Base --- */
 html, body { height: 100%; margin: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-}
-
-/* Links default to brand emerald */
+body { background: var(--bg); color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji"; }
 a { color: var(--brand-300); text-decoration: none; }
 a:hover { color: var(--brand); text-decoration: underline; }
-
-/* Utilities for brand accents */
-.brand { color: var(--brand); }
-.brand-bg { background: var(--brand); color: #00110a; }
-.brand-border { border-color: color-mix(in oklab, var(--brand) 60%, #000 40%); }
-
-/* Header bar */
 .site-header {
-  background:
-    linear-gradient(180deg, #020a07 0%, rgba(0,0,0,0) 100%),
-    #050608;
+  background: linear-gradient(180deg, #06120e 0%, rgba(0,0,0,0) 100%), #050608;
   border-bottom: 1px solid #0b1220;
 }
+.card {
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+  border: 1px solid #0e1622;
+}
+.btn {
+  display:inline-flex; align-items:center; gap:.5rem;
+  border-radius:.75rem; padding:.5rem .75rem; font-weight:500;
+  background: #0d1b15; border:1px solid rgba(16,185,129,.3); color: var(--brand-300);
+}
+.btn:hover { background:#0c241b; color:var(--brand); }
