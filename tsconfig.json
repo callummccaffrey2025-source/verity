@@ -16,6 +16,15 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@/lib/*": [
+        "src/lib/*"
+      ],
+      "@/data/*": [
+        "src/data/*"
+      ],
+      "@/components/*": [
+        "src/components/*"
       ]
     },
     "types": [

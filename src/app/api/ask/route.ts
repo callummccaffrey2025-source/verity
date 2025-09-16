@@ -1,41 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import openai from "@/lib/openai";
-import { getIndex } from "@/lib/pinecone";
-
-export const runtime = "nodejs";
-
-type AskBody = { q: string; pageSize?: number };
+import { search } from "@/lib/search";
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
-  let body: AskBody;
-  try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid JSON" }, { status: 400 }); }
-  const q = body.q?.trim();
-  const pageSize = typeof body.pageSize === "number" && body.pageSize > 0 ? body.pageSize : 3;
-  if (!q) return NextResponse.json({ error: "Missing query" }, { status: 400 });
+  const { q } = await req.json().catch(() => ({ q: "" as string }));
+  const question = (q || "").trim();
+  if (!question) return NextResponse.json({ answer: "", citations: [] });
 
-  const emb = await openai.embeddings.create({ model: "text-embedding-3-small", input: q });
-  const vector = emb.data[0].embedding;
-
-  const index = getIndex("verity-index");
-  const queryRes = await index.query({ topK: pageSize, vector, includeMetadata: true });
-  const matches = queryRes.matches ?? [];
-  const context = matches
-    .map((m) => (m.metadata as Record<string, unknown> | undefined)?.["text"])
-    .filter(Boolean)
-    .join("\n\n");
-
-  const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-      { role: "system", content: "You are Verity, a political explainer. Always cite sources." },
-      { role: "user", content: `Question: ${q}\n\nContext:\n${context}` },
-    ],
+  const hits = search(question, 3);
+  const citations = hits.map(h => {
+    const s = db.sources().find(x => x.id === h.sourceId)!;
+    return { sourceId: s.id, url: s.url, title: s.title, snippet: s.snippet };
   });
 
-  return NextResponse.json({
-    answer: completion.choices[0]?.message?.content ?? "",
-    sources: matches
-      .map((m) => (m.metadata as Record<string, unknown> | undefined)?.["url"])
-      .filter(Boolean),
-  });
+  // naive answer composer
+  const bullets = hits.map((h, i) => `• ${h.title} [${i+1}]`).join("\n");
+  const answer =
+`Here’s what the record shows:
+${bullets}
+
+Each point links to its source.`;
+
+  return NextResponse.json({ answer, citations }, { headers: { "Cache-Control": "no-store" } });
 }
