@@ -1,8 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 type Persona = "citizen" | "power" | "journalist";
-export default function PersonaSwitcher({ value }: { value: Persona }) {
-  const [v, setV] = useState<Persona>(value);
+export default function PersonaSwitcher() {
+  const [v, setV] = useState<Persona>("citizen");
+  useEffect(() => {
+    const m = document.cookie.match(/(?:^|;\\s*)v_persona=([^;]+)/);
+    if (m?.[1]) setV(decodeURIComponent(m[1]) as Persona);
+  }, []);
   return (
     <select
       value={v}
@@ -17,6 +21,7 @@ export default function PersonaSwitcher({ value }: { value: Persona }) {
         location.reload();
       }}
       className="bg-zinc-900 border border-zinc-700 rounded px-2 py-1 text-sm"
+      title="Persona"
     >
       <option value="citizen">Citizen</option>
       <option value="power">Power User</option>

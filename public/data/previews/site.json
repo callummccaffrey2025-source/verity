@@ -1,61 +1,28 @@
 {
   "name": "Verity — All Pages",
   "items": [
-    {
-      "title": "Home",
-      "subtitle": "Landing",
-      "href": "/",
-      "meta": {
-        "role": "core"
-      }
-    },
-    {
-      "title": "Bills",
-      "subtitle": "Latest bills",
-      "href": "/bills",
-      "meta": {
-        "status": "stub"
-      }
-    },
-    {
-      "title": "MPs",
-      "subtitle": "Members directory",
-      "href": "/mps",
-      "meta": {
-        "status": "stub"
-      }
-    },
-    {
-      "title": "Ownership",
-      "subtitle": "Media ownership AU",
-      "href": "/ownership",
-      "meta": {
-        "status": "stub"
-      }
-    },
-    {
-      "title": "Briefing: Budget 2025",
-      "subtitle": "Example briefing",
-      "href": "/briefings/budget-2025",
-      "meta": {
-        "status": "stub"
-      }
-    },
-    {
-      "title": "Search",
-      "subtitle": "Semantic & keyword",
-      "href": "/search",
-      "meta": {
-        "status": "stub"
-      }
-    },
-    {
-      "title": "Personalisation",
-      "subtitle": "Citizen / Power / Journalist",
-      "href": "/previews/personalisation",
-      "meta": {
-        "status": "live"
-      }
-    }
+    { "title":"Home",        "subtitle":"Landing",              "href": "/",                           "meta": { "role":"core" } },
+    { "title":"Dashboard",   "subtitle":"Personalised start",   "href": "/dashboard",                   "meta": { "status":"stub" } },
+    { "title":"Briefings",   "subtitle":"All briefings",        "href": "/briefings",                   "meta": { "status":"stub" } },
+    { "title":"Budget 2025", "subtitle":"Briefing example",     "href": "/briefings/budget-2025",       "meta": { "status":"stub" } },
+    { "title":"Bills",       "subtitle":"Latest bills",         "href": "/bills",                       "meta": { "status":"stub" } },
+    { "title":"Bill Compare","subtitle":"A/B diff view",        "href": "/bills/compare?a=latest&b=prev","meta": { "status":"stub" } },
+    { "title":"MPs",         "subtitle":"Directory",            "href": "/mps",                         "meta": { "status":"stub" } },
+    { "title":"Ownership",   "subtitle":"Media ownership AU",   "href": "/ownership",                   "meta": { "status":"stub" } },
+    { "title":"Search",      "subtitle":"Semantic & keyword",   "href": "/search",                      "meta": { "status":"stub" } },
+    { "title":"Watchlist",   "subtitle":"Followed items",       "href": "/watchlist",                   "meta": { "status":"stub" } },
+    { "title":"Notifications","subtitle":"Alert history",       "href": "/notifications",               "meta": { "status":"stub" } },
+    { "title":"Account",     "subtitle":"Profile & persona",    "href": "/account",                     "meta": { "status":"stub" } },
+    { "title":"Billing",     "subtitle":"Stripe portal",        "href": "/billing",                     "meta": { "status":"stub" } },
+    { "title":"Settings",    "subtitle":"Prefs & exports",      "href": "/settings",                    "meta": { "status":"stub" } },
+    { "title":"Features",    "subtitle":"Overview",             "href": "/features",                    "meta": { "status":"public" } },
+    { "title":"Pricing",     "subtitle":"$1/mo plan",           "href": "/pricing",                     "meta": { "status":"public" } },
+    { "title":"About",       "subtitle":"Mission & method",     "href": "/about",                       "meta": { "status":"public" } },
+    { "title":"Contact",     "subtitle":"Reach out",            "href": "/contact",                     "meta": { "status":"public" } },
+    { "title":"FAQ",         "subtitle":"Common questions",     "href": "/faq",                         "meta": { "status":"public" } },
+    { "title":"Terms",       "subtitle":"Legal",                "href": "/legal/terms",                 "meta": { "status":"public" } },
+    { "title":"Privacy",     "subtitle":"Legal",                "href": "/legal/privacy",               "meta": { "status":"public" } },
+    { "title":"Admin",       "subtitle":"Ops overview",         "href": "/admin",                       "meta": { "role":"internal" } },
+    { "title":"Persona Preview","subtitle":"Citizen/Power/Journalist","href": "/previews/personalisation", "meta": { "status":"live" } }
   ]
 }
