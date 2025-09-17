@@ -1,7 +1,1 @@
-/** Optional; Tailwind v4 works without, but explicit content paths help in monorepos */
-module.exports = {
-  darkMode: 'class',
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
-  theme: { extend: {} },
-  plugins: [],
-};
+module.exports = { darkMode:'class', content:['./src/**/*.{ts,tsx,js,jsx,mdx}'], theme:{extend:{}}, plugins:[] };

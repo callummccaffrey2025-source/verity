@@ -1,93 +1,48 @@
 @import "tailwindcss";
 
-/* ===== Brand tokens ===== */
-:root {
-  color-scheme: dark;
-  --bg: #000;             /* base black */
-  --surface: #0b0f14;     /* deep slate */
-  --surface-2: #0f151b;   /* card gradient end */
-  --text: #e6e6ea;        /* near-white */
-  --muted: #a1a1aa;       /* zinc-400 */
-  --brand: #10b981;       /* emerald-500 */
-  --brand-300: #6ee7b7;
-  --brand-600: #059669;
-  --ring: #22c55e;        /* ring/outline */
-  --left: #60a5fa;        /* coverage bar */
-  --center: #a1a1aa;
-  --right: #f87171;
-  --danger: #ef4444;
-  --warn: #f59e0b;
-  --ok: #22c55e;
+/* ===== Verity — Emerald/Black Design Tokens ===== */
+:root{
+  color-scheme:dark;
+  --bg:#000000; --surface:#0b0f14; --surface-2:#0f151b;
+  --text:#e6e6ea; --muted:#a1a1aa;
+  --brand:#10b981; --brand-300:#6ee7b7; --brand-600:#059669; --ring:#22c55e;
+  --left:#60a5fa; --center:#a1a1aa; --right:#f87171;
+  --danger:#ef4444; --warn:#f59e0b; --ok:#22c55e;
 }
 
-html, body { height: 100%; margin: 0; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-inter, ui-sans-serif), system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg); color:var(--text);
+  font-family: var(--font-inter, ui-sans-serif), system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+  text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
 }
 
-/* ===== Base type scale ===== */
-h1 { font-size: clamp(1.6rem, 2.5vw + 1rem, 2.5rem); font-weight: 800; line-height: 1.1; }
-h2 { font-size: clamp(1.3rem, 2vw + .8rem, 2rem); font-weight: 700; line-height: 1.15; }
-h3 { font-size: 1.125rem; font-weight: 600; }
-p  { color: var(--muted); }
+h1{font-size:clamp(2rem,2.8vw+1rem,3.25rem);font-weight:800;line-height:1.08}
+h2{font-size:clamp(1.5rem,1.8vw+1rem,2.25rem);font-weight:700}
+h3{font-size:1.125rem;font-weight:600}
+p{color:var(--muted)}
 
-/* ===== Links, focus, and buttons ===== */
-a { color: var(--brand-300); text-decoration: none; }
-a:hover { color: var(--brand); text-decoration: underline; }
+a{color:var(--brand-300);text-decoration:none} a:hover{color:var(--brand);text-decoration:underline}
 
-/* visible, soft focus ring everywhere */
-*:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 70%, #000 30%), 0 0 0 4px color-mix(in oklab, var(--ring) 25%, transparent);
-  border-radius: .5rem;
-}
+/* Focus ring */
+*:focus-visible{outline:none;box-shadow:0 0 0 2px color-mix(in oklab,var(--ring) 70%,#000 30%),0 0 0 4px color-mix(in oklab,var(--ring) 25%,transparent);border-radius:.5rem}
 
-/* ===== Header & footer ===== */
-.site-header {
-  background: linear-gradient(180deg, #08120e 0%, rgba(0,0,0,.0) 100%), #050608;
-  border-bottom: 1px solid #0b1220;
-}
-.site-footer {
-  border-top: 1px solid #0b1220;
-  color: var(--muted);
-}
+/* Header / Footer */
+.site-header{background:linear-gradient(180deg,#08120e 0%,rgba(0,0,0,.0) 100%),#050608;border-bottom:1px solid #0b1220}
+.site-footer{border-top:1px solid #0b1220;color:var(--muted)}
 
-/* ===== Cards & UI atoms ===== */
-.card {
-  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
-  border: 1px solid #0e1622;
-  border-radius: 1rem;
-}
-
-.btn {
-  display:inline-flex; align-items:center; gap:.5rem;
-  border-radius:.75rem; padding:.6rem .9rem; font-weight:600;
-  background:#0d1b15; border:1px solid rgba(16,185,129,.3);
-  color: var(--brand-300);
-}
-.btn:hover { background:#0c241b; color:var(--brand); }
+/* Cards & Buttons */
+.card{background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%);border:1px solid #0e1622;border-radius:1rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:.75rem;padding:.6rem .9rem;font-weight:600;background:#0d1b15;border:1px solid rgba(16,185,129,.30);color:var(--brand-300)}
+.btn:hover{background:#0c241b;color:var(--brand)}
 
 /* Inputs */
-.input {
-  background:#0a0f14; border:1px solid #1f2937; color:var(--text);
-  border-radius:.6rem; padding:.6rem .75rem;
-}
-.input::placeholder { color:#6b7280; }
+.input{background:#0a0f14;border:1px solid #1f2937;color:var(--text);border-radius:.6rem;padding:.6rem .75rem}
+.input::placeholder{color:#6b7280}
 
-/* Skip link for a11y */
-.skip-link {
-  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
-}
-.skip-link:focus-visible {
-  position: static; width:auto; height:auto; padding:.5rem .75rem; margin:.5rem;
-  background:#0a0f14; border:1px solid #1f2937; border-radius:.5rem;
-}
+/* Skip link */
+.skip-link{position:absolute;left:-9999px}
+.skip-link:focus-visible{position:static;padding:.5rem .75rem;margin:.5rem;background:#0a0f14;border:1px solid #1f2937;border-radius:.5rem}
 
-/* Reduced-motion friendly */
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
-}
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}

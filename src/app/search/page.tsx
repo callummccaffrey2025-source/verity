@@ -1,4 +1,1 @@
-import PageHeader from "@/components/PageHeader";
-export default function Search() {
-  return (<div><PageHeader title="Search" subtitle="Semantic & keyword" /></div>);
-}
+export default function Search(){ return(<div><h1>Search</h1><p className="mt-2">Semantic & keyword</p></div>); }
