@@ -1,9 +1,1 @@
-export const dynamic = "force-static";
-export default function Page(){
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="text-zinc-400 mt-2">Personalised start</p>
-    </div>
-  );
-}
+export default function Dashboard(){return(<div><h1 className="font-extrabold">Your feed</h1><p className="mt-2 text-zinc-400">News, bills, and MPs tailored to you.</p></div>);}

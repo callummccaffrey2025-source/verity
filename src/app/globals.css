@@ -28,7 +28,7 @@ a{color:var(--brand-300);text-decoration:none} a:hover{color:var(--brand);text-d
 *:focus-visible{outline:none;box-shadow:0 0 0 2px color-mix(in oklab,var(--ring) 70%,#000 30%),0 0 0 4px color-mix(in oklab,var(--ring) 25%,transparent);border-radius:.5rem}
 
 /* Header / Footer */
-.site-header{background:linear-gradient(180deg,#08120e 0%,rgba(0,0,0,.0) 100%),#050608;border-bottom:1px solid #0b1220}
+.site-header{position:sticky;top:0;z-index:40;backdrop-filter:saturate(140%) blur(6px);background:linear-gradient(180deg,#08120e 0%,rgba(0,0,0,.0) 100%),#050608;border-bottom:1px solid #0b1220}
 .site-footer{border-top:1px solid #0b1220;color:var(--muted)}
 
 /* Cards & Buttons */
