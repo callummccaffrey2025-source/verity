@@ -1,0 +1,92 @@
+'use client';
+
+import React from 'react';
+import MPCard from '../../../components/mp/MPCard';
+
+type MP = any;
+type MPListData = { items: MP[]; total: number };
+
+export default function MPList({ data }: { data: MPListData }) {
+  // Client state
+  const [page, setPage] = React.useState(1);
+  const [query, setQuery] = React.useState('');
+  const [clientData, setClientData] = React.useState<MPListData>(
+    data || { items: [], total: 0 }
+  );
+
+  // Prefer server items first, then client
+  const baseItems = (data?.items?.length ? data.items : clientData.items) || [];
+
+  // Fetch new pages (keeps your /api/mps contract intact)
+  React.useEffect(() => {
+    const q = new URLSearchParams({ sort: 'alpha', page: String(page), pageSize: '24' });
+    fetch(`/api/mps?` + q.toString())
+      .then((r) => r.json())
+      .then((j) => setClientData(j))
+      .catch(() => {});
+  }, [page]);
+
+  // Client-side name filter (non-destructive)
+  const items = query
+    ? baseItems.filter((m: any) =>
+        (m?.name || '').toLowerCase().includes(query.toLowerCase())
+      )
+    : baseItems;
+
+  const showSkel = !baseItems.length;
+  const total = clientData.total || data?.total || 0;
+  const pageSize = 24;
+  const totalPages = Math.max(1, Math.ceil((total || baseItems.length) / pageSize));
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* Toolbar */}
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="text-lg font-semibold">MPs</h1>
+
+        <div className="flex items-center gap-2">
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search by name…"
+            className="w-56 rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          />
+          <div className="flex items-center gap-2 text-sm text-zinc-400">
+            <button
+              className="rounded-md border border-zinc-700 px-2 py-1 hover:border-zinc-600 disabled:opacity-50"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+            >
+              Prev
+            </button>
+            <span>
+              Page {page} / {totalPages}
+            </span>
+            <button
+              className="rounded-md border border-zinc-700 px-2 py-1 hover:border-zinc-600 disabled:opacity-50"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Cards grid */}
+      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+        {showSkel
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <li key={'skel' + i}>
+                <div className="h-[152px] rounded-xl border border-zinc-800 bg-zinc-900 animate-pulse" />
+              </li>
+            ))
+          : (items.length ? items : baseItems).map((m: any, i: number) => (
+              <li key={m?.slug || m?.id || i}>
+                <MPCard mp={m} />
+              </li>
+            ))}
+      </ul>
+    </div>
+  );
+}

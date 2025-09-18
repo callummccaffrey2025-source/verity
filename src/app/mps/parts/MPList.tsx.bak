@@ -7,30 +7,18 @@ import MPCard from '@/components/mp/MPCard';
 type MP = any;
 type MPListData = { items: MP[]; total: number };
 
-// Accept multiple prop shapes so we don't depend on one page implementation.
-type Props =
-  | { data: MPListData }
-  | { items: MP[]; total?: number }
-  | { data?: MPListData; items?: MP[]; total?: number };
+export default function MPList({ data }: { data: MPListData }) {
+  // SSR payload (never lost)
+  const serverItems = data?.items ?? [];
+  const [clientData, setClientData] = React.useState<MPListData>(data || { items: [], total: 0 });
 
-export default function MPList(props: Props) {
-  const data = (props as any).data as MPListData | undefined;
-  const itemsProp = (props as any).items as MP[] | undefined;
-  const totalProp = (props as any).total as number | undefined;
-
-  // Server payload if provided
-  const serverItems: MP[] = data?.items ?? (Array.isArray(itemsProp) ? itemsProp : []);
-  const serverTotal: number = data?.total ?? (typeof totalProp === 'number' ? totalProp : serverItems.length);
-
-  // Keep a client copy if something later hydrates/filters
-  const [clientData] = React.useState<MPListData>({ items: serverItems, total: serverTotal });
-
-  // Prefer server on first paint; fall back to client if server empty
-  const items = serverItems?.length ? serverItems : (clientData?.items ?? []);
+  // Prefer server on first paint, fall back to client when/if it updates
+  const items = (serverItems && serverItems.length ? serverItems : (clientData?.items ?? []));
   const showSkel = !items || items.length === 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Results grid */}
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
         {showSkel
           ? Array.from({ length: 8 }).map((_, i) => (
