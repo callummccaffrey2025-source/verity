@@ -65,7 +65,7 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
       aria-label={`Open profile for ${name || 'MP'}`}
       className="group block rounded-xl border border-zinc-800 bg-zinc-900 p-4 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 transition"
     >
-      <article className="group block rounded-xl border border-zinc-800 bg-zinc-900 p-4 focus-within:ring-2 focus-within:ring-emerald-500/60">
+      <article className="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 hover:border-zinc-700 focus-within:ring-2 focus-within:ring-emerald-500/60 transition">
         <div className="flex items-center gap-3">
           {/* avatar */}
           {portraitUrl ? (

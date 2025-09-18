@@ -1,9 +1,8 @@
-export const dynamic = "force-static";
-export default function Page(){
+export default function About() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold">About</h1>
-      <p className="text-zinc-400 mt-2">Mission & methodology</p>
-    </div>
+    <main className="mx-auto max-w-3xl px-6 py-12">
+      <h1 className="text-3xl md:text-4xl font-semibold text-zinc-100">About Verity</h1>
+      <p className="mt-3 text-zinc-400">Radical transparency for Australia.</p>
+    </main>
   );
 }

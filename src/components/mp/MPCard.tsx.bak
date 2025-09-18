@@ -65,27 +65,22 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
       aria-label={`Open profile for ${name || 'MP'}`}
       className="group block rounded-xl border border-zinc-800 bg-zinc-900 p-4 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 transition"
     >
-      <article className="h-full">
+      <article className="group block rounded-xl border border-zinc-800 bg-zinc-900 p-4 focus-within:ring-2 focus-within:ring-emerald-500/60">
         <div className="flex items-center gap-3">
+          {/* avatar */}
           {portraitUrl ? (
             <img
               src={portraitUrl}
               alt={`${name} portrait`}
-              loading="lazy"
-              decoding="async"
-              className="h-12 w-10 rounded-md object-cover"
+              className="h-10 w-10 rounded-md object-cover ring-1 ring-zinc-800"
             />
           ) : (
-            <div
-              aria-hidden="true"
-              className="h-12 w-10 rounded-md bg-zinc-800 grid place-content-center text-zinc-300 text-xs font-semibold"
-            >
-              {initials(name)}
+            <div className="h-10 w-10 rounded-md bg-zinc-800 text-zinc-200 grid place-items-center ring-1 ring-zinc-800">
+              <span className="text-sm font-semibold">{(name || 'MP').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase()}</span>
             </div>
           )}
-
           <div className="min-w-0">
-            <h3 className="truncate font-semibold text-zinc-100">{name}</h3>
+            <h3 className="truncate font-semibold text-zinc-50">{name}</h3>
             <div className="truncate text-zinc-400 text-sm">
               {party && <span className="mr-1">{party}</span>}
               {chamber && <span className="mr-1">· {chamber}</span>}

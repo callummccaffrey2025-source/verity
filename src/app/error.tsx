@@ -1,5 +1,12 @@
-"use client";
-export default function GlobalError({ error, reset }:{ error:Error & { digest?:string }, reset:()=>void }){
-  console.error(error);
-  return(<div className="min-h-[60vh] flex flex-col items-center justify-center text-center"><h1 className="text-5xl font-extrabold">Something went wrong</h1><p className="mt-2 text-zinc-400">Please try again.</p><button onClick={()=>reset()} className="btn mt-4">Try again</button></div>);
+'use client';
+export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <main className="mx-auto max-w-3xl px-6 py-24">
+      <h1 className="text-3xl font-semibold text-zinc-100">Something went wrong</h1>
+      <p className="mt-2 text-zinc-400">{error?.message ?? "Unexpected error"}</p>
+      <button onClick={reset} className="mt-6 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2">
+        Try again
+      </button>
+    </main>
+  );
 }

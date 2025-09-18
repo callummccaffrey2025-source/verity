@@ -14,7 +14,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("http://localhost:3000")
 };
 
-export default function RootLayout({ children }:{ children:React.ReactNode }){
+import NavActiveClient from "@/components/NavActiveClient";
+import StickyCTA from "@/components/StickyCTA";
+
+import KeyShortcuts from "../components/KeyShortcuts";
+
+ RootLayout({ children }:{ children:React.ReactNode }){
   return(<html lang="en" className={inter.variable}><body>
     <a className="skip-link" href="#content">Skip to content</a>
     <header className="site-header px-4 py-3">
@@ -27,8 +32,17 @@ export default function RootLayout({ children }:{ children:React.ReactNode }){
         </div>
       </div>
     </header>
-    <main id="content" className="mx-auto max-w-6xl p-6">{children}</main>
+    <main id="content" className="mx-auto max-w-6xl p-6"><NavActiveClient />
+        <SmoothScroll />
+        <TrackClicks />
+        <StickyCTA />
+        <AnnouncementBar />
+        <RetargetJoin />
+        {children}</main>
     <Footer />
     <CmdPalette />
   </body></html>);
 }
+
+import SmoothScroll from "@/components/SmoothScroll";
+import TrackClicks from "@/components/TrackClicks";
