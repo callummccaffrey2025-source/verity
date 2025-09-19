@@ -1,0 +1,31 @@
+import { MP } from '@/lib/types';
+
+export default function DonorTable({ mp }: { mp: MP }) {
+  const donors = mp.donors || [];
+  if (!donors.length) return <p className="text-sm text-neutral-500">No disclosed donations recorded.</p>;
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="text-left border-b">
+            <th className="py-2 pr-4">Year</th>
+            <th className="py-2 pr-4">Donor</th>
+            <th className="py-2 pr-4">Amount (AUD)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {donors.map((d, i) => (
+            <tr key={`${d.name}-${i}`} className="border-b last:border-b-0">
+              <td className="py-2 pr-4">{d.year}</td>
+              <td className="py-2 pr-4">{d.name}</td>
+              <td className="py-2 pr-4">${d.amountAUD.toLocaleString('en-AU')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="text-xs text-neutral-500 mt-2">
+        Source: AEC public disclosures (links forthcoming).
+      </p>
+    </div>
+  );
+}

@@ -11,7 +11,7 @@ export default function MPCard({ mp }: { mp: MP }) {
         <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3"><div className="text-[11px] text-neutral-100">Party line</div><div className="mt-1 text-lg font-semibold">{mp.partyLinePct}%</div></div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3"><div className="text-[11px] text-neutral-100">Integrity score</div><div className="mt-1 text-lg font-semibold">{mp.integrityGrade}</div></div>
       </div>
-      <div className="mt-4 text-xs text-neutral-100">Recent votes: {mp.recentVotes.map(v => `${v.position} – ${v.title.replace("Bill","Amdt")}`).join("; ")}.</div>
+      <div className="mt-4 text-xs text-neutral-100">Recent votes: {(mp.recentVotes ?? []).map((v: { position: string; title: string }) => `${v.position} – ${v.title.replace("Bill","Amdt")}`).join("; ")}.</div>
     </article>
   );
 }
