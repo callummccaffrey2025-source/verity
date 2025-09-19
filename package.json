@@ -9,17 +9,23 @@
     "lint": "eslint",
     "eval": "node scripts/eval.mjs",
     "lhci": "pnpm dlx @lhci/cli@0.13.0 autorun",
-    "test:e2e": "playwright test -g \"\\[smoke\\]|\\[a11y\\]\"",
+    "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:a11y": "playwright test -g \"\\[a11y\\]\"",
+    "test:a11y": "playwright test -g \"axe clean enough\"",
     "test:smoke": "playwright test -g \"\\[smoke\\]\""
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
     "@mozilla/readability": "^0.6.0",
     "@pinecone-database/pinecone": "^6.1.2",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@stripe/stripe-js": "^7.9.0",
     "@supabase/supabase-js": "^2.57.0",
     "@vercel/og": "^0.8.5",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.15",
     "jsdom": "^26.1.0",
     "lucide-react": "^0.544.0",
     "marked": "^16.3.0",
@@ -29,27 +35,50 @@
     "react-dom": "^19.1.1",
     "react-markdown": "^10.1.0",
     "stripe": "^18.5.0",
-    "zod": "^4.1.5"
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@eslint/eslintrc": "^3",
     "@lhci/cli": "^0.15.1",
+    "@next/bundle-analyzer": "^15.5.3",
     "@playwright/test": "^1.55.0",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/jsdom": "^21.1.7",
     "@types/mozilla-readability": "^0.2.1",
     "@types/node": "^20.19.15",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
     "autoprefixer": "^10.4.21",
     "csv-parse": "^6.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.5.2",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "lefthook": "^1.13.1",
     "postcss": "^8.5.6",
     "slugify": "^1.6.6",
     "tailwindcss": "^4.1.13",
     "tsx": "^4.20.5",
     "typescript": "^5.9.2"
-  }
+  },
+  "browserslist": {
+    "production": [
+      "last 2 Chrome versions",
+      "last 2 Firefox versions",
+      "last 2 Safari versions",
+      "not dead",
+      "supports es6-module"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "type": "module"
 }

@@ -1,31 +1,30 @@
-import SourceGuard from '../../../components/verity/SourceGuard';
-import { Receipts } from '../../../components/verity/Receipts';
+export const metadata = { title: "Bias Compass™ — Verity", description: "See how outlets and statements align across the political spectrum with a transparent, source-backed lens." };
+import Methodology from "@/components/Methodology";
+import LegalNote from "@/components/LegalNote";
 
-const mock = [
-  { outlet: 'Example News',   score: -0.3, receipts: [{ url: 'https://oecd.org',         label: 'Method note' }] },
-  { outlet: 'Centrist Daily', score:  0.0, receipts: [{ url: 'https://abs.gov.au',       label: 'ABS metadata' }] },
-  { outlet: 'Market Herald',  score:  0.4, receipts: [{ url: 'https://australia.gov.au', label: 'Gov source' }] },
-];
-
-export default function Page() {
-  const receipts = mock.flatMap(m => m.receipts);
+export default function Page(){
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-semibold">Bias Compass™</h1>
-      <p className="text-zinc-300">Analytic spectrum of outlet framing. Click receipts to review methods.</p>
-      <SourceGuard receipts={receipts}>
-        <div className="rounded-2xl border border-zinc-800 p-4">
-          <ul className="space-y-2">
-            {mock.map((m, i) => (
-              <li key={i} className="flex items-center justify-between">
-                <span>{m.outlet}</span>
-                <span className="text-zinc-400">{m.score.toFixed(2)}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <Receipts items={receipts} />
-      </SourceGuard>
-    </div>
+    <main className="p-8 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-2">Bias Compass™</h1>
+      <p className="text-neutral-300 mb-6">See how outlets and statements align across the political spectrum with a transparent, source-backed lens.</p>
+
+      <div className="rounded-xl border border-neutral-800 bg-neutral-950 p-6">Coming soon.</div>
+
+      <Methodology
+        items={[
+          { label: "Sources", value: `Academic media-bias studies; public datasets; outlet self-disclosures; content analysis` },
+          { label: "Method", value: `Relative positioning using topic framing & language cues; calibrated to neutral baselines` },
+          { label: "Display", value: `Bias lens toggle; per-story/source positioning; confidence bands` },
+          { label: "Receipts", value: `Links to articles, transcripts, and datasets` }
+        ]}
+        limitations={[
+          `Positions reflect comparative analysis, not absolute truth.`,
+          `Nuance/tone may not be fully captured.`
+        ]}
+        updated="Weekly"
+      />
+
+      <LegalNote />
+    </main>
   );
 }

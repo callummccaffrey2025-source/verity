@@ -10,7 +10,7 @@ export default function Page(){
       <SourceGuard receipts={receipts}>
         <div className="rounded-2xl border border-zinc-800 p-4 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="text-zinc-400"><th className="text-left">Metric</th><th>AU</th><th>CA</th><th>UK</th></tr></thead>
+            <thead><tr className="text-neutral-100"><th className="text-left">Metric</th><th>AU</th><th>CA</th><th>UK</th></tr></thead>
             <tbody>{rows.map((r,i)=>(
               <tr key={i} className="border-t border-zinc-800"><td>{r.metric}</td><td className="text-center">{r.au}</td><td className="text-center">{r.ca}</td><td className="text-center">{r.uk}</td></tr>
             ))}</tbody>

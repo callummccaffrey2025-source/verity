@@ -7,7 +7,7 @@ export default function LogoCloud({
         {items.map((name) => (
           <div
             key={name}
-            className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-neutral-300"
+            className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-neutral-100"
           >
             {name}
           </div>

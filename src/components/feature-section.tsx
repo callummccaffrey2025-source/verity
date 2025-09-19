@@ -7,7 +7,7 @@ export default function FeatureSection({ heading, items }: { heading: string; it
         {items.map((f) => (
           <div key={f.title} className="rounded-xl border border-white/10 bg-white/5 p-5">
             <div className="text-lg font-semibold">{f.title}</div>
-            <p className="mt-2 text-neutral-400">{f.body}</p>
+            <p className="mt-2 text-neutral-100">{f.body}</p>
           </div>
         ))}
       </div>

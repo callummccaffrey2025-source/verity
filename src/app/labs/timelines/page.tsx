@@ -17,7 +17,7 @@ export default function Page(){
             <li key={i}>
               <div className="absolute -left-1.5 h-3 w-3 rounded-full bg-zinc-400" />
               <div className="ml-4">
-                <div className="text-sm text-zinc-400">{e.t}</div>
+                <div className="text-sm text-neutral-100">{e.t}</div>
                 <div className="font-medium">{e.title}</div>
               </div>
             </li>

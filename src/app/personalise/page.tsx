@@ -167,7 +167,7 @@ export default function PersonalisePage() {
               {cfg.issues.map(it => (
                 <span key={it} className="rounded-xl border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs">
                   {it}
-                  <button className="ml-2 text-zinc-400" onClick={()=>setCfg(c=>({...c, issues: c.issues.filter(x=>x!==it)}))}>×</button>
+                  <button className="ml-2 text-neutral-100" onClick={()=>setCfg(c=>({...c, issues: c.issues.filter(x=>x!==it)}))}>×</button>
                 </span>
               ))}
             </div>
@@ -175,7 +175,7 @@ export default function PersonalisePage() {
 
           <Card className="p-5">
             <div className="text-sm font-semibold">Media balance</div>
-            <div className="mt-3 text-xs text-zinc-400">0 = more left sources · 100 = more right sources</div>
+            <div className="mt-3 text-xs text-neutral-100">0 = more left sources · 100 = more right sources</div>
             <input
               type="range" min={0} max={100} value={cfg.media.balance}
               onChange={(e)=>setCfg(c=>({...c, media: {...c.media, balance: Number(e.target.value)}}))}
@@ -194,7 +194,7 @@ export default function PersonalisePage() {
               </label>
               <label className="flex items-center gap-2">
                 <input type="checkbox" checked={!!cfg.consent?.personalisedEmail}
-                  onChange={e=>setCfg(c=>({...c, consent: {...(c.consent ?? {}), personalisedEmail: e.target.checked}}))}/>
+                  onChange={e=>setCfg(c=>({...c, consent: {...(c.consent ?? {}), personalisedEmail: e.target.checked, telemetry: (c.consent?.telemetry ?? false)}}))}/>
                 Personalised email
               </label>
             </div>
@@ -219,7 +219,7 @@ export default function PersonalisePage() {
               {cfg.mps.map(m => (
                 <span key={m} className="rounded-xl border border-zinc-700 bg-zinc-900 px-2 py-1 text-xs">
                   {m}
-                  <button className="ml-2 text-zinc-400" onClick={()=>setCfg(c=>({...c, mps: c.mps.filter(x=>x!==m)}))}>×</button>
+                  <button className="ml-2 text-neutral-100" onClick={()=>setCfg(c=>({...c, mps: c.mps.filter(x=>x!==m)}))}>×</button>
                 </span>
               ))}
             </div>
@@ -229,22 +229,22 @@ export default function PersonalisePage() {
         {/* Live preview */}
         <div className="space-y-4">
           <Card className="p-5">
-            <div className="text-sm text-zinc-400">Preview</div>
+            <div className="text-sm text-neutral-100">Preview</div>
             <h3 className="mt-1 text-xl font-semibold">Your daily brief</h3>
-            <p className="text-sm text-zinc-300">
+            <p className="text-sm text-neutral-100">
               {cfg.persona} · {cfg.electorate || 'Electorate'} ({cfg.postcode || 'Postcode'}) · Issues: {cfg.issues.join(', ') || 'Pick a few'}
             </p>
           </Card>
 
           <Card className="p-5">
             <div className="text-sm font-semibold">Your news</div>
-            <div className="mt-2 text-xs text-zinc-400">
+            <div className="mt-2 text-xs text-neutral-100">
               Coverage mix · Left {coverage.left.toFixed(0)}% · Centre {coverage.center.toFixed(0)}% · Right {coverage.right.toFixed(0)}%
             </div>
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               {[1,2].map(i => (
                 <div key={i} className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-3">
-                  <div className="text-xs text-zinc-400">{cfg.issues[0] || 'Topic'} · Today</div>
+                  <div className="text-xs text-neutral-100">{cfg.issues[0] || 'Topic'} · Today</div>
                   <div className="mt-0.5 text-sm font-semibold">Sample headline {i}</div>
                   <div className="mt-2 h-2 overflow-hidden rounded-md border border-zinc-700 flex">
                     <div className="h-full" style={{ width: `${coverage.left}%`, background: 'rgba(96,165,250,1)' }} />
@@ -261,21 +261,21 @@ export default function PersonalisePage() {
 
           <Card className="p-5">
             <div className="text-sm font-semibold">Your MPs</div>
-            <ul className="mt-2 space-y-2 text-sm text-zinc-300">
+            <ul className="mt-2 space-y-2 text-sm text-neutral-100">
               {cfg.mps.length ? cfg.mps.map(m => <li key={m}>• {m} — votes & signals tracked</li>) : <li>Follow at least one MP for voting alerts.</li>}
             </ul>
           </Card>
 
           <Card className="p-5">
             <div className="text-sm font-semibold">Cadence</div>
-            <div className="text-sm text-zinc-300">
+            <div className="text-sm text-neutral-100">
               {cfg.cadence.mode} brief at {cfg.cadence.time} on {cfg.cadence.weekdays.join(' ')}
             </div>
           </Card>
         </div>
       </main>
 
-      <footer className="border-t border-zinc-900/60 bg-black/60 py-6 text-sm text-zinc-400">
+      <footer className="border-t border-zinc-900/60 bg-black/60 py-6 text-sm text-neutral-100">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4">
           <div>© 2025 Verity</div>
           <div>Receipts. Ownership. Bias surfaced. Personalised.</div>

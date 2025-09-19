@@ -22,7 +22,7 @@ export default function SearchSection(){
         <a key={h.sourceId} href={h.url} target="_blank" rel="noreferrer"
            className="block rounded border border-neutral-800 p-2 hover:border-emerald-600">
           <div className="text-sm font-medium">{h.title}</div>
-          <div className="text-xs text-neutral-400">{h.snippet}</div>
+          <div className="text-xs text-neutral-100">{h.snippet}</div>
         </a>
       ))}
     </div></div>);

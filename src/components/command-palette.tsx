@@ -101,7 +101,7 @@ export default function CommandPalette() {
               onClick={() => go(it.href)}
               className={`cursor-pointer rounded-md px-3 py-2 ${i === idx ? "bg-white/10" : "hover:bg-white/5"}`}
             >
-              <div className="text-neutral-200">{it.title}</div>
+              <div className="text-neutral-100">{it.title}</div>
               {it.group && <div className="text-xs text-neutral-500">{it.group}</div>}
             </li>
           ))}

@@ -25,9 +25,9 @@ export default async function PersonalisationPreview(){
     <div>
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">Personalisation Preview</h1>
-        <div className="text-sm text-zinc-400">Cookie: <code className="bg-zinc-900 px-2 py-1 rounded">v_persona={persona}</code></div>
+        <div className="text-sm text-neutral-100">Cookie: <code className="bg-zinc-900 px-2 py-1 rounded">v_persona={persona}</code></div>
       </div>
-      <p className="text-zinc-400 mt-2">This shows what a <span className="font-medium text-zinc-200">{persona}</span> sees. Use the header switcher to change persona.</p>
+      <p className="text-neutral-100 mt-2">This shows what a <span className="font-medium text-neutral-100">{persona}</span> sees. Use the header switcher to change persona.</p>
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((it,i)=> <PreviewCard key={i} {...it} />)}
       </div>

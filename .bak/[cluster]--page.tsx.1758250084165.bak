@@ -1,0 +1,17 @@
+// @ts-nocheck
+import { loadJSON } from "@/utils/load";
+import NewsCard, { Story } from "@/components/news/NewsCard";
+export const revalidate=0;
+export default async function Page({ params }: any){
+  const { clusters, stories } = await loadJSON<{clusters:string[];stories:Story[]}>("/data/news.json");
+  const cluster = decodeURIComponent(params.cluster);
+  const list = stories.filter(s=>s.cluster===cluster);
+  return (<div>
+    <h1 className="font-extrabold">{cluster}</h1>
+    <p className="mt-2 text-zinc-400">Receipts and context for {cluster}.</p>
+    <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+      {list.map((s,i)=><NewsCard key={i} s={s}/>)}
+      {!list.length && <div className="card p-6 text-zinc-300">No stories in this cluster yet.</div>}
+    </section>
+  </div>);
+}

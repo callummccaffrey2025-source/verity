@@ -1,0 +1,266 @@
+import type { ReactNode } from 'react';
+
+export default function VerityPreview() {
+  // --- Inline sparkline used in multiple sections ---
+  const spark = (
+    <svg viewBox="0 0 100 24" className="w-full h-6 overflow-visible">
+      <polyline
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        className="text-emerald-400/80"
+        points="0,18 10,14 20,16 30,10 40,12 50,6 60,8 70,5 80,9 90,7 100,4"
+      />
+    </svg>
+  );
+
+  // --- Tiny badge helper ---
+  const Badge = ({ children }: { children: ReactNode }) => (
+    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">
+      {children}
+    </span>
+  );
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-white selection:bg-emerald-500/30">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-3">
+            <div className="h-7 w-7 rounded-lg bg-gradient-to-tr from-emerald-500 to-emerald-300" />
+            <span className="text-lg font-bold tracking-tight">Verity</span>
+            <Badge>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live beta
+            </Badge>
+          </div>
+          <nav className="hidden items-center gap-6 text-sm text-zinc-300 md:flex">
+            <a className="hover:text-white" href="#feed">News</a>
+            <a className="hover:text-white" href="/mps">MPs</a>
+            <a className="hover:text-white" href="/bills">Bills</a>
+            <a className="hover:text-white" href="/pricing">Pricing</a>
+            <a className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-black hover:bg-emerald-400" href="/join">Join for $1</a>
+          </nav>
+        </div>
+      </header>
+
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-zinc-800 bg-gradient-to-b from-zinc-900/60 to-zinc-950">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_50%_-10%,rgba(16,185,129,0.15),transparent)]" />
+        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 md:grid-cols-2 md:py-24">
+          <div>
+            <div className="mb-4 flex flex-wrap gap-2">
+              <Badge>AI-powered</Badge>
+              <Badge>Australia-first</Badge>
+              <Badge>Non-partisan tooling</Badge>
+            </div>
+            <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
+              Politics, made <span className="text-emerald-400">transparent</span>.
+            </h1>
+            <p className="mt-4 max-w-xl text-zinc-400">
+              Verity tracks MPs, bills, donations, and media narratives — then explains them simply. Know who represents you, how they vote, and why it matters.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <a href="/join" className="rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-black hover:bg-emerald-400">Get started for $1/month</a>
+              <a href="#demo" className="rounded-xl border border-zinc-800 px-5 py-3 text-sm text-zinc-200 hover:border-emerald-500/40 hover:text-white">View live demo</a>
+              <span className="text-xs text-zinc-500">Cancel anytime</span>
+            </div>
+          </div>
+          <div className="grid content-center gap-4">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-lg">
+              <div className="flex items-center justify-between text-xs text-zinc-400">
+                <span>NSW • Electorate dashboard</span>
+                <span>Refreshed 2m ago</span>
+              </div>
+              <div className="mt-3 grid grid-cols-3 gap-3 text-sm">
+                {[
+                  { k: 'Bills this week', v: '12' },
+                  { k: 'Your MP votes with party', v: '92%' },
+                  { k: 'Confidence score', v: 'A-' },
+                ].map((x) => (
+                  <div key={x.k} className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3">
+                    <div className="text-zinc-400 text-[11px]">{x.k}</div>
+                    <div className="mt-1 text-lg font-semibold">{x.v}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4">{spark}</div>
+            </div>
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+              <div className="mb-2 text-xs text-zinc-400">Personalised issues</div>
+              <div className="flex flex-wrap gap-2">
+                {['Cost of living','Housing','Energy','Immigration','Education'].map((t) => (
+                  <span key={t} className="rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-300 hover:border-emerald-500/40">{t}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature highlights */}
+      <section className="mx-auto max-w-7xl px-6 py-14" id="demo">
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: 'MP Intelligence Cards',
+              body: 'Voting record, attendance, donors, media sentiment, and policy consistency in one clean view.'
+            },
+            {
+              title: 'Bill Tracker',
+              body: 'Plain-English summaries, stage progress, predicted outcomes, and who\'s whipping the votes.'
+            },
+            {
+              title: 'News De-bias',
+              body: 'Compare how outlets frame the same story. Know what\'s signal vs spin.'
+            }
+          ].map((f) => (
+            <article key={f.title} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <h3 className="text-base font-semibold text-emerald-400">{f.title}</h3>
+              <p className="mt-2 text-sm text-zinc-400">{f.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* Live feed preview */}
+      <section className="border-y border-zinc-800 bg-zinc-950 py-14" id="feed">
+        <div className="mx-auto max-w-6xl px-6">
+          <h3 className="text-2xl font-bold">Live Political Feed</h3>
+          <p className="mt-1 text-sm text-zinc-400">AI-curated updates for your electorate and issues.</p>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-2">
+            {/* Bill card */}
+            <article className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 hover:border-emerald-500/40">
+              <div className="flex items-center justify-between">
+                <h4 className="font-semibold">Housing Affordability Amendment Bill</h4>
+                <span className="text-xs text-zinc-400">Stage: Second reading</span>
+              </div>
+              <p className="mt-1 text-sm text-zinc-400">Caps stamp duty for first-home buyers under $800k; allocates funds for build-to-rent.</p>
+              <div className="mt-4 flex items-center gap-2 text-xs">
+                <span className="rounded-full bg-emerald-600/20 px-2 py-1 text-emerald-300">Predicted pass 64%</span>
+                <span className="rounded-full bg-zinc-800 px-2 py-1 text-zinc-300">Your MP: For</span>
+              </div>
+            </article>
+
+            {/* MP card */}
+            <article className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 hover:border-emerald-500/40" id="mps">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-500" />
+                <div>
+                  <h4 className="font-semibold">Jane Citizen, MP</h4>
+                  <p className="text-xs text-zinc-400">North Sydney • Liberal • Since 2019</p>
+                </div>
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+                  <div className="text-[11px] text-zinc-400">Attendance</div>
+                  <div className="mt-1 text-lg font-semibold">97%</div>
+                </div>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+                  <div className="text-[11px] text-zinc-400">Party line</div>
+                  <div className="mt-1 text-lg font-semibold">92%</div>
+                </div>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
+                  <div className="text-[11px] text-zinc-400">Integrity score</div>
+                  <div className="mt-1 text-lg font-semibold">A-</div>
+                </div>
+              </div>
+              <div className="mt-4 text-xs text-zinc-400">Recent votes: For – Housing Amdt; Against – Fuel Excise Rise; Abstain – Media Code.</div>
+            </article>
+
+            {/* Media compare */}
+            <article className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+              <h4 className="font-semibold">How media framed today’s energy policy</h4>
+              <div className="mt-3 grid grid-cols-2 gap-3 text-xs text-zinc-300">
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet A: "Bold climate push."</div>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet B: "Costly power gamble."</div>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet C: "Jobs vs bills debate."</div>
+                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet D: "Net-zero path clarified."</div>
+              </div>
+            </article>
+
+            {/* Sentiment mini-chart */}
+            <article className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5" id="bills">
+              <h4 className="font-semibold">Public sentiment (last 30 days)</h4>
+              <div className="mt-3 text-zinc-400">{spark}</div>
+              <div className="mt-2 text-xs text-zinc-500">Upward trend: +12% approval across tracked issues</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Conversion strip */}
+      <section className="mx-auto max-w-6xl px-6 py-12">
+        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 md:flex-row">
+          <div>
+            <h4 className="text-lg font-semibold">Try Verity for $1</h4>
+            <p className="text-sm text-emerald-200/90">Full access. Cancel anytime. Built for Australians who want clarity.</p>
+          </div>
+          <a href="/join" className="rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-black hover:bg-emerald-400">Start now</a>
+        </div>
+      </section>
+
+      {/* Testimonials / Trust */}
+      <section className="mx-auto max-w-7xl px-6 pb-16">
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            'Finally, politics makes sense.',
+            'The $1 is a no-brainer.',
+            'I can track my MP without reading 20 sites.'
+          ].map((q, i) => (
+            <figure key={i} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+              <blockquote className="text-sm text-zinc-200">{q}</blockquote>
+              <figcaption className="mt-3 text-xs text-zinc-500">Verified user</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-zinc-800 bg-zinc-950 px-6 py-10 text-sm text-zinc-500">
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="h-6 w-6 rounded bg-gradient-to-tr from-emerald-500 to-emerald-300" />
+              <strong>Verity</strong>
+            </div>
+            <p className="mt-2 text-xs">AI-powered civic intelligence for Australia.</p>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-zinc-400">Product</div>
+            <a className="block hover:text-white" href="#feed">Feed</a>
+            <a className="block hover:text-white" href="/mps">MPs</a>
+            <a className="block hover:text-white" href="/bills">Bills</a>
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs font-semibold text-zinc-400">Company</div>
+            <a className="block hover:text-white" href="/pricing">Pricing</a>
+            <a className="block hover:text-white" href="#">Terms</a>
+            <a className="block hover:text-white" href="#">Privacy</a>
+          </div>
+        </div>
+        <p className="mx-auto mt-6 max-w-7xl text-xs">© 2025 Verity. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ---- Dev-only smoke tests (run in browser, not during SSR) ----
+if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
+  const TESTIMONIALS = [
+    'Finally, politics makes sense.',
+    'The $1 is a no-brainer.',
+    'I can track my MP without reading 20 sites.'
+  ];
+  const ISSUES = ['Cost of living','Housing','Energy','Immigration','Education'];
+  const FEATURES = ['MP Intelligence Cards','Bill Tracker','News De-bias'];
+
+  console.groupCollapsed('VerityPreview smoke tests');
+  try {
+    console.assert(TESTIMONIALS.length === 3, 'Expected 3 testimonials');
+    console.assert(ISSUES.includes('Housing'), 'Issues should include Housing');
+    console.assert(FEATURES.length === 3, 'Expected 3 feature items');
+  } finally {
+    console.groupEnd();
+  }
+}

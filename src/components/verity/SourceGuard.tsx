@@ -7,7 +7,7 @@ export default function SourceGuard({
 }: { receipts?: Receipt[]; children: ReactNode; fallback?: ReactNode; }) {
   if (!receipts || receipts.length === 0) {
     return fallback ?? (
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-zinc-300">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4 text-sm text-neutral-100">
         This view requires sources ("receipts"). Add at least one official/public source.
       </div>
     );

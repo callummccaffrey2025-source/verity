@@ -24,7 +24,7 @@ export default function AskSection() {
       {loading && <div className="h-20 animate-pulse rounded bg-neutral-800" />}
       {!!answer && <p className="text-sm whitespace-pre-wrap">{answer}</p>}
       {!!cites.length && <ol className="list-decimal pl-5 space-y-1">
-        {cites.map(c=><li key={c.sourceId} className="text-xs text-neutral-400">
+        {cites.map(c=><li key={c.sourceId} className="text-xs text-neutral-100">
           <a className="underline" href={c.url} target="_blank" rel="noreferrer">{c.title}</a> — <span className="text-neutral-500">{c.snippet}</span>
         </li>)}
       </ol>}

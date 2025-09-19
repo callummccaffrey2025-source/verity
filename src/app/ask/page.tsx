@@ -1,1 +1,1 @@
-export default function Ask(){return(<div><h1 className="font-extrabold">Ask Verity</h1><p className="mt-2 text-zinc-400">Ask: “What changed in the Housing Bill?” — get a concise, cited answer.</p></div>);}
+export default function Ask(){return(<div><h1 className="font-extrabold">Ask Verity</h1><p className="mt-2 text-neutral-100">Ask: “What changed in the Housing Bill?” — get a concise, cited answer.</p></div>);}

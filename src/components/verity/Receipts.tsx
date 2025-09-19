@@ -8,12 +8,12 @@ export function Receipts({ items }: { items: Receipt[] }) {
       <div className="mb-2 font-semibold">Receipts</div>
       <ul className="space-y-2">
         {items.map((r, i) => (
-          <li key={i} className="text-zinc-300">
+          <li key={i} className="text-neutral-100">
             <Link href={r.url} className="underline" target="_blank">
               {r.label ?? r.url}
             </Link>
             {r.publisher && (
-              <span className="ml-2 text-xs text-zinc-400">
+              <span className="ml-2 text-xs text-neutral-100">
                 ({r.publisher}{r.date ? ` · ${r.date}` : ''})
               </span>
             )}

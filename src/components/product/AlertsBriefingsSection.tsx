@@ -14,8 +14,8 @@ export default function AlertsBriefingsSection(){
   const hasAny=useMemo(()=> (alerts.topics?.length||alerts.billIds?.length||alerts.mpIds?.length),[alerts]);
   function persist(next:Alerts){ setAlerts(next); localStorage.setItem("verity.alerts", JSON.stringify(next)); }
   async function refresh(){ const qs=hasAny?`?alerts=${b64(alerts)}`:""; const j=await (await fetch("/api/briefings"+qs)).json(); setItems(j.items||[]); }
-  useEffect(()=>{ refresh(); /* eslint-disable-next-line */ },[]);
-  useEffect(()=>{ refresh(); /* eslint-disable-next-line */ },[JSON.stringify(alerts)]);
+  useEffect(()=>{ refresh();   },[]);
+  useEffect(()=>{ refresh();   },[JSON.stringify(alerts)]);
   function addTopic(e:React.FormEvent){ e.preventDefault(); const t=topic.trim(); if(!t) return; setTopic(""); persist({ ...alerts, topics:Array.from(new Set([...(alerts.topics||[]), t]))}); }
   function removeTopic(t:string){ persist({ ...alerts, topics:(alerts.topics||[]).filter(x=>x!==t) }); }
   return (<div>

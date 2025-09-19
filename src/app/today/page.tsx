@@ -11,7 +11,7 @@ export default function Today() {
         {items.map((it) => (
           <article key={it.title} className="rounded-xl border border-zinc-800 bg-zinc-900 p-4">
             <h2 className="text-lg font-medium text-zinc-100">{it.title}</h2>
-            <p className="mt-2 text-sm text-zinc-400">{it.body}</p>
+            <p className="mt-2 text-sm text-neutral-100">{it.body}</p>
           </article>
         ))}
       </div>

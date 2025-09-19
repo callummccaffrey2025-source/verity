@@ -23,7 +23,7 @@ export default function NewsCard({ story }: { story: Story }) {
   return (
     <a href={story.url} className="block rounded-2xl border border-zinc-800 hover:border-emerald-700/60 transition p-4">
       <div className="flex items-baseline justify-between gap-3">
-        <div className="text-xs text-zinc-400 flex items-center gap-2">
+        <div className="text-xs text-neutral-100 flex items-center gap-2">
           <span className="inline-flex items-center gap-1">
             <StanceDot stance={story.stance} />
             <span className="uppercase tracking-wide">{story.source}</span>
@@ -34,13 +34,13 @@ export default function NewsCard({ story }: { story: Story }) {
         {story.tags?.length ? (
           <div className="hidden sm:flex flex-wrap gap-2">
             {story.tags.map(t => (
-              <span key={t} className="rounded bg-zinc-900/70 text-xs text-zinc-400 px-2 py-0.5">{t}</span>
+              <span key={t} className="rounded bg-zinc-900/70 text-xs text-neutral-100 px-2 py-0.5">{t}</span>
             ))}
           </div>
         ) : null}
       </div>
       <div className="mt-2 text-base font-semibold">{story.title}</div>
-      {story.excerpt ? <p className="mt-1 text-sm text-zinc-400">{story.excerpt}</p> : null}
+      {story.excerpt ? <p className="mt-1 text-sm text-neutral-100">{story.excerpt}</p> : null}
     </a>
   );
 }

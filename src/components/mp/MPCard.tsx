@@ -25,7 +25,7 @@ function safeSlugFromName(name?: string) {
 }
 function initials(name?: string) {
   const parts = (name || '').trim().split(/\s+/).slice(0, 2);
-  return parts.map(p => p[0]?.toUpperCase() || '').join('');
+  return parts.map((p: string)=> p[0]?.toUpperCase() || '').join('');
 }
 
 export default function MPCard({ mp }: { mp: AnyMP }) {
@@ -75,13 +75,13 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
               className="h-10 w-10 rounded-md object-cover ring-1 ring-zinc-800"
             />
           ) : (
-            <div className="h-10 w-10 rounded-md bg-zinc-800 text-zinc-200 grid place-items-center ring-1 ring-zinc-800">
-              <span className="text-sm font-semibold">{(name || 'MP').split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase()}</span>
+            <div className="h-10 w-10 rounded-md bg-zinc-800 text-neutral-100 grid place-items-center ring-1 ring-zinc-800">
+              <span className="text-sm font-semibold">{(name || 'MP').split(' ').map((p: string)=>p[0]).slice(0,2).join('').toUpperCase()}</span>
             </div>
           )}
           <div className="min-w-0">
             <h3 className="truncate font-semibold text-zinc-50">{name}</h3>
-            <div className="truncate text-zinc-400 text-sm">
+            <div className="truncate text-neutral-100 text-sm">
               {party && <span className="mr-1">{party}</span>}
               {chamber && <span className="mr-1">· {chamber}</span>}
               {electorate && <span>· {electorate}</span>}
@@ -89,15 +89,15 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
           </div>
         </div>
 
-        <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-zinc-300">
+        <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-neutral-100">
           <div>
-            <div className="text-zinc-400 uppercase tracking-wide text-[11px]">
+            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
               Attendance (12m)
             </div>
             <div className="text-zinc-100 font-medium">{pct(att12)}</div>
           </div>
           <div>
-            <div className="text-zinc-400 uppercase tracking-wide text-[11px]">
+            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
               Overall attendance
             </div>
             <div className="text-zinc-100 font-medium">
@@ -105,7 +105,7 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
             </div>
           </div>
           <div>
-            <div className="text-zinc-400 uppercase tracking-wide text-[11px]">
+            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
               Rebellions (12m)
             </div>
             <div className="text-zinc-100 font-medium">
@@ -113,7 +113,7 @@ export default function MPCard({ mp }: { mp: AnyMP }) {
             </div>
           </div>
           <div>
-            <div className="text-zinc-400 uppercase tracking-wide text-[11px]">
+            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
               Committees
             </div>
             <div className="text-zinc-100 font-medium">

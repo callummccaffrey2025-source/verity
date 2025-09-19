@@ -16,7 +16,7 @@ export default function Nav(){
         const active = path===l.href || path.startsWith(l.href+"/");
         return (
           <a key={l.href} href={l.href}
-             className={active?"text-emerald-300":"text-zinc-300 hover:text-white"}
+             className={active?"text-emerald-300":"text-neutral-100 hover:text-white"}
              aria-current={active?"page":undefined}>{l.label}</a>
         );
       })}

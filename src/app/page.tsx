@@ -1,266 +1,218 @@
-import type { ReactNode } from 'react';
+'use client';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight, Check, Shield, Newspaper, Scale, Users, BadgeDollarSign, Search, BarChart3, ScrollText, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
 
-export default function VerityPreview() {
-  // --- Inline sparkline used in multiple sections ---
-  const spark = (
-    <svg viewBox="0 0 100 24" className="w-full h-6 overflow-visible">
-      <polyline
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        className="text-emerald-400/80"
-        points="0,18 10,14 20,16 30,10 40,12 50,6 60,8 70,5 80,9 90,7 100,4"
-      />
-    </svg>
-  );
+const mpSample = { name: "Jane Citizen MP", party: "Liberal Party", electorate: "Wentworth (NSW)", score: 82, lastVoted: "18 Sep 2025", streak: "+5" };
+const billSample = { title: "Online Safety (Transparency) Amendment Bill 2025", chamber: "House of Representatives", stage: "Second Reading", updated: "18 Sep 2025", stanceSplit: { support: 56, oppose: 44 } };
+const newsSample = [
+  { title: "Senate committee releases report on privacy overhaul", ts: "19 Sep 2025", src: "ParlInfo" },
+  { title: "Cost of living package passes lower house", ts: "18 Sep 2025", src: "Hansard" },
+  { title: "High Court hears challenge on digital ID bill", ts: "17 Sep 2025", src: "ABC" },
+];
 
-  // --- Tiny badge helper ---
-  const Badge = ({ children }: { children: ReactNode }) => (
-    <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-300">
-      {children}
-    </span>
-  );
-
+export default function Page() {
+  const [query, setQuery] = useState("");
   return (
-    <div className="min-h-screen bg-zinc-950 text-white selection:bg-emerald-500/30">
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-950/70 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    <div className="min-h-screen bg-neutral-950 text-neutral-100">
+      {/* Announcement Bar */}
+      <div className="w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white text-sm">
+        <div className="mx-auto max-w-7xl px-4 py-2 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2"><Sparkles className="h-4 w-4"/><span>Alpha preview · $1/mo founding plan</span></div>
+          <Button size="sm" variant="secondary" className="h-8">Join waitlist</Button>
+        </div>
+      </div>
+
+      {/* Nav */}
+      <header className="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-neutral-950/60 border-b border-white/10">
+        <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-tr from-emerald-500 to-emerald-300" />
-            <span className="text-lg font-bold tracking-tight">Verity</span>
-            <Badge>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live beta
-            </Badge>
+            <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
+            <span className="font-semibold tracking-tight">Verity</span>
+            <Badge className="text-white/90">v0.1 preview</Badge>
           </div>
-          <nav className="hidden items-center gap-6 text-sm text-zinc-300 md:flex">
-            <a className="hover:text-white" href="#feed">News</a>
-            <a className="hover:text-white" href="#mps">MPs</a>
-            <a className="hover:text-white" href="#bills">Bills</a>
-            <a className="hover:text-white" href="#pricing">Pricing</a>
-            <a className="rounded-lg bg-emerald-500 px-4 py-2 font-semibold text-black hover:bg-emerald-400" href="#join">Join for $1</a>
+          <nav className="hidden md:flex items-center gap-6 text-sm text-neutral-100">
+            <a href="/news" className="hover:text-white flex items-center gap-2"><Newspaper className="h-4 w-4"/>News</a>
+            <a href="/bills" className="hover:text-white flex items-center gap-2"><ScrollText className="h-4 w-4"/>Bills</a>
+            <a href="/mps" className="hover:text-white flex items-center gap-2"><Users className="h-4 w-4"/>MPs</a>
+            <a href="/dashboard" className="hover:text-white flex items-center gap-2"><BarChart3 className="h-4 w-4"/>Dashboard</a>
+            <a href="/pricing" className="hover:text-white flex items-center gap-2"><BadgeDollarSign className="h-4 w-4"/>Pricing</a>
           </nav>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" className="text-neutral-100 hover:text-white">Log in</Button>
+            <Button variant="secondary">Join</Button>
+          </div>
         </div>
       </header>
 
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-zinc-800 bg-gradient-to-b from-zinc-900/60 to-zinc-950">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60rem_30rem_at_50%_-10%,rgba(16,185,129,0.15),transparent)]" />
-        <div className="mx-auto grid max-w-7xl gap-8 px-6 py-16 md:grid-cols-2 md:py-24">
+      <section className="mx-auto max-w-7xl px-4 py-16">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
           <div>
-            <div className="mb-4 flex flex-wrap gap-2">
-              <Badge>AI-powered</Badge>
-              <Badge>Australia-first</Badge>
-              <Badge>Non-partisan tooling</Badge>
-            </div>
-            <h1 className="text-4xl font-extrabold leading-tight md:text-5xl">
-              Politics, made <span className="text-emerald-400">transparent</span>.
-            </h1>
-            <p className="mt-4 max-w-xl text-zinc-400">
-              Verity tracks MPs, bills, donations, and media narratives — then explains them simply. Know who represents you, how they vote, and why it matters.
+            <motion.h1 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-4xl md:text-5xl font-semibold tracking-tight leading-tight">
+              Australia’s civic intelligence layer
+            </motion.h1>
+            <p className="mt-4 text-neutral-100 text-lg leading-relaxed">
+              Verity tracks bills, votes, MPs, and media—so you can see what’s real, what matters, and what changed today. Radical transparency, $1/month.
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <a href="#join" className="rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-black hover:bg-emerald-400">Get started for $1/month</a>
-              <a href="#demo" className="rounded-xl border border-zinc-800 px-5 py-3 text-sm text-zinc-200 hover:border-emerald-500/40 hover:text-white">View live demo</a>
-              <span className="text-xs text-zinc-500">Cancel anytime</span>
-            </div>
-          </div>
-          <div className="grid content-center gap-4">
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-lg">
-              <div className="flex items-center justify-between text-xs text-zinc-400">
-                <span>NSW • Electorate dashboard</span>
-                <span>Refreshed 2m ago</span>
-              </div>
-              <div className="mt-3 grid grid-cols-3 gap-3 text-sm">
-                {[
-                  { k: 'Bills this week', v: '12' },
-                  { k: 'Your MP votes with party', v: '92%' },
-                  { k: 'Confidence score', v: 'A-' },
-                ].map((x) => (
-                  <div key={x.k} className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3">
-                    <div className="text-zinc-400 text-[11px]">{x.k}</div>
-                    <div className="mt-1 text-lg font-semibold">{x.v}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4">{spark}</div>
-            </div>
-            <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-              <div className="mb-2 text-xs text-zinc-400">Personalised issues</div>
-              <div className="flex flex-wrap gap-2">
-                {['Cost of living','Housing','Energy','Immigration','Education'].map((t) => (
-                  <span key={t} className="rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-300 hover:border-emerald-500/40">{t}</span>
-                ))}
+              <Button variant="primary">Get started <ArrowRight className="ml-2 h-4 w-4"/></Button>
+              <Button variant="outline">See live demo</Button>
+              <div className="flex items-center gap-2 text-neutral-100 text-sm">
+                <Shield className="h-4 w-4"/> No ads · Cancel anytime
               </div>
             </div>
+            <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4 opacity-70">
+              {["Hansard", "ParlInfo", "ABS", "AEC"].map((t) => (
+                <div key={t} className="rounded-xl border border-white/10 p-3 text-center text-sm">{t}</div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Feature highlights */}
-      <section className="mx-auto max-w-7xl px-6 py-14" id="demo">
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            {
-              title: 'MP Intelligence Cards',
-              body: 'Voting record, attendance, donors, media sentiment, and policy consistency in one clean view.'
-            },
-            {
-              title: 'Bill Tracker',
-              body: 'Plain-English summaries, stage progress, predicted outcomes, and who\'s whipping the votes.'
-            },
-            {
-              title: 'News De-bias',
-              body: 'Compare how outlets frame the same story. Know what\'s signal vs spin.'
-            }
-          ].map((f) => (
-            <article key={f.title} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-              <h3 className="text-base font-semibold text-emerald-400">{f.title}</h3>
-              <p className="mt-2 text-sm text-zinc-400">{f.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* Live feed preview */}
-      <section className="border-y border-zinc-800 bg-zinc-950 py-14" id="feed">
-        <div className="mx-auto max-w-6xl px-6">
-          <h3 className="text-2xl font-bold">Live Political Feed</h3>
-          <p className="mt-1 text-sm text-zinc-400">AI-curated updates for your electorate and issues.</p>
-
-          <div className="mt-6 grid gap-6 md:grid-cols-2">
-            {/* Bill card */}
-            <article className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 hover:border-emerald-500/40">
-              <div className="flex items-center justify-between">
-                <h4 className="font-semibold">Housing Affordability Amendment Bill</h4>
-                <span className="text-xs text-zinc-400">Stage: Second reading</span>
-              </div>
-              <p className="mt-1 text-sm text-zinc-400">Caps stamp duty for first-home buyers under $800k; allocates funds for build-to-rent.</p>
-              <div className="mt-4 flex items-center gap-2 text-xs">
-                <span className="rounded-full bg-emerald-600/20 px-2 py-1 text-emerald-300">Predicted pass 64%</span>
-                <span className="rounded-full bg-zinc-800 px-2 py-1 text-zinc-300">Your MP: For</span>
-              </div>
-            </article>
-
-            {/* MP card */}
-            <article className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 hover:border-emerald-500/40" id="mps">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-500" />
-                <div>
-                  <h4 className="font-semibold">Jane Citizen, MP</h4>
-                  <p className="text-xs text-zinc-400">North Sydney • Liberal • Since 2019</p>
-                </div>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-3 text-sm">
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-                  <div className="text-[11px] text-zinc-400">Attendance</div>
-                  <div className="mt-1 text-lg font-semibold">97%</div>
-                </div>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-                  <div className="text-[11px] text-zinc-400">Party line</div>
-                  <div className="mt-1 text-lg font-semibold">92%</div>
-                </div>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">
-                  <div className="text-[11px] text-zinc-400">Integrity score</div>
-                  <div className="mt-1 text-lg font-semibold">A-</div>
-                </div>
-              </div>
-              <div className="mt-4 text-xs text-zinc-400">Recent votes: For – Housing Amdt; Against – Fuel Excise Rise; Abstain – Media Code.</div>
-            </article>
-
-            {/* Media compare */}
-            <article className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-              <h4 className="font-semibold">How media framed today’s energy policy</h4>
-              <div className="mt-3 grid grid-cols-2 gap-3 text-xs text-zinc-300">
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet A: "Bold climate push."</div>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet B: "Costly power gamble."</div>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet C: "Jobs vs bills debate."</div>
-                <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-3">Outlet D: "Net-zero path clarified."</div>
-              </div>
-            </article>
-
-            {/* Sentiment mini-chart */}
-            <article className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5" id="bills">
-              <h4 className="font-semibold">Public sentiment (last 30 days)</h4>
-              <div className="mt-3 text-zinc-400">{spark}</div>
-              <div className="mt-2 text-xs text-zinc-500">Upward trend: +12% approval across tracked issues</div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      {/* Conversion strip */}
-      <section className="mx-auto max-w-6xl px-6 py-12">
-        <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 md:flex-row">
+          {/* Search & live tiles */}
           <div>
-            <h4 className="text-lg font-semibold">Try Verity for $1</h4>
-            <p className="text-sm text-emerald-200/90">Full access. Cancel anytime. Built for Australians who want clarity.</p>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl">Try it</CardTitle>
+                <CardDescription>Search a bill, MP, or topic</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-100"/>
+                    <Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="e.g. Privacy Act, Voice referendum, digital ID" className="pl-9"/>
+                  </div>
+                  <Button variant="outline">Search</Button>
+                </div>
+                <div className="mt-6 grid sm:grid-cols-2 gap-4">
+                  <Card className="bg-neutral-950/60">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base flex items-center gap-2"><Users className="h-4 w-4"/>MP Spotlight</CardTitle>
+                      <CardDescription>Wentworth (NSW)</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="font-medium">{mpSample.name}</div>
+                          <div className="text-xs text-neutral-100">{mpSample.party}</div>
+                        </div>
+                        <Badge className="bg-emerald-600/80 text-white">Score {mpSample.score}</Badge>
+                      </div>
+                      <div className="text-xs text-neutral-100">Last vote: {mpSample.lastVoted} · Streak {mpSample.streak}</div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-neutral-950/60">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-base flex items-center gap-2"><Scale className="h-4 w-4"/>Bill Tracker</CardTitle>
+                      <CardDescription>{billSample.chamber} · {billSample.stage}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <div className="font-medium leading-snug">{billSample.title}</div>
+                      <div className="text-xs text-neutral-100">Updated {billSample.updated}</div>
+                      <div className="mt-2 h-2 w-full rounded bg-neutral-800 overflow-hidden">
+                        <div className="h-full bg-emerald-500" style={{ width: `${billSample.stanceSplit.support}%` }} />
+                      </div>
+                      <div className="text-xs text-neutral-100">Support {billSample.stanceSplit.support}% · Oppose {billSample.stanceSplit.oppose ?? 100 - billSample.stanceSplit.support}%</div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          <a href="#join" className="rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-black hover:bg-emerald-400">Start now</a>
         </div>
       </section>
 
-      {/* Testimonials / Trust */}
-      <section className="mx-auto max-w-7xl px-6 pb-16">
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            'Finally, politics makes sense.',
-            'The $1 is a no-brainer.',
-            'I can track my MP without reading 20 sites.'
-          ].map((q, i) => (
-            <figure key={i} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-              <blockquote className="text-sm text-zinc-200">{q}</blockquote>
-              <figcaption className="mt-3 text-xs text-zinc-500">Verified user</figcaption>
-            </figure>
+      {/* News rail */}
+      <section className="mx-auto max-w-7xl px-4 py-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xl font-semibold">Today</h2>
+          <a href="/news" className="text-sm text-neutral-100 hover:text-white">All news</a>
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {newsSample.map((n) => (
+            <Card key={n.title} className="bg-neutral-900/50">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base leading-snug">{n.title}</CardTitle>
+                <CardDescription>{n.src} · {n.ts}</CardDescription>
+              </CardHeader>
+            </Card>
           ))}
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="mx-auto max-w-7xl px-4 py-12">
+        <div className="rounded-3xl border border-white/10 bg-neutral-900/40 p-6 md:p-10">
+          <div className="grid md:grid-cols-4 gap-8 items-center">
+            <div className="md:col-span-2">
+              <h3 className="text-2xl font-semibold">Founding Plan</h3>
+              <ul className="mt-4 space-y-2 text-sm text-neutral-100">
+                {[
+                  "Bill & vote tracking with alerts",
+                  "MP profiles & scorecards",
+                  "Bias-balanced news rail",
+                  "Personal dashboard & topics",
+                ].map((f) => (<li key={f} className="flex items-start gap-2"><Check className="h-4 w-4 mt-0.5 text-emerald-400"/> {f}</li>))}
+              </ul>
+            </div>
+            <div className="md:col-span-2">
+              <Card className="bg-neutral-950/60">
+                <CardHeader>
+                  <CardTitle className="text-xl">$1<span className="text-sm text-neutral-100">/month</span></CardTitle>
+                  <CardDescription>Cancel anytime. No ads. No trackers.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button variant="secondary" className="w-full">Start for $1</Button>
+                  <div className="text-xs text-neutral-100 text-center">Student & concession pricing available</div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-800 bg-zinc-950 px-6 py-10 text-sm text-zinc-500">
-        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+      <footer className="mt-8 border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-4 py-8 text-sm text-neutral-100 grid md:grid-cols-4 gap-6">
           <div>
-            <div className="flex items-center gap-3">
-              <div className="h-6 w-6 rounded bg-gradient-to-tr from-emerald-500 to-emerald-300" />
-              <strong>Verity</strong>
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
+              <span className="font-medium text-neutral-100">Verity</span>
             </div>
-            <p className="mt-2 text-xs">AI-powered civic intelligence for Australia.</p>
+            <p className="mt-2">AI-powered civic intelligence for Australia.</p>
           </div>
-          <div className="space-y-1">
-            <div className="text-xs font-semibold text-zinc-400">Product</div>
-            <a className="block hover:text-white" href="#feed">Feed</a>
-            <a className="block hover:text-white" href="#mps">MPs</a>
-            <a className="block hover:text-white" href="#bills">Bills</a>
+          <div>
+            <div className="text-neutral-100 mb-2">Product</div>
+            <ul className="space-y-1">
+              <li><a href="/news" className="hover:text-white">News</a></li>
+              <li><a href="/bills" className="hover:text-white">Bills</a></li>
+              <li><a href="/mps" className="hover:text-white">MPs</a></li>
+              <li><a href="/dashboard" className="hover:text-white">Dashboard</a></li>
+            </ul>
           </div>
-          <div className="space-y-1">
-            <div className="text-xs font-semibold text-zinc-400">Company</div>
-            <a className="block hover:text-white" href="#pricing">Pricing</a>
-            <a className="block hover:text-white" href="#">Terms</a>
-            <a className="block hover:text-white" href="#">Privacy</a>
+          <div>
+            <div className="text-neutral-100 mb-2">Company</div>
+            <ul className="space-y-1">
+              <li><a href="#" className="hover:text-white">About</a></li>
+              <li><a href="#" className="hover:text-white">Privacy</a></li>
+              <li><a href="#" className="hover:text-white">Terms</a></li>
+            </ul>
+          </div>
+          <div>
+            <div className="text-neutral-100 mb-2">Contact</div>
+            <ul className="space-y-1">
+              <li><a href="#" className="hover:text-white">support@verity.au</a></li>
+              <li className="text-neutral-500">© {new Date().getFullYear()} Verity</li>
+            </ul>
           </div>
         </div>
-        <p className="mx-auto mt-6 max-w-7xl text-xs">© 2025 Verity. All rights reserved.</p>
       </footer>
     </div>
   );
-}
-
-// ---- Dev-only smoke tests (run in browser, not during SSR) ----
-if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
-  const TESTIMONIALS = [
-    'Finally, politics makes sense.',
-    'The $1 is a no-brainer.',
-    'I can track my MP without reading 20 sites.'
-  ];
-  const ISSUES = ['Cost of living','Housing','Energy','Immigration','Education'];
-  const FEATURES = ['MP Intelligence Cards','Bill Tracker','News De-bias'];
-
-  console.groupCollapsed('VerityPreview smoke tests');
-  try {
-    console.assert(TESTIMONIALS.length === 3, 'Expected 3 testimonials');
-    console.assert(ISSUES.includes('Housing'), 'Issues should include Housing');
-    console.assert(FEATURES.length === 3, 'Expected 3 feature items');
-  } finally {
-    console.groupEnd();
-  }
 }

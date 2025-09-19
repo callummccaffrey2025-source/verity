@@ -14,7 +14,7 @@ export default function Page() {
           {cells.map((c,i)=>(
             <div key={i} className="rounded-lg border border-zinc-800 p-4">
               <div className="font-medium">{c.seat}</div>
-              <div className="text-zinc-400 text-sm">Engagement score: {c.score}</div>
+              <div className="text-neutral-100 text-sm">Engagement score: {c.score}</div>
             </div>
           ))}
         </div>

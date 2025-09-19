@@ -29,7 +29,7 @@ export default function Header() {
         onMouseEnter={() => router.prefetch(href)}
         className={[
           "rounded-md px-3 py-2 text-sm transition",
-          isActive ? "bg-white/5 text-emerald-300" : "text-neutral-300 hover:bg-white/5"
+          isActive ? "bg-white/5 text-emerald-300" : "text-neutral-100 hover:bg-white/5"
         ].join(" ")}
       >
         {label}
@@ -54,9 +54,10 @@ export default function Header() {
 
           {/* desktop */}
           <nav className="hidden items-center gap-1 md:flex">
+        <a href="/features" className="text-sm opacity-80 hover:opacity-100">Features</a>
             {NAV.map((n) => <LinkEl key={n.href} {...n} />)}
             <button
-              className="ml-1 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-neutral-300 hover:bg-white/10"
+              className="ml-1 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-neutral-100 hover:bg-white/10"
               onClick={() => document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
               title="Search (⌘K)"
               data-track="palette_open"

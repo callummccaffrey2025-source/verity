@@ -13,13 +13,13 @@ export function ReceiptsDrawer({ items, label='Receipts' }: { items: Receipt[]; 
           <aside className="absolute right-0 top-0 h-full w-full max-w-md border-l border-zinc-800 bg-zinc-950 p-4 text-zinc-100">
             <div className="flex items-center justify-between">
               <div className="text-lg font-semibold">Receipts</div>
-              <button className="text-zinc-400 hover:text-zinc-200" onClick={()=>setOpen(false)}>Close</button>
+              <button className="text-neutral-100 hover:text-neutral-100" onClick={()=>setOpen(false)}>Close</button>
             </div>
             <ul className="mt-4 space-y-3">
               {items.map((r,i)=>(
                 <li key={i} className="rounded-lg border border-zinc-800 bg-zinc-900/40 p-3">
                   <div className="text-sm font-medium">{r.label}</div>
-                  <div className="text-xs text-zinc-400">{r.source}{r.date?` · ${r.date}`:''}</div>
+                  <div className="text-xs text-neutral-100">{r.source}{r.date?` · ${r.date}`:''}</div>
                   <a className="text-emerald-300 text-sm" href={r.url}>Open ↗</a>
                 </li>
               ))}

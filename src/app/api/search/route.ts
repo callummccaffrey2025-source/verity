@@ -1,8 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import { search } from "@/lib/search";
-
-export function GET(req: NextRequest) {
-  const q = req.nextUrl.searchParams.get("q")?.trim() ?? "";
-  const hits = q ? search(q, 20) : [];
-  return NextResponse.json({ hits }, { headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate=300" } });
+import { NextResponse } from "next/server";
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const q = (searchParams.get("q")||"").trim().toLowerCase();
+  // TODO: swap mock for real adapters
+  const data = {
+    mps: q ? [{ id:"jane-citizen", name:"Jane Citizen MP", electorate:"Wentworth"}] : [],
+    bills: q ? [{ id:"os-transparency-2025", title:"Online Safety (Transparency) Amendment Bill 2025"}] : [],
+    news: []
+  };
+  return NextResponse.json(data);
 }

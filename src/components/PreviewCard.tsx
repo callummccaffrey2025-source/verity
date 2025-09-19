@@ -7,7 +7,7 @@ export default function PreviewCard({ title, subtitle, href, img, meta }: Props)
       </div>
       <div className="mt-3">
         <div className="text-base font-semibold">{title}</div>
-        {subtitle ? <div className="text-sm text-zinc-400">{subtitle}</div> : null}
+        {subtitle ? <div className="text-sm text-neutral-100">{subtitle}</div> : null}
         {meta ? (
           <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-zinc-500">
             {Object.entries(meta).map(([k,v]) => <span key={k} className="rounded bg-zinc-900/60 px-2 py-0.5">{k}: {String(v)}</span>)}

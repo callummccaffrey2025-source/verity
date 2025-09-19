@@ -20,7 +20,7 @@ export default function AskForm() {
         <div className="mt-4 rounded-lg border border-white/10 bg-white/5 p-4">
           <div className="text-neutral-100">{res.answer}</div>
           {res.citations?.length>0 && (
-            <ul className="mt-3 list-disc pl-5 text-sm text-neutral-400">
+            <ul className="mt-3 list-disc pl-5 text-sm text-neutral-100">
               {res.citations.map(c=>(<li key={c.url}><a className="underline" href={c.url}>{c.title}</a></li>))}
             </ul>
           )}

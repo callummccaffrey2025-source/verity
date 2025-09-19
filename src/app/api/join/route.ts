@@ -1,21 +1,14 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
-  const { email, consent, hp } = await req.json().catch(() => ({}) as any);
-
-  // Honeypot: if present, just return ok without writing
-  if (hp) return NextResponse.json({ ok: true });
-
-  if (typeof email !== "string" || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-    return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
-  }
-
   try {
-    db.appendWaitlist(email, Boolean(consent));
+    const { email, region } = await req.json();
+    if (!email || typeof email !== "string") {
+      return NextResponse.json({ ok: false, error: "invalid-email" }, { status: 400 });
+    }
+    console.log("[join] new lead:", { email, region, at: new Date().toISOString() });
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    console.error("[/api/join] append failed", err);
-    return NextResponse.json({ ok: false, error: "server_error" }, { status: 500 });
+  } catch {
+    return NextResponse.json({ ok: false }, { status: 500 });
   }
 }

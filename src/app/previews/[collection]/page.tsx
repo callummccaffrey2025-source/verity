@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 type Item = { title:string; subtitle?:string; href:string; img?:string; meta?:Record<string,string|number> };
 type Collection = { name:string; items: Item[] };
 export const revalidate = 0;
-export default async function Collection({ params }:{ params:{ collection:string }}) {
+export default async function Page({ params, searchParams }: any) {
   try{
     const data = await loadJSON<Collection>(`/data/previews/${params.collection}.json`);
     return (

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react"; import { Button } from "@/components/ui/Button"; import { Input } from "@/components/ui/Input";
+import { useState } from "react"; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input';
 export default function JoinForm(){
   const [status,setStatus]=useState<"idle"|"loading"|"ok"|"err">("idle"); const [email,setEmail]=useState("");
   async function onSubmit(e:React.FormEvent<HTMLFormElement>){e.preventDefault(); if(!email.includes("@")){setStatus("err");return;} setStatus("loading");

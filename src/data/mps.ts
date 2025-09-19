@@ -1,0 +1,2 @@
+import type { MP } from "@/lib/types";
+export const MPS: MP[] = [{ id:"jane-citizen", name:"Jane Citizen, MP", electorate:"North Sydney", party:"Liberal", since:2019, attendancePct:97, partyLinePct:92, integrityGrade:"A-", recentVotes:[ {title:"Housing Affordability Amendment Bill", position:"For"}, {title:"Fuel Excise Rise Bill", position:"Against"}, {title:"Media Code Update", position:"Abstain"} ] }];

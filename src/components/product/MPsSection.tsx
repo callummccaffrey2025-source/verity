@@ -20,7 +20,7 @@ export default function MPsSection(){
       {filtered.map(m=>(
         <a key={m.id} href={`/mps/${m.id}`} className="block p-2 hover:bg-neutral-900/50">
           <div className="text-sm font-medium">{m.name}</div>
-          <div className="text-xs text-neutral-400">{m.party} · {m.electorate}</div>
+          <div className="text-xs text-neutral-100">{m.party} · {m.electorate}</div>
         </a>
       ))}
     </div></div>);
