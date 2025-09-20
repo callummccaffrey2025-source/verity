@@ -3,10 +3,12 @@ export type MPStatement =
   | { date?: string; text?: string; excerpt?: string; source?: string; url?: string };
 
 export interface MP {
+  slug?: string;
   id: string;
   name: string;
   electorate: string;
   state?: string;
+  chamber?: string;
   party: string;
   since?: number;
   attendancePct?: number;

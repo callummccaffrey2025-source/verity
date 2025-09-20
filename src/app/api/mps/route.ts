@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { MP } from '@/lib/types-compat';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -18,23 +19,23 @@ export async function GET(req: Request) {
 
     const file = path.join(process.cwd(), 'public', 'data', 'mps-au.json');
     const raw = await fs.readFile(file, 'utf8');
-    const all: any[] = JSON.parse(raw);
+    const all: unknown[] = JSON.parse(raw);
 
     // Normalize missing slugs defensively
-    for (const m of all) { if (!m.slug && m.name) m.slug = slugify(m.name); }
+    for (const m of (all as MP[])) { if (!m.slug && m.name) m.slug = slugify(m.name); }
 
-    let rows = all;
+    let rows: MP[] = all as MP[];
 
     if (q) {
-      rows = rows.filter(m =>
+      rows = rows.filter((m: MP) =>
         [m.name, m.electorate, m.state, m.party]
           .some(v => String(v || '').toLowerCase().includes(q)));
     }
-    if (chamber) rows = rows.filter(m => String(m.chamber || '').toLowerCase() === chamber);
-    if (party)   rows = rows.filter(m => String(m.party   || '').toLowerCase().includes(party));
+    if (chamber) rows = rows.filter((m: MP) => String(m.chamber || '').toLowerCase() === chamber);
+    if (party)   rows = rows.filter((m: MP) => String(m.party   || '').toLowerCase().includes(party));
 
     if (sort === 'alpha') {
-      rows = rows.slice().sort((a, b) => String(a.name || '').localeCompare(String(b.name || '')));
+      rows = rows.slice().sort((a: MP, b: MP) => String(a.name || '').localeCompare(String(b.name || '')));
     }
 
     const total = rows.length;
@@ -42,8 +43,10 @@ export async function GET(req: Request) {
     const items = rows.slice(start, start + pageSize);
 
     return NextResponse.json({ items, total }, { status: 200 });
-  } catch (e: any) {
+  } catch (e: unknown) {
+
     // Never 500 the UI—return an empty, well-formed payload
-    return NextResponse.json({ items: [], total: 0, error: e?.message || 'failed' }, { status: 200 });
-  }
+      const msg = e instanceof Error ? e.message : 'failed';
+  return NextResponse.json({ items: [], total: 0, error: msg }, { status: 200 });
+}
 }
