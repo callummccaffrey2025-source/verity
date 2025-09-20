@@ -1,5 +1,4 @@
-import { MP } from '@/lib/types-compat';
-
+import type { MP } from '@/lib/types';
 export const MPS: MP[] = [
   {
     id: 'andrew-hastie',

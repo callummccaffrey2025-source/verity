@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { MP } from '@/lib/types-compat';
+import type { MP } from '@/lib/types';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -19,7 +19,7 @@ export async function GET(req: Request) {
 
     const file = path.join(process.cwd(), 'public', 'data', 'mps-au.json');
     const raw = await fs.readFile(file, 'utf8');
-    const all: unknown[] = JSON.parse(raw);
+    const all: MP[] = JSON.parse(raw);
 
     // Normalize missing slugs defensively
     for (const m of (all as MP[])) { if (!m.slug && m.name) m.slug = slugify(m.name); }
