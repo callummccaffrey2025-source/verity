@@ -1,6 +1,7 @@
 import { loadJSON } from "@/utils/load";
 import NewsCard, { Story } from "@/components/news/NewsCard";
 export const revalidate=0;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(props: any) {
   const { params, searchParams } = props as any;
   const { clusters, stories } = await loadJSON<{clusters:string[];stories:Story[]}>("/data/news.json");

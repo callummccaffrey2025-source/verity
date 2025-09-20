@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(props: any) {
   const { params, searchParams } = props as any;
   const { id } = params;

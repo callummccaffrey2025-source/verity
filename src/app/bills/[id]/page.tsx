@@ -3,6 +3,7 @@ import StageTracker from "@/components/bills/StageTracker";
 import DiffViewer from "@/components/bills/DiffViewer";
 import ReceiptList from "@/components/ReceiptList";
 export const dynamic="force-static";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(props: any) {
   const { params, searchParams } = props as any;
   const { id } = await params;

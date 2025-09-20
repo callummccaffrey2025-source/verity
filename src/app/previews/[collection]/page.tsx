@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 type Item = { title:string; subtitle?:string; href:string; img?:string; meta?:Record<string,string|number> };
 type Collection = { name:string; items: Item[] };
 export const revalidate = 0;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Page(props: any) {
   const { params, searchParams } = props as any;
   try{
