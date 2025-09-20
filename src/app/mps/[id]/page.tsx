@@ -1,4 +1,5 @@
-export default async function Page({ params, searchParams }: any) {
+export default async function Page(props: any) {
+  const { params, searchParams } = props as any;
   const { id } = params;
   return (
     <div className="p-6 space-y-2">

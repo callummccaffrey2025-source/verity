@@ -6,7 +6,7 @@ type BriefItem =
  | { kind:"bill";  id:string; title:string; stage:string; last_updated?:string }
  | { kind:"mp";    id:string; name:string;  party?:string; electorate?:string };
 type Alerts={topics?:string[]; mpIds?:string[]; billIds?:string[]};
-const b64=(o:any)=>{ try{ return typeof window==="undefined"?"":window.btoa(unescape(encodeURIComponent(JSON.stringify(o)))); } catch { return ""; } };
+const b64=(o: unknown)=>{ try{ return typeof window==="undefined"?"":window.btoa(unescape(encodeURIComponent(JSON.stringify(o)))); } catch { return ""; } };
 
 export default function AlertsBriefingsSection(){
   const [topic,setTopic]=useState(""), [alerts,setAlerts]=useState<Alerts>(()=>{ try{ return JSON.parse(localStorage.getItem("verity.alerts")||"{}"); }catch{return{}}; });

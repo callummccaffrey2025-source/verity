@@ -153,7 +153,8 @@ export async function POST(req: NextRequest) {
     await index.namespace(jurisdiction ?? "global").upsert(items);
 
     return NextResponse.json({ ok: true, upserted: items.length, ids: items.map(i => i.id) });
-  } catch (e: any) {
-    return NextResponse.json({ ok: false, error: String(e?.message ?? e) }, { status: 500 });
+  } catch (e: unknown) {
+    const errMsg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ ok: false, error: errMsg }, { status: 500 });
   }
 }

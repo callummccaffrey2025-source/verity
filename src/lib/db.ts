@@ -111,7 +111,7 @@ function writeJSON(name: string, value: unknown) {
 
 export const db = {
 
-  status(): any {
+  status(): unknown {
 
     // Keep it simple; route code derives docCounts separately
 

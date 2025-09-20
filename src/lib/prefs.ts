@@ -26,7 +26,7 @@ export const defaultPrefs: Preferences = {
 };
 
 // ultra-light validation without adding deps
-export function coercePrefs(input: any): Preferences | null {
+export function coercePrefs(input: unknown): Preferences | null {
   try {
     const p = { ...defaultPrefs, ...(input ?? {}) } as Preferences;
     p.persona = ['Citizen','Power User','Journalist','Educator'].includes(p.persona) ? p.persona : 'Citizen';

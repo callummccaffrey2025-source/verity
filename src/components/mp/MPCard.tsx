@@ -1,3 +1,4 @@
+import type { MP } from '@/lib/types';
 'use client';
 import Link from 'next/link';
 import * as React from 'react';
@@ -5,17 +6,17 @@ import * as React from 'react';
 type AnyMP = Record<string, any>;
 
 // best-effort helpers that never crash on null/undefined
-function pct(v: any): string {
+function pct(v: unknown): string {
   if (v === null || v === undefined || v === '') return '—';
   const n = typeof v === 'string' ? Number(v) : v;
-  if (!isFinite(n)) return '—';
+  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
   if (n < 10 && n > 0) return `${n.toFixed(1)}%`;
   return `${Math.round(n)}%`;
 }
-function int(v: any): string {
+function int(v: unknown): string {
   if (v === null || v === undefined || v === '') return '—';
   const n = Number(v);
-  return isFinite(n) ? `${n}` : '—';
+  return Number.isFinite(n) ? `${n}` : '—';
 }
 function safeSlugFromName(name?: string) {
   return (name || '')
@@ -28,6 +29,11 @@ function initials(name?: string) {
   return parts.map((p: string)=> p[0]?.toUpperCase() || '').join('');
 }
 
+function formatPercent(n: unknown): string {
+  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
+  if (n < 10 && n > 0) return `${n.toFixed(1)}%`;
+  return `${Math.round(n)}%`;
+}
 export default function MPCard({ mp }: { mp: AnyMP }) {
   const m = mp || {};
   const name = m.name ?? 'Unnamed MP';

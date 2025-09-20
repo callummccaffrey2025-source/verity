@@ -1,7 +1,8 @@
 import { loadJSON } from "@/utils/load";
 import NewsCard, { Story } from "@/components/news/NewsCard";
 export const revalidate=0;
-export default async function Page({ params, searchParams }: any){
+export default async function Page(props: any) {
+  const { params, searchParams } = props as any;
   const { clusters, stories } = await loadJSON<{clusters:string[];stories:Story[]}>("/data/news.json");
   const cluster = decodeURIComponent(params.cluster);
   const list = stories.filter(s=>s.cluster===cluster);

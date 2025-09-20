@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 // If you have shadcn/ui installed:
 import { Card } from '@/components/ui/card';
 // If not, uncomment this tiny fallback:
-// const Card = (p: any) => <div {...p} className={(p.className ?? '') + ' rounded-xl border border-zinc-800 bg-zinc-900/40'} />;
+// const Card = (p: unknown) => <div {...p} className={(p.className ?? '') + ' rounded-xl border border-zinc-800 bg-zinc-900/40'} />;
 
 type Preferences = {
   persona: 'Citizen' | 'Power User' | 'Journalist' | 'Educator';
@@ -29,7 +29,7 @@ const defaultPrefs: Preferences = {
   consent: { telemetry: false, personalisedEmail: true },
 };
 
-function coerceLocal(input: any): Preferences {
+function coerceLocal(input: unknown): Preferences {
   const p = { ...defaultPrefs, ...(input ?? {}) } as Preferences;
   p.persona = (['Citizen','Power User','Journalist','Educator'] as const).includes(p.persona) ? p.persona : 'Citizen';
   p.postcode = String(p.postcode ?? '').slice(0, 8);
