@@ -1,4 +1,4 @@
-import type { MP } from '@/lib/types-compat';
+import type { MP } from "@/lib/types";
 
 export default function DonorTable({ mp }: { mp: MP }) {
   const donors = (mp.donors ?? []) as {

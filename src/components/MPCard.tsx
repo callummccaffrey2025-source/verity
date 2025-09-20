@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { MP } from '@/lib/types-compat'
+import type { MP } from "@/lib/types"
 
 export default function MPCard({ mp }: { mp: MP }) {
   const attendance = (mp.attendancePct ?? 0) + '%'

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { MPS } from "@/lib/data/mps";
-import type { MP } from "@/lib/types-compat";
+import type { MP } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 
 function sortByName(a: MP, b: MP) {

@@ -1,4 +1,4 @@
-import type { Bill } from '@/lib/types-compat';
+import type { Bill } from "@/lib/types";
 export const BILLS: Bill[] = [
   {
     id: 'digital-id-2024',

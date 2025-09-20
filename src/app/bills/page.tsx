@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BILLS } from "@/lib/data/bills";
-import type { Bill } from "@/lib/types-compat";
+import type { Bill } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 
 export default function BillsPage() {

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { Bill } from '@/lib/types-compat'
+import type { Bill } from "@/lib/types"
 import { Badge } from '@/components/ui/badge'
 
 const stageTone = (s:Bill['stage']) => (s==='Passed'?'success':s==='Rejected'?'warning':'muted')
