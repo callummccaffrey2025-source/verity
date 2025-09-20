@@ -1,31 +1,43 @@
-import { MP } from '@/lib/types';
+import type { MP } from '@/lib/types-compat';
 
 export default function DonorTable({ mp }: { mp: MP }) {
-  const donors = mp.donors || [];
-  if (!donors.length) return <p className="text-sm text-neutral-500">No disclosed donations recorded.</p>;
+  const donors = (mp.donors ?? []) as {
+    name: string;
+    amount: number;
+    amountAUD?: number;
+    year?: number;
+  }[];
+
+  if (!donors.length) return null;
+
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left border-b">
-            <th className="py-2 pr-4">Year</th>
-            <th className="py-2 pr-4">Donor</th>
-            <th className="py-2 pr-4">Amount (AUD)</th>
+    <div className="mt-6">
+      <h3 className="text-sm font-medium text-white/90">Top donors</h3>
+      <table className="mt-2 w-full text-sm">
+        <thead className="text-white/60">
+          <tr>
+            <th className="py-2 pr-4 text-left">Name</th>
+            <th className="py-2 pr-4 text-right">Amount</th>
+            <th className="py-2 pr-0 text-right">Year</th>
           </tr>
         </thead>
-        <tbody>
-          {donors.map((d, i) => (
-            <tr key={`${d.name}-${i}`} className="border-b last:border-b-0">
-              <td className="py-2 pr-4">{d.year}</td>
-              <td className="py-2 pr-4">{d.name}</td>
-              <td className="py-2 pr-4">${d.amountAUD.toLocaleString('en-AU')}</td>
-            </tr>
-          ))}
+        <tbody className="text-white/90">
+          {donors.map(
+            (
+              d: { name: string; amount: number; amountAUD?: number; year?: number },
+              i: number
+            ) => (
+              <tr key={`${d.name}-${d.year ?? i}`} className="border-b last:border-b-0 border-white/10">
+                <td className="py-2 pr-4">{d.name}</td>
+                <td className="py-2 pr-4 text-right">
+                  ${ (d.amountAUD ?? d.amount).toLocaleString('en-AU') }
+                </td>
+                <td className="py-2 pr-0 text-right">{d.year ?? '—'}</td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
-      <p className="text-xs text-neutral-500 mt-2">
-        Source: AEC public disclosures (links forthcoming).
-      </p>
     </div>
   );
 }

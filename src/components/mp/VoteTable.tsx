@@ -1,28 +1,45 @@
 import Link from 'next/link';
-import { MP } from '@/lib/types';
+import type { MP } from '@/lib/types-compat';
 
 export default function VoteTable({ mp }: { mp: MP }) {
-  const votes = mp.votes || [];
-  if (!votes.length) return <p className="text-sm text-neutral-500">No votes recorded.</p>;
+  const votes = (mp.votes ?? []) as {
+    title: string;
+    position: string;
+    date?: string;
+    billId?: string;
+    billTitle?: string;
+    vote?: string;
+  }[];
+
+  if (!votes.length) return null;
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="text-left border-b">
-            <th className="py-2 pr-4">Date</th>
-            <th className="py-2 pr-4">Bill</th>
-            <th className="py-2 pr-4">Vote</th>
+    <div className="mt-6">
+      <h3 className="text-sm font-medium text-white/90">Recent votes</h3>
+      <table className="mt-2 w-full text-sm">
+        <thead className="text-white/60">
+          <tr>
+            <th className="py-2 pr-4 text-left">Date</th>
+            <th className="py-2 pr-4 text-left">Bill</th>
+            <th className="py-2 pr-0  text-left">Vote</th>
           </tr>
         </thead>
-        <tbody>
-          {votes.map(v => (
-            <tr key={`${v.billId}-${v.date}`} className="border-b last:border-b-0">
-              <td className="py-2 pr-4 whitespace-nowrap">{new Date(v.date).toLocaleDateString()}</td>
-              <td className="py-2 pr-4">
-                <Link href={`/bills/${v.billId}`} className="underline underline-offset-2">{v.billTitle}</Link>
+        <tbody className="text-white/90">
+          {votes.map((v, i) => (
+            <tr key={`${v.billId ?? v.title}-${v.date ?? i}`} className="border-b last:border-b-0 border-white/10">
+              <td className="py-2 pr-4 whitespace-nowrap">
+                {v.date ? new Date(v.date).toLocaleDateString() : '—'}
               </td>
-              <td className="py-2 pr-4">{v.vote}</td>
+              <td className="py-2 pr-4">
+                {v.billId ? (
+                  <Link href={`/bills/${v.billId}`} className="underline underline-offset-2">
+                    {v.billTitle ?? v.title}
+                  </Link>
+                ) : (
+                  v.billTitle ?? v.title
+                )}
+              </td>
+              <td className="py-2 pr-0">{v.vote ?? v.position}</td>
             </tr>
           ))}
         </tbody>

@@ -1,13 +1,25 @@
-import type { Bill } from "@/lib/types";
+import Link from 'next/link'
+import type { Bill } from '@/lib/types-compat'
+import { Badge } from '@/components/ui/badge'
+
+const stageTone = (s:Bill['stage']) => (s==='Passed'?'success':s==='Rejected'?'warning':'muted')
+
 export default function BillCard({ bill }: { bill: Bill }) {
+  const pass = bill.predictedPassPct ?? 62
+  const mpPos = bill.yourMPPosition ?? '—'
   return (
-    <article className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-5 hover:border-emerald-500/40">
-      <div className="flex items-center justify-between"><h4 className="font-semibold">{bill.title}</h4><span className="text-xs text-neutral-100">Stage: {bill.stage}</span></div>
-      <p className="mt-1 text-sm text-neutral-100">{bill.summary}</p>
-      <div className="mt-4 flex items-center gap-2 text-xs">
-        <span className="rounded-full bg-emerald-600/20 px-2 py-1 text-emerald-300">Predicted pass {(bill.predictedPassPct ?? 62)}%</span>
-        <span className="rounded-full bg-zinc-800 px-2 py-1 text-neutral-100">Your MP: {(bill.yourMPPosition ?? "—")}</span>
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-950/70 p-4">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <Link href={`/bills/${bill.id}`} className="font-semibold hover:underline">{bill.title}</Link>
+          <p className="mt-1 text-sm text-neutral-300">{bill.summary ?? 'Plain-language summary coming soon.'}</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Badge variant="success">Predicted pass {pass}%</Badge>
+            <Badge>Your MP: {mpPos}</Badge>
+          </div>
+        </div>
+        <Badge variant={stageTone(bill.stage)} className="whitespace-nowrap">Stage: {bill.stage}</Badge>
       </div>
-    </article>
-  );
+    </div>
+  )
 }

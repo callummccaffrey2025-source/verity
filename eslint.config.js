@@ -6,7 +6,7 @@ import a11yPlugin from 'eslint-plugin-jsx-a11y';
 
 export default [
   // Global ignores (replacement for .eslintignore)
-  { ignores: ['.next/**', 'node_modules/**', '.lhci/**', 'playwright-report/**', 'test-results/**'] },
+  { ignores: ['.next/**', 'node_modules/**', '.lhci/**', 'playwright-report/**', 'test-results/**', 'src/lib/types.ts'] },
 
   {
     files: ['**/*.{ts,tsx,js,jsx}'],

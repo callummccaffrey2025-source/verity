@@ -1,4 +1,4 @@
-import { MP } from '@/lib/types';
+import { MP } from '@/lib/types-compat';
 
 export const MPS: MP[] = [
   {
@@ -15,11 +15,11 @@ export const MPS: MP[] = [
     trustIndex: 0,
     influenceScore: 0,
     donors: [
-      { name: 'AEC Public Disclosure (example)', amountAUD: 15000, year: 2023 },
+      { name: 'AEC Public Disclosure (example)', amount: 15000, amountAUD: 15000, year: 2023 },
     ],
     votes: [
-      { billId: 'digital-id-2024', billTitle: 'Digital ID Bill 2024', vote: 'Aye', date: '2024-06-18' },
-      { billId: 'housing-aus-2025', billTitle: 'Housing Affordability Bill 2025', vote: 'No', date: '2025-03-22' },
+      { billId: 'digital-id-2024', billTitle: 'Digital ID Bill 2024', title: 'Digital ID Bill 2024', position: 'Aye', vote: 'Aye', date: '2024-06-18' },
+      { billId: 'housing-aus-2025', billTitle: 'Housing Affordability Bill 2025', title: 'Housing Affordability Bill 2025', position: 'No', vote: 'No', date: '2025-03-22' },
     ],
     statements: [
       {

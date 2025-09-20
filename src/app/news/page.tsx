@@ -1,46 +1,31 @@
-import Link from 'next/link';
-import { NEWS } from '@/lib/data/news';
+import Link from "next/link";
+import { CLUSTERS } from "@/lib/data/news";
 
-export const metadata = {
-  title: 'News | Verity',
-  description: 'Recent political coverage linked to MPs and Bills.',
-};
-
-export default function NewsPage() {
+export default function NewsIndex() {
   return (
-    <main className="container mx-auto max-w-5xl px-4 py-8 space-y-6">
-      <header>
-        <h1 className="text-2xl md:text-3xl font-semibold">News</h1>
-        <p className="text-neutral-600">Clusters and bias signals coming soon — everything links back to MPs & bills.</p>
-      </header>
+    <main className="mx-auto max-w-5xl px-6 py-10">
+      <h1 className="text-2xl font-semibold">News</h1>
+    <p className="mt-2 text-sm text-neutral-300">Top clusters across outlets. Click through for linked coverage.</p>
+    <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-neutral-300">
+      <span className="opacity-70">Stance legend:</span>
+      <span className="rounded-full bg-emerald-600/20 px-2 py-0.5 text-emerald-300">Supportive</span>
+      <span className="rounded-full bg-red-600/20 px-2 py-0.5 text-red-300">Critical</span>
+      <span className="rounded-full ring-1 ring-zinc-600 px-2 py-0.5 text-neutral-200">Neutral</span>
+    </div>
+      <p className="mt-2 text-sm text-neutral-300">
+        Explore curated clusters with bias-aware summaries (demo).
+      </p>
 
-      <section aria-labelledby="latest">
-        <h2 id="latest" className="text-xl font-semibold mb-3">Latest</h2>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {NEWS.map(n => (
-            <li key={n.id} className="rounded-xl border p-4">
-              <div className="text-xs text-neutral-500">
-                {new Date(n.published).toLocaleDateString()} • {n.source} • Bias: {n.bias ?? 'Unknown'}
-              </div>
-              <a href={n.url} className="block mt-1 text-base font-medium underline underline-offset-2">
-                {n.title}
-              </a>
-              <div className="text-sm text-neutral-600 mt-2">
-                {(n.related?.billIds || []).map(b => (
-                  <span key={b} className="mr-2">
-                    Bill: <Link href={`/bills/${b}`} className="underline">#{b}</Link>
-                  </span>
-                ))}
-                {(n.related?.mpIds || []).map(m => (
-                  <span key={m} className="mr-2">
-                    MP: <Link href={`/mps/${m}`} className="underline">#{m}</Link>
-                  </span>
-                ))}
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <ul className="mt-6 space-y-3">
+        {CLUSTERS.map((c) => (
+          <li key={c.id}>
+            <Link href={`/news/${c.id}`} className="text-base font-medium hover:underline">
+              {c.title}
+            </Link>
+            <div className="text-sm text-neutral-400">{c.summary}</div>
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

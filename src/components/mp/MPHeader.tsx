@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { MP } from '@/lib/types';
+import { MP } from '@/lib/types-compat';
 
 export default function MPHeader({ mp }: { mp: MP }) {
   return (
