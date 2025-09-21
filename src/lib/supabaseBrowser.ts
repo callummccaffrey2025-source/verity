@@ -9,3 +9,7 @@ export function createClient(): SupabaseClient {
 
 // Back-compat name used elsewhere
 export const getSupabaseBrowser = createClient;
+
+export function getSupabaseBrowser(){ 
+  return (typeof supabaseBrowser!=="undefined") ? supabaseBrowser : null as any;
+}

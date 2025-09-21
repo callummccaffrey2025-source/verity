@@ -1,6 +1,7 @@
 
 
 import "@fontsource-variable/inter";
+import SiteJSONLD from '@/components/site-jsonld';
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className="bg-neutral-950">
       <body className="min-h-dvh bg-ink text-white antialiased tabular"  style={{background:"var(--ink)",color:"var(--text-1)"}}>
+      <SiteJSONLD />
     <a href="#main" className="sr-only focus:not-sr-only absolute left-2 top-2 z-50 rounded bg-zinc-900 px-3 py-1 text-sm border border-zinc-800">Skip to content</a>
 <Nav/>
 <main className="mx-auto max-w-6xl px-4 py-6">
