@@ -1,17 +1,11 @@
-"use client";
-import { createBrowserClient, type SupabaseClient } from "@supabase/ssr";
+import { createBrowserClient } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
-export function getSupabaseBrowser(): SupabaseClient {
+export function createClient(): SupabaseClient {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-  if (!url || !anon) {
-    console.warn("Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY");
-  }
-  return createBrowserClient(url, anon);
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+  return createBrowserClient(url, key);
 }
 
-// Back-compat: some files import { supabaseBrowser }
-export const supabaseBrowser = getSupabaseBrowser;
-
-// Optional default import compatibility
-export default getSupabaseBrowser;
+// Back-compat name used elsewhere
+export const getSupabaseBrowser = createClient;

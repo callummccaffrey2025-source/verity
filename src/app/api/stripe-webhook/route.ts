@@ -1,8 +1,9 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { supabaseAdmin as db } from "@/lib/supabaseAdmin";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion:"2024-06-20" });
+import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+const db = getSupabaseAdmin();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request){
   const sig = (await req.headers).get("stripe-signature")!;

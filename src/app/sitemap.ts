@@ -1,14 +1,13 @@
 import type { MetadataRoute } from 'next';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  // Add any dynamic URLs here later
-  const staticPaths = ['', '/news', '/mps', '/bills', '/search', '/dashboard'];
+  const paths = ['/', '/news', '/bills', '/mps', '/pricing', '/join'];
   const now = new Date().toISOString();
-  return staticPaths.map((p) => ({
+  return paths.map(p => ({
     url: `${base}${p}`,
     lastModified: now,
-    changeFrequency: 'daily',
-    priority: p === '' ? 1 : 0.7,
+    changefreq: p === '/' ? 'hourly' : 'daily',
+    priority: p === '/' ? 1 : 0.6,
   }));
 }

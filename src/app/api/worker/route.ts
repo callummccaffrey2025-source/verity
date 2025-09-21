@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from "next/server";
-import { supabaseAdmin as db } from "@/lib/supabaseAdmin";
+import { getSupabaseAdmin } from '@/lib/supabaseAdmin';
+const db = getSupabaseAdmin();
 import { JSDOM } from "jsdom";
 
 async function fetchHtml(url: string){ const res = await fetch(url); return await res.text(); }

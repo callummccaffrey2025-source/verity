@@ -1,4 +1,4 @@
-import { ProgressBar } from "@/components/ui/ProgressBar";
+import { ProgressBar } from "@/components/ui/progressbar";
 
 export function BillListItem({
   title, stage, predictedPass, supportSplit,

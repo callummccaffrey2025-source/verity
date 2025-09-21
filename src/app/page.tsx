@@ -87,7 +87,7 @@ export default function Page() {
                 <div className="flex items-center gap-3">
                   <div className="flex-1 relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-100"/>
-                    <Input value={query} onChange={(e)=>setQuery(e.target.value)} placeholder="e.g. Privacy Act, Voice referendum, digital ID" className="pl-9"/>
+                    <Input value={query} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setQuery(e.target.value)} placeholder="e.g. Privacy Act, Voice referendum, digital ID" className="pl-9"/>
                   </div>
                   <Button variant="outline">Search</Button>
                 </div>

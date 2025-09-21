@@ -1,4 +1,4 @@
-import Tag from "@/components/ui/Tag";
+import Tag from "@/components/ui/tag";
 export const metadata = { title: "Dashboard", alternates: { canonical: "/dashboard" } };
 import DashboardHydrate from "@/components/DashboardHydrate";
 import BillListItem from "@/components/BillListItem";
