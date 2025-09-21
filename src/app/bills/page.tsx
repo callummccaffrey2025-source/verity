@@ -1,43 +1,27 @@
-import Link from "next/link";
-import { BILLS } from "@/lib/data/bills";
-import type { Bill } from "@/lib/types";
-import { Badge } from "@/components/ui/badge";
+import Section from "@/components/Section";
+import PageHeader from "@/components/PageHeader";
+export const metadata = { title: "Bills", alternates: { canonical: "/bills" } };
+import BillListItem from "@/components/BillListItem";
+import ContextPanel from '@/components/shared/ContextPanel';
+import Row from '@/components/list/Row';
+const items = [
+  { title:'Housing Affordability Bill 2025', meta:'Status: Second Reading • Source: gov' },
+  { title:'Digital Safety Amendment', meta:'Status: Committee • Source: verifiedNews' },
+];
+function StageTracker(){ return (
+  <div className="mt-1 flex gap-2 text-xs text-zinc-400">
+    <span className="px-2 py-0.5 rounded-full border border-zinc-700">Introduced</span>
+    <span className="px-2 py-0.5 rounded-full border border-zinc-700">House</span>
+    <span className="px-2 py-0.5 rounded-full border border-zinc-700">Senate</span>
+    <span className="px-2 py-0.5 rounded-full border border-zinc-700">Royal Assent</span>
+  </div>
+);}
 
-export default function BillsPage() {
-  const bills: Bill[] = BILLS;
-
+export default function Page(){
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="text-2xl font-semibold">Bills</h1>
-      <p className="mt-2 text-sm text-neutral-300">
-        Track the progress and likely impact of legislation.
-      </p>
-
-      <ul className="mt-6 space-y-4">
-        {bills.map((bill) => (
-          <li key={bill.id} className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-5">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <Link href={`/bills/${bill.id}`} className="text-lg font-semibold hover:underline">
-                  {bill.title}
-                </Link>
-                <p className="mt-1 text-sm text-neutral-300">
-                  {bill.summary ?? "Plain-language summary coming soon."}
-                </p>
-              </div>
-              <Badge variant="outline" className="whitespace-nowrap">Stage: {bill.stage}</Badge>
-            </div>
-            <div className="mt-3 flex flex-wrap gap-2">
-              <Badge variant="success">
-                Predicted pass {(bill.predictedPassPct ?? 62)}%
-              </Badge>
-              <Badge variant="secondary">
-                Your MP: {bill.yourMPPosition ?? "—"}
-              </Badge>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </main>
+    <div>
+      
+      <div className="space-y-3">{items.map((x,i)=><Row key={i} {...x}/>)}</div>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+function isErr(e: unknown): e is { message?: unknown } { return typeof e === "object" && e !== null; }
 "use client";
 import { useEffect } from "react";
 
@@ -16,7 +17,7 @@ export default function ClientErrorTrap() {
     window.addEventListener("error", onErr);
     window.addEventListener("unhandledrejection", onRej);
     return () => {
-      window.removeEventListener("error", onErr as any);
+      window.removeEventListener("error", onErr);
       window.removeEventListener("unhandledrejection", onRej);
     };
   }, []);

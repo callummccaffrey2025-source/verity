@@ -1,66 +1,67 @@
-export type Preferences = {
-  persona: 'Citizen' | 'Power User' | 'Journalist' | 'Educator';
-  electorate: string;
-  postcode: string;
-  issues: string[];
-  media: {
-    balance: number;           // 0 left..100 right (50=center)
-    reduceOpinion: boolean;
-    avoidPaywalled: boolean;
-    exclude: string[];         // outlets to avoid
-  };
-  mps: string[];               // names/ids
-  cadence: { mode: 'Email' | 'Push'; time: string; weekdays: string[] };
-  consent?: { telemetry: boolean; personalisedEmail: boolean };
+export type Prefs = {
+  mps: string[];
+  bills: string[];
+  topics: string[];
 };
 
-export const defaultPrefs: Preferences = {
-  persona: 'Citizen',
-  electorate: 'Sydney',
-  postcode: '2000',
-  issues: ['Housing', 'Climate', 'Economy'],
-  media: { balance: 50, reduceOpinion: true, avoidPaywalled: false, exclude: [] },
-  mps: ['Alex Smith'],
-  cadence: { mode: 'Email', time: '07:30', weekdays: ['Mon','Tue','Wed','Thu','Fri'] },
-  consent: { telemetry: false, personalisedEmail: true },
-};
+const KEY = "verity_prefs_v1";
 
-// ultra-light validation without adding deps
-export function coercePrefs(input: unknown): Preferences | null {
+function safeParse(x: unknown): Prefs {
   try {
-    const p = { ...defaultPrefs, ...(input ?? {}) } as Preferences;
-    p.persona = ['Citizen','Power User','Journalist','Educator'].includes(p.persona) ? p.persona : 'Citizen';
-    p.postcode = String(p.postcode ?? '').slice(0, 8);
-    p.electorate = String(p.electorate ?? '').slice(0, 64);
-    p.issues = Array.isArray(p.issues) ? [...new Set(p.issues.map(String))].slice(0, 12) : defaultPrefs.issues;
-    p.media = {
-      balance: Math.min(100, Math.max(0, Number(p.media?.balance ?? 50))),
-      reduceOpinion: !!p.media?.reduceOpinion,
-      avoidPaywalled: !!p.media?.avoidPaywalled,
-      exclude: Array.isArray(p.media?.exclude) ? [...new Set(p.media.exclude.map(String))].slice(0, 16) : [],
+    const o = typeof x === "string" ? JSON.parse(x) : {};
+    const arr = (v: unknown) => (Array.isArray(v) ? v.filter((s) => typeof s === "string") : []);
+    return {
+      mps: arr((o as { mps?: unknown }).mps),
+      bills: arr((o as { bills?: unknown }).bills),
+      topics: arr((o as { topics?: unknown }).topics),
     };
-    p.mps = Array.isArray(p.mps) ? [...new Set(p.mps.map(String))].slice(0, 10) : [];
-    const wd = Array.isArray(p.cadence?.weekdays) ? p.cadence.weekdays : defaultPrefs.cadence.weekdays;
-    p.cadence = {
-      mode: p.cadence?.mode === 'Push' ? 'Push' : 'Email',
-      time: String(p.cadence?.time ?? '07:30'),
-      weekdays: wd.filter((d) => ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].includes(d)),
-    };
-    p.consent = {
-      telemetry: !!p.consent?.telemetry,
-      personalisedEmail: !!p.consent?.personalisedEmail,
-    };
-    return p;
   } catch {
-    return null;
+    return { mps: [], bills: [], topics: [] };
   }
 }
 
-// cookie helpers (1 year)
-export function encodeCookie(p: Preferences) {
-  return Buffer.from(JSON.stringify(p)).toString('base64url');
+export function getPrefs(): Prefs {
+  if (typeof window === "undefined") return { mps: [], bills: [], topics: [] };
+  return safeParse(window.localStorage.getItem(KEY));
 }
-export function decodeCookie(raw?: string): Preferences | null {
-  try { return raw ? JSON.parse(Buffer.from(raw, 'base64url').toString('utf8')) : null; }
-  catch { return null; }
+
+export function setPrefs(next: Prefs): void {
+  if (typeof window === "undefined") return;
+  const norm: Prefs = {
+    mps: [...new Set(next.mps.filter(Boolean))],
+    bills: [...new Set(next.bills.filter(Boolean))],
+    topics: [...new Set(next.topics.filter(Boolean))],
+  };
+  window.localStorage.setItem(KEY, JSON.stringify(norm));
+}
+
+function toggle(list: string[], id: string, on?: boolean): string[] {
+  const has = list.includes(id);
+  if (on === true || (!has && on === undefined)) return [...list, id];
+  if (on === false || (has && on === undefined)) return list.filter((x) => x !== id);
+  return list;
+}
+
+export const prefs = {
+  followMP(id: string, on?: boolean) {
+    const p = getPrefs();
+    setPrefs({ ...p, mps: toggle(p.mps, id, on) });
+  },
+  followBill(id: string, on?: boolean) {
+    const p = getPrefs();
+    setPrefs({ ...p, bills: toggle(p.bills, id, on) });
+  },
+  toggleTopic(id: string, on?: boolean) {
+    const p = getPrefs();
+    setPrefs({ ...p, topics: toggle(p.topics, id, on) });
+  },
+};
+
+export function coercePrefs(x: unknown): Prefs { return safeParse(x); }
+export function encodeCookie(p: Prefs): string {
+  try { return encodeURIComponent(JSON.stringify(p)); } catch { return encodeURIComponent('{"mps":[],"bills":[],"topics":[]}'); }
+}
+export function decodeCookie(v: string | undefined | null): Prefs {
+  if(!v) return { mps:[], bills:[], topics:[] };
+  try { return coercePrefs(JSON.parse(decodeURIComponent(v))); } catch { return { mps:[], bills:[], topics:[] }; }
 }

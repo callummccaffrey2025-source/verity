@@ -1,139 +1,20 @@
-import type { MP } from '@/lib/types';
-'use client';
-import Link from 'next/link';
-import * as React from 'react';
-
-type AnyMP = Record<string, any>;
-
-// best-effort helpers that never crash on null/undefined
-function pct(v: unknown): string {
-  if (v === null || v === undefined || v === '') return '—';
-  const n = typeof v === 'string' ? Number(v) : v;
-  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
-  if (n < 10 && n > 0) return `${n.toFixed(1)}%`;
-  return `${Math.round(n)}%`;
-}
-function int(v: unknown): string {
-  if (v === null || v === undefined || v === '') return '—';
-  const n = Number(v);
-  return Number.isFinite(n) ? `${n}` : '—';
-}
-function safeSlugFromName(name?: string) {
-  return (name || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
-}
-function initials(name?: string) {
-  const parts = (name || '').trim().split(/\s+/).slice(0, 2);
-  return parts.map((p: string)=> p[0]?.toUpperCase() || '').join('');
-}
-
-function formatPercent(n: unknown): string {
-  if (typeof n !== 'number' || !Number.isFinite(n)) return '—';
-  if (n < 10 && n > 0) return `${n.toFixed(1)}%`;
-  return `${Math.round(n)}%`;
-}
-export default function MPCard({ mp }: { mp: AnyMP }) {
-  const m = mp || {};
-  const name = m.name ?? 'Unnamed MP';
-  const slug = m.slug ?? safeSlugFromName(name);
-  const href = slug ? `/mps/${slug}` : '/mps';
-  const portraitUrl = m.portrait_url || m.portraitUrl || null;
-
-  // tolerant field reads (don’t change server data, just read what exists)
-  const party = m.party ?? m.Party ?? '';
-  const chamber = m.chamber ?? m.house ?? '';
-  const electorate = m.electorate ?? m.seat ?? m.state ?? '';
-
-  const att12 =
-    m.att12 ??
-    m.attendance12m ??
-    m.attendance_12m ??
-    m['Attendance (12m)'] ??
-    null;
-
-  const attOverall =
-    m.attOverall ??
-    m.overall_attendance ??
-    m.overallAttendance ??
-    m['Overall attendance'] ??
-    null;
-
-  const rebellions12m =
-    m.rebellions12m ?? m.rebellions_12m ?? m.rebellions ?? 0;
-
-  const committees = m.committees ?? m.committees_count ?? 0;
-
+type Props = {
+  name: string; party?: string; seat?: string; photoUrl?: string; state?: string;
+  onClick?: () => void;
+};
+export default function MPCard({ name, party='—', seat='—', photoUrl, state='—', onClick }: Props){
   return (
-    <Link
-      href={href}
-      aria-label={`Open profile for ${name || 'MP'}`}
-      className="group block rounded-xl border border-zinc-800 bg-zinc-900 p-4 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 transition"
-    >
-      <article className="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 hover:border-zinc-700 focus-within:ring-2 focus-within:ring-emerald-500/60 transition">
-        <div className="flex items-center gap-3">
-          {/* avatar */}
-          {portraitUrl ? (
-            <img
-              src={portraitUrl}
-              alt={`${name} portrait`}
-              className="h-10 w-10 rounded-md object-cover ring-1 ring-zinc-800"
-            />
-          ) : (
-            <div className="h-10 w-10 rounded-md bg-zinc-800 text-neutral-100 grid place-items-center ring-1 ring-zinc-800">
-              <span className="text-sm font-semibold">{(name || 'MP').split(' ').map((p: string)=>p[0]).slice(0,2).join('').toUpperCase()}</span>
-            </div>
-          )}
-          <div className="min-w-0">
-            <h3 className="truncate font-semibold text-zinc-50">{name}</h3>
-            <div className="truncate text-neutral-100 text-sm">
-              {party && <span className="mr-1">{party}</span>}
-              {chamber && <span className="mr-1">· {chamber}</span>}
-              {electorate && <span>· {electorate}</span>}
-            </div>
-          </div>
+    <button onClick={onClick} className="group w-full rounded-2xl border border-white/10 bg-ink/60 p-4 text-left transition hover:border-brand/50 hover:shadow-soft">
+      <div className="flex items-center gap-4">
+        <div className="h-12 w-12 overflow-hidden rounded-xl bg-white/5">
+          {photoUrl ? <img src={photoUrl} alt={name} className="h-full w-full object-cover" /> : <div className="h-full w-full" />}
         </div>
-
-        <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm text-neutral-100">
-          <div>
-            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
-              Attendance (12m)
-            </div>
-            <div className="text-zinc-100 font-medium">{pct(att12)}</div>
-          </div>
-          <div>
-            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
-              Overall attendance
-            </div>
-            <div className="text-zinc-100 font-medium">
-              {pct(attOverall)}
-            </div>
-          </div>
-          <div>
-            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
-              Rebellions (12m)
-            </div>
-            <div className="text-zinc-100 font-medium">
-              {int(rebellions12m)}
-            </div>
-          </div>
-          <div>
-            <div className="text-neutral-100 uppercase tracking-wide text-[11px]">
-              Committees
-            </div>
-            <div className="text-zinc-100 font-medium">
-              {int(committees)}
-            </div>
-          </div>
+        <div className="flex-1">
+          <div className="font-medium">{name}</div>
+          <div className="text-xs text-white/60">{party} • {seat} • {state}</div>
         </div>
-
-        <div className="mt-4">
-          <span className="inline-flex items-center gap-1 text-emerald-300 text-sm group-hover:underline">
-            Open profile →
-          </span>
-        </div>
-      </article>
-    </Link>
+        <div className="text-brand opacity-0 transition group-hover:opacity-100">View →</div>
+      </div>
+    </button>
   );
 }

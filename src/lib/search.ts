@@ -1,3 +1,8 @@
+function toStr(x: unknown): string { return typeof x === "string" ? x : x == null ? "" : String(x); }
+export type BillHit={ kind:"bill"; id:string; title:string; predictedPass?:number };
+export type MPHit={ kind:"mp"; id:string; name:string; party?:string };
+export type ArticleHit={ kind:"article"; id:string; title:string; stance?:"Supportive"|"Critical"|"Neutral" };
+export type SearchResult = BillHit|MPHit|ArticleHit;
 import { db } from "./db";
 
 export type Hit = {
@@ -32,7 +37,7 @@ export function search(q: string, limit = 50): Hit[] {
 
   for (const s of db.sources()) {
     const titleRaw = String(s.title ?? "");
-    const textRaw = String((s as any).text ?? "");
+    const textRaw = toStr((s as {text?:unknown})?.text);
     const urlRaw = String(s.url ?? "");
     const dateRaw = s.date ? String(s.date) : undefined;
 
@@ -73,11 +78,11 @@ export function search(q: string, limit = 50): Hit[] {
 
     if (score > 0) {
       results.push({
-        sourceId: String((s as any).id ?? ""),
+        sourceId: toStr((s as {id?:unknown})?.id),
         title: titleRaw,
         url: urlRaw,
         date: dateRaw,
-        snippet: String((s as any).snippet ?? ""),
+        snippet: toStr((s as {snippet?:unknown})?.snippet),
         score,
       });
     }
@@ -125,4 +130,25 @@ function count(hay: string, re: RegExp): number {
   re.lastIndex = 0;
   for (let m = re.exec(hay); m; m = re.exec(hay)) c++;
   return c;
+}
+
+export function demoSearch(q: string): { bills: BillHit[]; mps: MPHit[]; articles: ArticleHit[] } {
+  const Q = q.toLowerCase();
+  const bills: BillHit[] = [
+    { kind: "bill" as const, id:"b1", title:"Digital Safety Act", predictedPass:68 },
+    { kind: "bill" as const, id:"b2", title:"Fuel Excise Relief", predictedPass:41 },
+  ].filter(b => !Q || b.title.toLowerCase().includes(Q));
+
+  const mps: MPHit[] = [
+    { kind: "mp" as const, id:"m1", name:"Alex Taylor", party:"Labor" },
+    { kind: "mp" as const, id:"m2", name:"Jordan Reid", party:"Liberal" },
+  ].filter(m => !Q || m.name.toLowerCase().includes(Q) || (m.party||"").toLowerCase().includes(Q));
+
+  const articles: ArticleHit[] = [
+    { kind: "article" as const, id:"c1", title:"Migration bill backlash", stance: "Critical" as const },
+    { kind: "article" as const, id:"c2", title:"Cost of living relief", stance: "Supportive" as const },
+    { kind: "article" as const, id:"c3", title:"TikTok ban debate", stance: "Neutral" as const },
+  ].filter(a => !Q || a.title.toLowerCase().includes(Q));
+
+  return { bills, mps, articles };
 }

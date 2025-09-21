@@ -1,21 +1,17 @@
-import { loadJSON } from "@/utils/load";
-import PreviewCard from "@/components/PreviewCard";
-import { notFound } from "next/navigation";
-type Item = { title:string; subtitle?:string; href:string; img?:string; meta?:Record<string,string|number> };
-type Collection = { name:string; items: Item[] };
-export const revalidate = 0;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function Page(props: any) {
-  const { params, searchParams } = props as any;
-  try{
-    const data = await loadJSON<Collection>(`/data/previews/${params.collection}.json`);
-    return (
-      <div>
-        <h1 className="text-2xl font-bold">{data.name}</h1>
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.items.map((it,i)=> <PreviewCard key={i} {...it} />)}
-        </div>
-      </div>
-    );
-  }catch{ notFound(); }
+export type PageProps = {
+  params: Promise<{ collection: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function Page({ params, searchParams }: PageProps){
+  const { collection } = await params;
+  const q = (await searchParams)?.q;
+
+  return (
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="text-2xl font-semibold tracking-tight">Preview: {collection}</h1>
+      {q ? <p className="mt-2 text-sm text-zinc-400">Query: <code>{String(q)}</code></p> : null}
+      <div className="mt-4 card p-4 text-sm text-zinc-400">Coming soon.</div>
+    </main>
+  );
 }

@@ -1,3 +1,10 @@
+export type ConsentState = "granted" | "denied";
+export function getConsent(): ConsentState {
+  try {
+    const v = localStorage.getItem("analytics_consent");
+    return v === "granted" ? "granted" : "denied";
+  } catch { return "denied"; }
+}
 export type AnalyticsEvent = {
   name: string;
   props?: Record<string, unknown>;
@@ -6,7 +13,7 @@ export type AnalyticsEvent = {
 
 export function analyticsConsent(): "granted" | "denied" {
   if (typeof window === "undefined") return "denied";
-  return (localStorage.getItem("analytics_consent") as any) || "denied";
+  return getConsent();
 }
 
 export function setAnalyticsConsent(state: "granted" | "denied") {

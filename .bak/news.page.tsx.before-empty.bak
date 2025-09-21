@@ -1,0 +1,23 @@
+import StanceLegend from "@/components/news/StanceLegend";
+import ClusterCard from "@/components/ClusterCard";
+
+export default function Page(){
+  const clusters = [
+    { id:"c1", title:"Migration bill backlash", stance:"Critical",  storyCount:8, summary:"Editors note...", tags:["Immigration","Parliament"] },
+    { id:"c2", title:"Cost of living relief",   stance:"Supportive", storyCount:5, summary:"Editors note...", tags:["Economy","Budget"] },
+    { id:"c3", title:"TikTok ban debate",       stance:"Neutral",    storyCount:6, summary:"Editors note...", tags:["Tech","Security"] },
+  ];
+  return (
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <div className="mb-6 flex items-end justify-between">
+        <h1 className="text-2xl font-semibold tracking-tight">News</h1>
+        <StanceLegend />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {clusters.map(c => (
+          <ClusterCard key={c.id} cluster={c} />
+        ))}
+      </div>
+    </main>
+  );
+}

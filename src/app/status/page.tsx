@@ -1,19 +1,40 @@
-async function getHealth() {
-  const res = await fetch("/api/health", { cache: "no-store" });
-  if (!res.ok) return { ok: false };
-  return res.json();
-}
-export default async function Status() {
-  const health = await getHealth();
+'use client';
+import { useEffect, useState } from 'react';
+
+type Health = { ok: boolean; service: string; time: string };
+
+export default function StatusPage(){
+  const [h,setH]=useState<Health|null>(null);
+  const [err,setErr]=useState<string>('');
+  useEffect(()=>{
+    let cancelled=false;
+    (async ()=>{
+      try{
+        const res = await fetch('/api/health', { cache: 'no-store' });
+        const data = await res.json();
+        if(!cancelled) setH(data);
+      }catch(e){
+        if(!cancelled) setErr(String(e));
+      }
+    })();
+    return ()=>{ cancelled=true; };
+  },[]);
   return (
-    <main className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="text-3xl md:text-4xl font-semibold text-zinc-100">Status</h1>
-      <p className="mt-2 text-neutral-100">Operational overview.</p>
-      <div className="mt-6 rounded-xl border border-zinc-800 bg-zinc-900 p-4">
-        <div className="text-sm">
-          <div>App: <span className={health.ok ? "text-emerald-400" : "text-red-400"}>{health.ok ? "Operational" : "Degraded"}</span></div>
-          <div className="text-neutral-100 mt-1">Probe: <code className="text-neutral-100">/api/health</code></div>
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <h1 className="text-2xl font-semibold tracking-tight">Status</h1>
+      {!h && !err && <div className="mt-3 text-sm text-zinc-400">Checking…</div>}
+      {err && <div className="mt-3 text-sm text-rose-400">Error: {err}</div>}
+      {h && (
+        <div className="mt-4 card p-4">
+          <div className="text-sm"><span className="text-zinc-400">ok:</span> {String(h.ok)}</div>
+          <div className="text-sm"><span className="text-zinc-400">service:</span> {h.service}</div>
+          <div className="text-sm"><span className="text-zinc-400">time:</span> {new Date(h.time).toLocaleString()}</div>
+          <div className="text-xs text-zinc-500 mt-3">From /api/health</div>
         </div>
+      )}
+      <div className="mt-6 grid gap-2 md:grid-cols-2">
+        <a className="card p-4 block" href="/opengraph-image"><div className="font-medium">OpenGraph image</div><div className="text-xs text-zinc-400">/opengraph-image</div></a>
+        <a className="card p-4 block" href="/twitter-image"><div className="font-medium">Twitter image</div><div className="text-xs text-zinc-400">/twitter-image</div></a>
       </div>
     </main>
   );

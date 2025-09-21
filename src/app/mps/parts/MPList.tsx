@@ -1,59 +1,50 @@
-/* @jsxImportSource react */
-'use client';
+import Link from "next/link";
+import Stat from "@/components/Stat";
+import { formatPercent } from "@/lib/format";
+import MPCard from "@/components/mp/MPCard";
 
-import * as React from 'react';
-import MPCard from '@/components/mp/MPCard';
+export type MP = {
+  id: string;
+  name: string;
+  party: string;
+  seat?: string;
+  attendance?: number;
+  alignment?: number;
+  reliability?: number;
+};
 
-type MP = any;
-type MPListData = { items: MP[]; total: number };
-
-// Accept multiple prop shapes so we don't depend on one page implementation.
-type Props =
-  | { data: MPListData }
-  | { items: MP[]; total?: number }
-  | { data?: MPListData; items?: MP[]; total?: number };
+type Props = { items: MP[] };
 
 export default function MPList(props: Props) {
-  const data = (props as any).data as MPListData | undefined;
-  const itemsProp = (props as any).items as MP[] | undefined;
-  const totalProp = (props as any).total as number | undefined;
+  const { items } = props;
 
-  // Server payload if provided
-  const serverItems: MP[] = data?.items ?? (Array.isArray(itemsProp) ? itemsProp : []);
-  const serverTotal: number = data?.total ?? (typeof totalProp === 'number' ? totalProp : serverItems.length);
-
-  // Keep a client copy if something later hydrates/filters
-  const [clientData] = React.useState<MPListData>({ items: serverItems, total: serverTotal });
-
-  // Prefer server on first paint; fall back to client if server empty
-  const items = serverItems?.length ? serverItems : (clientData?.items ?? []);
-  const showSkel = !items || items.length === 0;
+  if (!Array.isArray(items) || items.length === 0) {
+    return <div className="text-sm text-zinc-400">No MPs found.</div>;
+  }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6">
-        {showSkel
-          ? Array.from({ length: 8 }).map((_, i) => (
-              <li key={'skel'+i} className="min-h-[172px]">
-                <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 animate-pulse">
-                  <div className="h-5 w-40 bg-zinc-700/50 rounded mb-3"></div>
-                  <div className="h-4 w-28 bg-zinc-700/40 rounded mb-4"></div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="h-8 bg-zinc-700/30 rounded"></div>
-                    <div className="h-8 bg-zinc-700/30 rounded"></div>
-                    <div className="h-8 bg-zinc-700/30 rounded"></div>
-                    <div className="h-8 bg-zinc-700/30 rounded"></div>
-                  </div>
-                </div>
-              </li>
-            ))
-          : items.map((m: MP, idx: number) => (
-              <li key={m?.slug || m?.id || idx} className="min-h-[172px]">
-                <MPCard mp={m} />
-              </li>
-            ))
-        }
-      </ul>
-    </div>
+    <ul className="space-y-3">
+      {items.map((m) => (
+        <li key={m.id} className="card p-4">
+          {/* existing MP card */}
+          <div data-testid="mp-header" className="mb-2">
+        <div className="text-base font-semibold">{m.name}</div>
+        <div className="text-xs text-zinc-400">{m.party}{m.seat ? (" · " + m.seat) : ""}</div>
+     </div>
+          {/* stats row */}
+          <div className="mt-3 grid grid-cols-3 gap-2">
+            <Stat label="Attendance" value={formatPercent(m.attendance)} />
+            <Stat label="Alignment" value={formatPercent(m.alignment)} />
+            <Stat label="Reliability" value={formatPercent(m.reliability)} />
+          </div>
+          <Link
+            href={`/mps/${m.id}`}
+            className="mt-3 inline-flex items-center text-sm text-emerald-400 underline underline-offset-4 hover:text-emerald-300"
+          >
+            View profile →
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 }

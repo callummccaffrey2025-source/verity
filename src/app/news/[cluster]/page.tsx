@@ -1,18 +1,31 @@
-import { loadJSON } from "@/utils/load";
-import NewsCard, { Story } from "@/components/news/NewsCard";
-export const revalidate=0;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function Page(props: any) {
-  const { params, searchParams } = props as any;
-  const { clusters, stories } = await loadJSON<{clusters:string[];stories:Story[]}>("/data/news.json");
-  const cluster = decodeURIComponent(params.cluster);
-  const list = stories.filter(s=>s.cluster===cluster);
-  return (<div>
-    <h1 className="font-extrabold">{cluster}</h1>
-    <p className="mt-2 text-neutral-100">Receipts and context for {cluster}.</p>
-    <section className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-      {list.map((s,i)=><NewsCard key={i} s={s}/>)}
-      {!list.length && <div className="card p-6 text-neutral-100">No stories in this cluster yet.</div>}
-    </section>
-  </div>);
+import type { Metadata } from "next";
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ cluster: string }> }
+): Promise<Metadata> {
+  const { cluster } = await params;
+  const id = cluster;
+  const title = "News cluster · " + id;
+  const description = "Curated articles with stance signalling.";
+  return {
+    title,
+    description,
+    alternates: { canonical: "/news/" + id },
+    openGraph: { title, description },
+    twitter: { title, description },
+  };
+}
+
+export default async function Page(
+  { params }: { params: Promise<{ cluster: string }> }
+){
+  const { cluster: _c } = await params;
+  const cluster = decodeURIComponent(_c);
+
+  return (
+    <main className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="text-2xl font-semibold tracking-tight">News cluster</h1>
+      <p className="mt-2 text-sm text-zinc-400">Cluster id: <code>{cluster}</code></p>
+    </main>
+  );
 }

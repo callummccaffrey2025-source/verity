@@ -1,31 +1,13 @@
 'use client';
-
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function GlobalError({ error }:{ error: Error & { digest?: string } }) {
+  console.error(error);
   return (
     <html>
-      <body style={{ background: '#0a0a0a', color: '#e5e7eb', padding: 24 }}>
-        <h1 style={{ fontSize: 24, marginBottom: 8 }}>Something went wrong</h1>
-        <p style={{ opacity: 0.8, marginBottom: 16 }}>
-          {error?.message ?? 'Unexpected error'}
-        </p>
-        <button
-          onClick={() => reset()}
-          style={{
-            border: '1px solid #27272a',
-            background: '#18181b',
-            padding: '8px 12px',
-            borderRadius: 8,
-            cursor: 'pointer',
-          }}
-        >
-          Try again
-        </button>
+      <body>
+        <main className="mx-auto max-w-3xl px-4 py-16">
+          <h1 className="text-2xl font-semibold">App failed to start</h1>
+          <p className="mt-2 text-sm text-zinc-400">Please refresh. {error?.digest ? `Error ID: ${error.digest}` : ''}</p>
+        </main>
       </body>
     </html>
   );

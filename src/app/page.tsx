@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { SearchHero } from "@/components/home/SearchHero";
 
 const mpSample = { name: "Jane Citizen MP", party: "Liberal Party", electorate: "Wentworth (NSW)", score: 82, lastVoted: "18 Sep 2025", streak: "+5" };
 const billSample = { title: "Online Safety (Transparency) Amendment Bill 2025", chamber: "House of Representatives", stage: "Second Reading", updated: "18 Sep 2025", stanceSplit: { support: 56, oppose: 44 } };

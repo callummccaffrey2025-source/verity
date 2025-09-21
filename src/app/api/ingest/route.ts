@@ -3,6 +3,16 @@ import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
 import crypto from "node:crypto";
 
+type RecordMetadataValue = string | number | boolean | null; // mirrors Pinecone allowed values
+function coerceRecordMetadata(x: unknown): Record<string, string | number | boolean> {
+  if (!x || typeof x !== "object") return {};
+  const out: Record<string, string | number | boolean> = {};
+  for (const [k, v] of Object.entries(x as Record<string, unknown>)) {
+    if (typeof v === "string" || typeof v === "number" || typeof v === "boolean") out[k] = v;
+  }
+  return out;
+}
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -147,10 +157,10 @@ export async function POST(req: NextRequest) {
         chunk: i,
         totalChunks: chunks.length,
         createdAt: new Date().toISOString(),
-      } as Record<string, any>,
+      } as Record<string, unknown>,
     }));
 
-    await index.namespace(jurisdiction ?? "global").upsert(items);
+    await index.namespace(jurisdiction ?? "global").upsert(items.map(it => ({ ...it, metadata: coerceRecordMetadata((it as {metadata?:unknown}).metadata) })));
 
     return NextResponse.json({ ok: true, upserted: items.length, ids: items.map(i => i.id) });
   } catch (e: unknown) {

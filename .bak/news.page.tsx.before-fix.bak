@@ -1,0 +1,25 @@
+import ClusterCard from "@/components/ClusterCard";
+import StanceLegend from "@/components/news/StanceLegend";
+import Row from '@/components/list/Row';
+const items = [
+  { title:'Parliament debates housing package', meta:'Reliability: verifiedNews' },
+  { title:'Committee releases transparency report', meta:'Reliability: gov' },
+];
+export default function Page(){
+  const clusters=[
+    { id:"c1", title:"Migration bill backlash", stance:"Critical", storyCount:8, summary:"Editors note...", tags:["Immigration","Parliament"] },
+    { id:"c2", title:"Cost of living relief", stance:"Supportive", storyCount:5, summary:"Editors note...", tags:["Economy","Budget"] },
+    { id:"c3", title:"TikTok ban debate", stance:"Neutral", storyCount:6, summary:"Editors note...", tags:["Tech","Security"] },
+  ];
+
+  return (
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {clusters.map(c => (<ClusterCard key={c.id} cluster={c} />))}
+    </div>
+  
+    <div>
+      <h1 className="mb-4 text-2xl font-semibold">News</h1>
+      <div className="space-y-3">{items.map((x,i)=><Row key={i} {...x}/>)}</div>
+    </div>
+  );
+}

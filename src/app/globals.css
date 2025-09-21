@@ -1,6 +1,17 @@
 @import "tailwindcss";
 
-:root { color-scheme: dark; }
+:root{
+  /* Design tokens: adjust once, the whole app updates */
+  --page-gutter: 1rem;          /* base gutter on mobile */
+  --page-gutter-md: 1.25rem;    /* md+ */
+  --card-radius: 1rem;          /* rounded-2xl-ish */
+  --card-shadow: 0 8px 28px rgba(0,0,0,.25);
+  --ink: #0b0f1a;               /* bg */
+  --ink-2: #111827;             /* panel */
+  --text-1: #e5e7eb;            /* primary */
+  --text-2: #a1a1aa;            /* secondary */
+  --border-1: #27272a;          /* borders */
+ color-scheme: dark; }
 html, body { height: 100%; }
 
 
@@ -47,3 +58,26 @@ html, body { height: 100%; }
 }
 input,select,button{ outline: none }
 input:focus,select:focus,button:focus{ box-shadow: 0 0 0 2px hsl(var(--ring)) }
+
+/* card polish */
+@layer components {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .kbd { @apply rounded border border-zinc-700 px-1.5 py-0.5 text-xs; }
+}
+
+
+/* Coherent card across the app */
+.card{
+  background: color-mix(in oklab, var(--ink), var(--ink-2) 75%);
+  border: 1px solid var(--border-1);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+/* Tighten default rhythm slightly for better density */
+.prose, .content {
+  line-height: 1.45;
+}
+
+.card:where(:hover){ border-color:#3f3f46; }
+.card:where(:focus-visible){ outline:2px solid #818cf8; outline-offset:3px; }

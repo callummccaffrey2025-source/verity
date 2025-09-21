@@ -1,7 +1,21 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default async function Page(props: any) {
-  const { params, searchParams } = props as any;
-  const { id } = params;
+ 
+import type { Metadata } from "next";
+export async function generateMetadata({ params }:{ params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const title = "MP · " + id;
+  const description = "MP profile: attendance, alignment & reliability.";
+  return {
+    title,
+    description,
+    alternates: { canonical: "/mps/" + id },
+    openGraph: { title, description },
+    twitter: { title, description },
+  };
+}
+
+export default async function Page({ params }: { params: Promise<{ id: string }> }){
+  
+  const { id } = await params;
   return (
     <div className="p-6 space-y-2">
       <h1 className="text-2xl font-semibold">MP Profile</h1>

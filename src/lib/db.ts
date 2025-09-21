@@ -115,7 +115,7 @@ export const db = {
 
     // Keep it simple; route code derives docCounts separately
 
-    return readJSON<any>("status.json", {});
+    return readJSON<unknown>("status.json", {});
 
   },
 
@@ -129,7 +129,7 @@ export const db = {
 
   appendWaitlist(email: string, optedOut: boolean) {
 
-    const arr = readJSON<any[]>("waitlist.json", []);
+    const arr = readJSON<unknown[]>("waitlist.json", []);
 
     arr.push({ email, optedOut, ts: new Date().toISOString() });
 
