@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }}
       />
   
-<main id="main">{children}</main>
+<main id="main"><div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div></main>
       </main>
       </body>
     </html>

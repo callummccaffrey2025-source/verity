@@ -88,3 +88,30 @@ input:focus,select:focus,button:focus{ box-shadow: 0 0 0 2px hsl(var(--ring)) }
   box-shadow: 0 0 0 3px rgba(255,255,255,.24);
   border-radius: 0.5rem;
 }
+
+
+/* ✨ quick-polish baseline */
+:root{
+  --radius:12px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --dur:150ms;
+}
+*{ transition-timing-function:var(--ease); transition-duration:var(--dur); }
+
+.prose,.copy{ max-width:65ch; }
+h1{ @apply text-3xl sm:text-4xl font-semibold tracking-tight; }
+h2{ @apply text-2xl font-semibold tracking-tight; }
+p{ @apply leading-7 text-muted-foreground; }
+
+/* readable focus states */
+:where(a,button,input,textarea,select,[role="button"]):focus-visible{
+  outline:none;
+  box-shadow:0 0 0 2px hsl(var(--ring)),0 0 0 4px hsl(var(--background));
+}
+
+/* cleaner link hover */
+a{ @apply underline-offset-4 decoration-transparent transition; }
+a:hover{ @apply decoration-current; }
+
+/* gentle card elevation default hook (opt-in via class 'card') */
+.card{ @apply rounded-2xl border border-border/60 bg-background shadow-sm hover:shadow-md transition-shadow; }

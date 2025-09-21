@@ -1,8 +1,20 @@
-export default function Section({ title, children }:{ title:string; children: React.ReactNode }){
+import * as React from "react";
+
+export function Section({
+  title,
+  children,
+  className = "",
+}: {
+  title: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <section className="mt-8">
-      <h2 className="text-sm font-medium text-zinc-300">{title}</h2>
-      <div className="mt-2">{children}</div>
+    <section className={`py-10 sm:py-14 border-t first:border-t-0 border-border/50 ${className}`}>
+      <h2 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h2>
+      <div className="text-base">{children}</div>
     </section>
   );
 }
+
+export default Section;
