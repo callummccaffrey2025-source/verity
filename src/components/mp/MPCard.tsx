@@ -1,20 +1,15 @@
-type Props = {
-  name: string; party?: string; seat?: string; photoUrl?: string; state?: string;
-  onClick?: () => void;
-};
-export default function MPCard({ name, party='—', seat='—', photoUrl, state='—', onClick }: Props){
+import type { MP } from "@/types";
+import Card from "@/components/ui/card";
+export default function MPCard({ mp }: { mp: MP }){
   return (
-    <button onClick={onClick} className="group w-full rounded-2xl border border-white/10 bg-ink/60 p-4 text-left transition hover:border-brand/50 hover:shadow-soft">
+    <Card className="p-5 transition hover:scale-[1.01]">
       <div className="flex items-center gap-4">
-        <div className="h-12 w-12 overflow-hidden rounded-xl bg-white/5">
-          {photoUrl ? <img src={photoUrl} alt={name} className="h-full w-full object-cover" /> : <div className="h-full w-full" />}
+        <div className="h-10 w-10 shrink-0 rounded-full bg-emerald/20" />
+        <div>
+          <div className="font-medium">{mp.name}</div>
+          <div className="text-xs text-white/60">{mp.party} — {mp.electorate}</div>
         </div>
-        <div className="flex-1">
-          <div className="font-medium">{name}</div>
-          <div className="text-xs text-white/60">{party} • {seat} • {state}</div>
-        </div>
-        <div className="text-brand opacity-0 transition group-hover:opacity-100">View →</div>
       </div>
-    </button>
+    </Card>
   );
 }

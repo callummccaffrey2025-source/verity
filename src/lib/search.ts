@@ -1,154 +1,36 @@
-function toStr(x: unknown): string { return typeof x === "string" ? x : x == null ? "" : String(x); }
-export type BillHit={ kind:"bill"; id:string; title:string; predictedPass?:number };
-export type MPHit={ kind:"mp"; id:string; name:string; party?:string };
-export type ArticleHit={ kind:"article"; id:string; title:string; stance?:"Supportive"|"Critical"|"Neutral" };
-export type SearchResult = BillHit|MPHit|ArticleHit;
-import { db } from "./db";
+export type MPHit = { id: string; name: string; party: string; electorate: string; };
+export type BillHit = { id: string; title: string; status?: string; predictedPass?: number; };
+export type ArticleHit = { id: string; title: string; outlet: string; url: string; };
 
-export type Hit = {
-  sourceId: string;
-  title: string;
-  url: string;
-  date?: string;
-  snippet: string;
-  score: number;
+const DEMO: { mps: MPHit[]; bills: BillHit[]; articles: ArticleHit[] } = {
+  mps: [
+    { id: "mp1", name: "Jane Smith", party: "Independent", electorate: "Sydney" },
+    { id: "mp2", name: "Alex Nguyen", party: "Greens", electorate: "Melbourne" }
+  ],
+  bills: [
+    { id: "bill1", title: "Climate Action Bill 2025", status: "Second Reading", predictedPass: 0.72 },
+    { id: "bill2", title: "Digital Integrity Bill", status: "Committee", predictedPass: 0.58 }
+  ],
+  articles: [
+    { id: "a1", title: "Budget 2025: Key Measures", outlet: "ABC", url: "https://example.com/a1" },
+    { id: "a2", title: "Election Reform Debate", outlet: "SBS", url: "https://example.com/a2" }
+  ]
 };
 
-/**
- * Simple but effective ranking:
- * - Field boosts: title > text > url
- * - Exact word > prefix > substring
- * - Whole-phrase bonus
- * - Gentle recency boost (exp decay over ~1 year)
- * - Optional limit (default 50) for compatibility with callers
- */
-export function search(q: string, limit = 50): Hit[] {
-  const normQ = normalize(q);
-  const terms = unique(tokenize(normQ).filter(t => t.length >= 2));
-  if (terms.length === 0) return [];
-
-  const phrase = escapeRegex(normQ.trim());
-  const phraseRe = phrase ? new RegExp(`\\b${phrase}\\b`, "i") : null;
-
-  const now = Date.now();
-  const dayMs = 24 * 60 * 60 * 1000;
-
-  const results: Hit[] = [];
-
-  for (const s of db.sources()) {
-    const titleRaw = String(s.title ?? "");
-    const textRaw = toStr((s as {text?:unknown})?.text);
-    const urlRaw = String(s.url ?? "");
-    const dateRaw = s.date ? String(s.date) : undefined;
-
-    const title = normalize(titleRaw);
-    const body = normalize(textRaw);
-    const url = normalize(urlRaw);
-
-    let score = 0;
-
-    for (const t of terms) {
-      const w = escapeRegex(t);
-      const wordRe = new RegExp(`\\b${w}\\b`, "g");
-      const prefixRe = new RegExp(`\\b${w}[a-z0-9_-]*`, "g");
-
-      score += 3 * count(title, wordRe);
-      score += 2 * count(title, prefixRe);
-      if (title.includes(t)) score += 1;
-
-      score += 1 * count(body, wordRe);
-      score += 0.5 * count(body, prefixRe);
-      if (body.includes(t)) score += 0.25;
-
-      if (url.includes(t)) score += 0.3;
-    }
-
-    if (phraseRe && (phraseRe.test(title) || phraseRe.test(body))) {
-      score += 2;
-    }
-
-    if (dateRaw) {
-      const ts = Date.parse(dateRaw);
-      if (!Number.isNaN(ts)) {
-        const days = Math.max(0, (now - ts) / dayMs);
-        const recency = Math.exp(-days / 365);
-        score *= 1 + 0.5 * recency;
-      }
-    }
-
-    if (score > 0) {
-      results.push({
-        sourceId: toStr((s as {id?:unknown})?.id),
-        title: titleRaw,
-        url: urlRaw,
-        date: dateRaw,
-        snippet: toStr((s as {snippet?:unknown})?.snippet),
-        score,
-      });
-    }
-  }
-
-  results.sort((a, b) => {
-    if (b.score !== a.score) return b.score - a.score;
-    const at = a.date ? Date.parse(a.date) : NaN;
-    const bt = b.date ? Date.parse(b.date) : NaN;
-    const aValid = !Number.isNaN(at);
-    const bValid = !Number.isNaN(bt);
-    if (aValid && bValid && bt !== at) return bt - at;
-    if (aValid !== bValid) return bValid ? 1 : -1;
-    return a.title.localeCompare(b.title);
-  });
-
-  return results.slice(0, Math.max(1, limit));
+export async function search(q: string){
+  const qn = (q||"").toLowerCase();
+  const pick = (arr: any[]) => arr.filter(x => !qn || JSON.stringify(x).toLowerCase().includes(qn));
+  return {
+    mps: pick(DEMO.mps),
+    bills: pick(DEMO.bills).map(b => ({ ...b, predictedPass: b?.predictedPass ?? 0 })),
+    articles: pick(DEMO.articles)
+  };
 }
 
-/* ---------- helpers ---------- */
-
-function normalize(s: string): string {
-  const lower = s.toLowerCase();
-  try {
-    return lower.normalize("NFD").replace(/\p{Diacritic}/gu, "");
-  } catch {
-    return lower.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-  }
-}
-
-function tokenize(s: string): string[] {
-  return s.split(/[^a-z0-9_-]+/i).filter(Boolean);
-}
-
-function unique<T>(arr: T[]): T[] {
-  return Array.from(new Set(arr));
-}
-
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function count(hay: string, re: RegExp): number {
-  let c = 0;
-  re.lastIndex = 0;
-  for (let m = re.exec(hay); m; m = re.exec(hay)) c++;
-  return c;
-}
-
-export function demoSearch(q: string): { bills: BillHit[]; mps: MPHit[]; articles: ArticleHit[] } {
-  const Q = q.toLowerCase();
-  const bills: BillHit[] = [
-    { kind: "bill" as const, id:"b1", title:"Digital Safety Act", predictedPass:68 },
-    { kind: "bill" as const, id:"b2", title:"Fuel Excise Relief", predictedPass:41 },
-  ].filter(b => !Q || b.title.toLowerCase().includes(Q));
-
-  const mps: MPHit[] = [
-    { kind: "mp" as const, id:"m1", name:"Alex Taylor", party:"Labor" },
-    { kind: "mp" as const, id:"m2", name:"Jordan Reid", party:"Liberal" },
-  ].filter(m => !Q || m.name.toLowerCase().includes(Q) || (m.party||"").toLowerCase().includes(Q));
-
-  const articles: ArticleHit[] = [
-    { kind: "article" as const, id:"c1", title:"Migration bill backlash", stance: "Critical" as const },
-    { kind: "article" as const, id:"c2", title:"Cost of living relief", stance: "Supportive" as const },
-    { kind: "article" as const, id:"c3", title:"TikTok ban debate", stance: "Neutral" as const },
-  ].filter(a => !Q || a.title.toLowerCase().includes(Q));
-
-  return { bills, mps, articles };
+export async function demoSearch(){
+  return {
+    mps: DEMO.mps,
+    bills: DEMO.bills.map(b => ({ ...b, predictedPass: b?.predictedPass ?? 0 })),
+    articles: DEMO.articles
+  };
 }

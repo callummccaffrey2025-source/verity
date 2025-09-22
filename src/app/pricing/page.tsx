@@ -1,21 +1,22 @@
+import Section from "@/components/shared/Section";
+import Card from "@/components/ui/card";
 export default function Page(){
+  const tiers = [
+    { name: "Citizen",     price: "$1/mo",  desc: "Personalized daily brief + dashboards." },
+    { name: "Analyst",     price: "$15/mo", desc: "Advanced filters, exports, alerts." },
+    { name: "Institution", price: "Talk to us", desc: "API, bulk seats, governance tools." },
+  ];
   return (
-    <div>
-      <h1 className="mb-6 text-2xl font-semibold">Pricing</h1>
+    <Section title="Pricing">
       <div className="grid gap-6 md:grid-cols-3">
-        {[
-          {name:'Basic', price:'$1/mo', blurb:'Core transparency features'},
-          {name:'Supporter', price:'$3/mo', blurb:'Early features + reports'},
-          {name:'Patron', price:'$5/mo', blurb:'Everything + thank-you wall'},
-        ].map((t)=>(
-          <div key={t.name} className="rounded-2xl border border-white/10 p-6">
-            <div className="text-lg font-medium">{t.name}</div>
-            <div className="my-2 text-3xl text-brand">{t.price}</div>
-            <div className="text-sm text-white/70">{t.blurb}</div>
-            <a href="/join" className="mt-4 inline-block rounded-lg bg-brand px-4 py-2 text-ink hover:shadow-soft">Get started</a>
-          </div>
+        {tiers.map(t => (
+          <Card key={t.name} className="p-6">
+            <div className="mb-2 text-lg font-semibold">{t.name}</div>
+            <div className="mb-2 text-2xl font-bold text-emerald">{t.price}</div>
+            <div className="text-sm text-white/70">{t.desc}</div>
+          </Card>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }

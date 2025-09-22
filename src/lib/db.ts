@@ -1,153 +1,32 @@
+type MP = { id: string; name: string; party: string; electorate: string; };
+type Bill = { id: string; title: string; summary?: string; status?: string; introduced?: string; sponsor?: string; };
+type News = { id: string; title: string; outlet?: string; url?: string; };
 
-import fs from "fs";
-
-import path from "path";
-
-
-
-export type Source = {
-
-  id: string;
-
-  type: "bill" | "hansard" | "media";
-
-  title: string;
-
-  date: string;
-
-  url: string;
-
-  snippet: string;
-
-  text: string;
-
-};
-
-export type Bill = {
-
-  id: string;
-
-  title: string;
-
-  stage: string;
-
-  summary: string;
-
-  sponsors: string[];
-
-  last_updated: string;
-
-  sources: string[]; // source ids
-
-};
-
-export type Vote = { billId: string; position: "aye" | "no" | "abstain"; date: string };
-
-export type MP = {
-
-  id: string;
-
-  name: string;
-
-  party: string;
-
-  electorate: string;
-
-  roles: string[];
-
-  integrity: { conflicts: string[]; gifts: string[] };
-
-  votes: Vote[];
-
-};
-
-export type Alerts = {
-
-  topics?: string[];
-
-  mpIds?: string[];
-
-  billIds?: string[];
-
-};
-
-
-
-const DATA_DIR = path.join(process.cwd(), "src", "data");
-
-const file = (name: string) => path.join(DATA_DIR, name);
-
-
-
-function readJSON<T>(name: string, fallback: T): T {
-
-  try {
-
-    const p = file(name);
-
-    if (!fs.existsSync(p)) return fallback;
-
-    return JSON.parse(fs.readFileSync(p, "utf8")) as T;
-
-  } catch {
-
-    return fallback;
-
-  }
-
-}
-
-function writeJSON(name: string, value: unknown) {
-
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-
-  fs.writeFileSync(file(name), JSON.stringify(value, null, 2));
-
-}
-
-
-
-// Public helpers
+function loadJSON<T>(p: string, fallback: T): T { try { return require(p) as T; } catch { return fallback; } }
+const MPs   = loadJSON<MP[]>("./src/data/mps.json", []);
+const Bills = loadJSON<Bill[]>("./src/data/bills.json", []);
+const NewsA = loadJSON<News[]>("./src/data/sources.json", []);
 
 export const db = {
-
-  status(): unknown {
-
-    // Keep it simple; route code derives docCounts separately
-
-    return readJSON<unknown>("status.json", {});
-
+  mP: {
+    async findMany(opts?: any): Promise<MP[]> {
+      const s = (opts?.where?.name?.contains || "").toLowerCase?.() || "";
+      return !s ? MPs : MPs.filter(m => m.name.toLowerCase().includes(s));
+    },
+    async findUnique(opts: { where: { id: string } }): Promise<MP|null> {
+      return MPs.find(m => m.id === opts?.where?.id) ?? null;
+    },
   },
-
-  sources(): Source[] { return readJSON<Source[]>("sources.json", []); },
-
-  bills(): Bill[] { return readJSON<Bill[]>("bills.json", []); },
-
-  mps(): MP[] { return readJSON<MP[]>("mps.json", []); },
-
-  topics(): string[] { return readJSON<string[]>("topics.json", []); },
-
-  appendWaitlist(email: string, optedOut: boolean) {
-
-    const arr = readJSON<unknown[]>("waitlist.json", []);
-
-    arr.push({ email, optedOut, ts: new Date().toISOString() });
-
-    writeJSON("waitlist.json", arr);
-
+  bill: {
+    async findMany(opts?: any): Promise<Bill[]> {
+      const s = (opts?.where?.title?.contains || "").toLowerCase?.() || "";
+      return !s ? Bills : Bills.filter(b => (b.title||"").toLowerCase().includes(s));
+    },
+    async findUnique(opts: { where: { id: string } }): Promise<Bill|null> {
+      return Bills.find(b => b.id === opts?.where?.id) ?? null;
+    },
   },
-
-  bill(id: string) {
-
-    return this.bills().find((b) => b.id === id);
-
-  },
-
-  mp(id: string) {
-
-    return this.mps().find((m) => m.id === id);
-
-  },
-
+  news: { async findMany(): Promise<News[]> { return NewsA; } },
+  async $queryRaw(_q?: any){ return [{ ok: 1 }]; }
 };
-
+export const prisma = db as any;

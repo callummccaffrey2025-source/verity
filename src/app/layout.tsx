@@ -1,61 +1,31 @@
-
-
-import "@fontsource-variable/inter";
-import SiteJSONLD from '@/components/site-jsonld';
 import "./globals.css";
-import type { Metadata } from "next";
+import Nav from "@/components/shared/Nav";
+import Footer from "@/components/shared/Footer";
+import { Inter } from "next/font/google";
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
-import { Inter } from 'next/font/google'
-
-import Nav from '@/components/shell/Nav';
-import Footer from '@/components/shell/Footer';
-export const metadata: Metadata = {
-  metadataBase: new URL('http://localhost:3000'),
+export const metadata = {
+  title: "Verity — Civic intelligence for Australia",
+  description: "Personalized, source-linked clarity on MPs, bills, and news.",
+  metadataBase: new URL("http://localhost:3000"),
   openGraph: {
-    images: ['/opengraph-image'],
+    title: "Verity — Civic intelligence for Australia",
+    description: "Personalized, source-linked clarity on MPs, bills, and news.",
+    url: "http://localhost:3000",
+    siteName: "Verity",
+    images: [{ url: "/og.svg", width: 1200, height: 630 }],
+    type: "website",
   },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/twitter-image'],
-  },
-  
-  title: { default: 'Verity', template: '%s · Verity' },
-  description: 'AI-powered civic intelligence for Australia',
+  twitter: { card: "summary_large_image", title: "Verity", description: "Civic intelligence for Australia.", images: ["/og.svg"] },
 };
 
-// Use system stack to avoid remote fetch flakiness; swap to next/font if you want.
-const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="bg-neutral-950">
-      <body className="min-h-dvh bg-ink text-white antialiased tabular"  style={{background:"var(--ink)",color:"var(--text-1)"}}>
-      <SiteJSONLD />
-    <a href="#main" className="sr-only focus:not-sr-only absolute left-2 top-2 z-50 rounded bg-zinc-900 px-3 py-1 text-sm border border-zinc-800">Skip to content</a>
-<Nav/>
-<main className="mx-auto max-w-6xl px-4 py-6">
-        
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify((() => {
-            const siteBase = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-            return {
-              "@context":"https://schema.org",
-              "@type":"WebSite",
-              "name":"Verity",
-              "url": siteBase,
-              "potentialAction": {
-                "@type":"SearchAction",
-                "target": `${siteBase}/search?q={search_term_string}`,
-                "query-input":"required name=search_term_string"
-              }
-            };
-          })())
-        }}
-      />
-  
-<main id="main"><div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div></main>
-      </main>
+    <html lang="en">
+      <body className={`${inter.className} min-h-screen bg-[var(--bg)] text-[var(--fg)]`}>
+        <Nav />
+        <main id="content" className="container-verity py-8">{children}</main>
+        <Footer />
       </body>
     </html>
   );

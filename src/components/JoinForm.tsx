@@ -1,9 +1,26 @@
 "use client";
-import { useState } from "react"; import { Button } from '@/components/ui/button'; import { Input } from '@/components/ui/input';
+import { Button } from "@/components/ui/button";
+import React from "react";
 export default function JoinForm(){
-  const [status,setStatus]=useState<"idle"|"loading"|"ok"|"err">("idle"); const [email,setEmail]=useState("");
-  async function onSubmit(e:React.FormEvent<HTMLFormElement>){e.preventDefault(); if(!email.includes("@")){setStatus("err");return;} setStatus("loading");
-    try{const res=await fetch("/api/waitlist",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email})}); if(!res.ok) throw new Error(); setStatus("ok");}
-    catch{setStatus("err");}}
-  return(<form onSubmit={onSubmit} className="mt-4 space-y-3 max-w-md"><Input value={email} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setEmail(e.target.value)} required type="email" placeholder="you@example.com"/><div className="flex items-center gap-2"><Button disabled={status==="loading"}>{status==="loading"?"Joining…":"Join waitlist"}</Button>{status==="ok"&&<span className="text-emerald-300 text-sm">You’re on the list.</span>}{status==="err"&&<span className="text-red-400 text-sm">Enter a valid email.</span>}</div></form>);
+  const [email,setEmail] = React.useState("");
+  const [msg,setMsg] = React.useState<string|null>(null);
+  const [loading,setLoading] = React.useState(false);
+  async function onSubmit(e:React.FormEvent){
+    e.preventDefault(); setMsg(null); setLoading(true);
+    try{
+      const r = await fetch("/api/subscribe",{ method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ email }) });
+      const j = await r.json();
+      if(!r.ok) throw new Error(j.error || "Failed");
+      setMsg("You're in — thanks for joining Verity!"); setEmail("");
+    }catch(e:any){ setMsg(e?.message || "Could not subscribe"); }
+    finally{ setLoading(false); }
+  }
+  return (
+    <form onSubmit={onSubmit} className="max-w-md space-y-3">
+      <input className="w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 outline-none placeholder:text-white/50"
+             placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} required type="email" />
+      <Button disabled={loading} className="w-full">{loading?"Working...":"Get started"}</Button>
+      {msg && <div className="text-sm text-white/80">{msg}</div>}
+    </form>
+  );
 }

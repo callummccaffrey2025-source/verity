@@ -1,25 +1,21 @@
-"use client";
-import { usePathname } from "next/navigation";
-const links=[
-  {href:"/news",label:"News"},
-  {href:"/bills/housing-bill-2025",label:"Bills"},
-  {href:"/mps",label:"MPs"},
-  {href:"/ownership",label:"Ownership"},
-  {href:"/trust",label:"Trust"},
-  {href:"/pricing",label:"Pricing"}
-];
+import Link from "next/link";
+
 export default function Nav(){
-  const path=usePathname()||"/";
-  return(
-    <nav aria-label="Primary" className="hidden md:flex gap-6 text-sm">
-      {links.map(l=>{
-        const active = path===l.href || path.startsWith(l.href+"/");
-        return (
-          <a key={l.href} href={l.href}
-             className={active?"text-emerald-300":"text-neutral-100 hover:text-white"}
-             aria-current={active?"page":undefined}>{l.label}</a>
-        );
-      })}
-    </nav>
+  const links = [
+    { href:"/mps", label:"MPs" },
+    { href:"/bills", label:"Bills" },
+    { href:"/news", label:"News" },
+    { href:"/pricing", label:"Pricing" },
+    { href:"/join", label:"Join" },
+  ];
+  return (
+    <header className="sticky top-0 z-30 border-b border-[#263041] bg-[#0b0f14]/80 backdrop-blur">
+      <div className="mx-auto max-w-6xl px-4 h-14 flex items-center justify-between">
+        <Link href="/" className="font-semibold tracking-wide">VERITY</Link>
+        <nav className="flex items-center gap-6 text-sm text-[#9BA3AF]">
+          {links.map(l => <Link key={l.href} href={l.href} className="hover:text-white">{l.label}</Link>)}
+        </nav>
+      </div>
+    </header>
   );
 }

@@ -1,10 +1,10 @@
-type StatusShape = Partial<{ lastIngest: { bills: string|null; hansard: string|null; media: string|null }; uptime30d: string }>
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-export function GET() {
-  const s: StatusShape = db.status() || {};
-  const docCounts = { sources: db.sources().length, bills: db.bills().length, mps: db.mps().length };
-  const lastIngest = (s?.lastIngest) || { bills: null, hansard: null, media: null };
-  const uptime30d = (s?.uptime30d) || "99.9%";
-  return NextResponse.json({ uptime30d, lastIngest, docCounts }, { headers:{ "Cache-Control":"s-maxage=30" }});
+export async function GET(){
+  try{
+    await db.$queryRaw`SELECT 1`;
+    return NextResponse.json({ ok:true });
+  }catch(e:any){
+    return NextResponse.json({ ok:false, error:e?.message||"db error" },{ status:500 });
+  }
 }

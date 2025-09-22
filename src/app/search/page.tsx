@@ -1,33 +1,63 @@
-import Section from "@/components/Section";
-import PageHeader from "@/components/PageHeader";
-export const metadata = { title: "Search", alternates: { canonical: "/search" } };
-import EmptyState from "@/components/EmptyState";
-type PageProps = { searchParams?: Record<string, string | string[] | undefined> };
-import MPList from "@/app/mps/parts/MPList";
+import { search, type BillHit, type MPHit, type ArticleHit } from "@/lib/search";
 import ClusterCard from "@/components/ClusterCard";
 import BillListItem from "@/components/BillListItem";
-import { demoSearch, type BillHit, type MPHit, type ArticleHit } from "@/lib/search";
-export default async function Page({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }){
-  const sp = await searchParams;
-const q = typeof sp?.q === 'string' ? sp.q : '';
-  const results = demoSearch(q);
-  
-  
-  return (
-    <main className="mx-auto max-w-6xl px-4 md:px-5 py-8">
-  <PageHeader title="Search" subtitle="Everything in one place" />
-<p className="mt-1 text-sm text-zinc-400">Query: <kbd className="rounded border border-zinc-700 px-1.5 py-0.5">{q || '—'}</kbd></p>
 
-      
-      
+export const metadata = { title: "Search — Verity" };
+
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const sp = await searchParams;
+  const q = typeof sp?.q === "string" ? sp.q : "";
+  const results = await search(q);
+
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-8">
+      <h1 className="text-2xl font-semibold tracking-tight">Search</h1>
+      <p className="mt-1 text-sm text-white/60">
+        Showing results for <span className="font-medium text-white">“{q || "all"}”</span>
+      </p>
+
+      {/* MPs */}
+      <section className="mt-8">
+        <h2 className="text-sm font-medium text-zinc-300">
+          MPs <span className="text-zinc-500 tabular ml-1">({results.mps.length})</span>
+        </h2>
+        {results.mps.length ? (
+          <ul className="mt-2 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(results.mps as MPHit[]).map((m) => (
+              <li key={m.id} className="card p-4">
+                <div className="font-medium">{m.name}</div>
+                <div className="text-sm text-white/70">
+                  {m.party} — {m.electorate}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="mt-2 card p-4 text-sm text-zinc-400">No MPs found.</div>
+        )}
+      </section>
+
       {/* Bills */}
-      <section className="mt-6">
-        <h2 className="text-sm font-medium text-zinc-300">Bills <span className="text-zinc-500 tabular ml-1">({results.bills.length})</span></h2>
+      <section className="mt-10">
+        <h2 className="text-sm font-medium text-zinc-300">
+          Bills <span className="text-zinc-500 tabular ml-1">({results.bills.length})</span>
+        </h2>
         {results.bills.length ? (
           <ul className="mt-2 space-y-3">
-            {results.bills.map(b => (
+            {(results.bills as BillHit[]).map((b) => (
               <li key={b.id} className="card p-4">
-                <BillListItem bill={{ id: b.id, title: b.title, predictedPass: b.predictedPass ?? 0, youFollow: false }} />
+                <BillListItem
+                  bill={{
+                    id: b.id,
+                    title: b.title,
+                    predictedPass: b.predictedPass ?? 0,
+                    youFollow: false,
+                  }}
+                />
               </li>
             ))}
           </ul>
@@ -36,42 +66,29 @@ const q = typeof sp?.q === 'string' ? sp.q : '';
         )}
       </section>
 
-      {/* MPs */}
-      <section className="mt-8">
-        <h2 className="text-sm font-medium text-zinc-300">MPs <span className="text-zinc-500 tabular ml-1">({results.mps.length})</span></h2>
-        {results.mps.length ? (
-          <div className="mt-2">
-            <MPList items={results.mps.map(m => ({ id: m.id, name: m.name, party: m.party ?? "" }))} />
-          </div>
-        ) : (
-          <div className="mt-2 card p-4 text-sm text-zinc-400">No MPs found.</div>
-        )}
-      </section>
-
-      {/* News */}
-      <section className="mt-8">
-        <h2 className="text-sm font-medium text-zinc-300">News <span className="text-zinc-500 tabular ml-1">({results.articles.length})</span></h2>
+      {/* Articles / Clusters */}
+      <section className="mt-10">
+        <h2 className="text-sm font-medium text-zinc-300">
+          News <span className="text-zinc-500 tabular ml-1">({results.articles.length})</span>
+        </h2>
         {results.articles.length ? (
-          <div className="mt-2 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {results.articles.map(a => (
+          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(results.articles as ArticleHit[]).map((a) => (
               <ClusterCard
                 key={a.id}
                 cluster={{
                   id: a.id,
                   title: a.title,
-                  stance: a.stance || "Neutral",
-                  storyCount: 1,
-                  summary: "",
-                  tags: []
-                }}
+                  outlet: a.outlet,
+                  url: a.url,
+                } as any}
               />
             ))}
           </div>
         ) : (
-          <EmptyState>No news yet.</EmptyState>
+          <div className="mt-2 card p-4 text-sm text-zinc-400">No news found.</div>
         )}
       </section>
-
-    </main>
+    </div>
   );
 }

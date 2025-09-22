@@ -1,117 +1,42 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Design tokens */
 :root{
-  /* Design tokens: adjust once, the whole app updates */
-  --page-gutter: 1rem;          /* base gutter on mobile */
-  --page-gutter-md: 1.25rem;    /* md+ */
-  --card-radius: 1rem;          /* rounded-2xl-ish */
-  --card-shadow: 0 8px 28px rgba(0,0,0,.25);
-  --ink: #0b0f1a;               /* bg */
-  --ink-2: #111827;             /* panel */
-  --text-1: #e5e7eb;            /* primary */
-  --text-2: #a1a1aa;            /* secondary */
-  --border-1: #27272a;          /* borders */
- color-scheme: dark; }
-html, body { height: 100%; }
-
-
-@layer base {
-  :root { font-family: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
-  .font-sans { font-family: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+  --bg:#0b0f14;
+  --fg:#e5e7eb;
+  --muted:#9ca3af;
+  --card:rgba(255,255,255,.05);
+  --border:rgba(255,255,255,.10);
+  --accent:#10b981;
+  --accent-2:#15d19a;
 }
 
-
-/* Focus ring standardization */
-.focus-ring { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,0.2); }
-/* 8pt spacing utilities for gaps we reuse */
-:root { --gap-2: .5rem; --gap-3: .75rem; --gap-4: 1rem; }
-
-
-:root{
-  /* brighter foregrounds for dark UI */
-  --foreground: 240 10% 96%;
-  --muted-foreground: 240 5% 78%;
-}
-*{ color: hsl(var(--foreground)); }
-
-
-/* Homepage hero contrast helpers */
-:root{
-  /* keep brand vibe but meet WCAG AA */
-  --foreground: 240 10% 98%;
-  --muted-foreground: 240 5% 80%;
-}
-.home-hero h1,
-.home-hero p { color: hsl(var(--foreground)); }
-.home-hero{ position: relative; }
-.home-hero::before{
-  content:"";
-  position:absolute; inset:0;
-  background: linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.55));
-  pointer-events:none;
+/* Base */
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,sans-serif;
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
 }
 
+a{ color:var(--accent) }
+h1,h2,h3{ letter-spacing:-.01em }
 
-/* verity-pages */
-:root{
-  --ring: 240 3.7% 15.9%;
-}
-input,select,button{ outline: none }
-input:focus,select:focus,button:focus{ box-shadow: 0 0 0 2px hsl(var(--ring)) }
+/* Scrollbar */
+::-webkit-scrollbar{ width:10px; height:10px }
+::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.12); border-radius:9999px }
 
-/* card polish */
-@layer components {
-  .tabular { font-variant-numeric: tabular-nums; }
-  .kbd { @apply rounded border border-zinc-700 px-1.5 py-0.5 text-xs; }
-}
+/* Reusable helpers */
+.container-verity{ @apply mx-auto max-w-6xl px-4 }
+.card{ @apply rounded-2xl border border-white/10 bg-white/5 shadow-card }
+.btn{ @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium outline-none transition focus-visible:ring-2 focus-visible:ring-emerald/60 }
+.btn-primary{ @apply bg-[var(--accent)] text-[#0b0f14] hover:bg-[var(--accent-2)] }
+.btn-ghost{ @apply text-[var(--accent)] hover:bg-white/5 }
+.badge{ @apply inline-flex items-center rounded-full bg-emerald/20 px-2 py-0.5 text-xs font-medium text-emerald }
 
-
-/* Coherent card across the app */
-.card{
-  background: color-mix(in oklab, var(--ink), var(--ink-2) 75%);
-  border: 1px solid var(--border-1);
-  border-radius: var(--card-radius);
-  box-shadow: var(--card-shadow);
-}
-
-/* Tighten default rhythm slightly for better density */
-.prose, .content {
-  line-height: 1.45;
-}
-
-.card:where(:hover){ border-color:#3f3f46; }
-.card:where(:focus-visible){ outline:2px solid #818cf8; outline-offset:3px; }
-
-/* --- Verity quick-wins: accessible focus --- */
-:where(a,button,input,select,textarea) { outline: none; }
-:where(a,button,input,select,textarea):focus-visible {
-  box-shadow: 0 0 0 3px rgba(255,255,255,.24);
-  border-radius: 0.5rem;
-}
-
-
-/* ✨ quick-polish baseline */
-:root{
-  --radius:12px;
-  --ease:cubic-bezier(.2,.8,.2,1);
-  --dur:150ms;
-}
-*{ transition-timing-function:var(--ease); transition-duration:var(--dur); }
-
-.prose,.copy{ max-width:65ch; }
-h1{ @apply text-3xl sm:text-4xl font-semibold tracking-tight; }
-h2{ @apply text-2xl font-semibold tracking-tight; }
-p{ @apply leading-7 text-muted-foreground; }
-
-/* readable focus states */
-:where(a,button,input,textarea,select,[role="button"]):focus-visible{
-  outline:none;
-  box-shadow:0 0 0 2px hsl(var(--ring)),0 0 0 4px hsl(var(--background));
-}
-
-/* cleaner link hover */
-a{ @apply underline-offset-4 decoration-transparent transition; }
-a:hover{ @apply decoration-current; }
-
-/* gentle card elevation default hook (opt-in via class 'card') */
-.card{ @apply rounded-2xl border border-border/60 bg-background shadow-sm hover:shadow-md transition-shadow; }
+.h1{ font-weight:700; font-size:2rem; letter-spacing:-.02em }
+.lead{ font-size:1.05rem; color:rgba(255,255,255,.75) }
+.muted{ color:rgba(255,255,255,.6) }

@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model MP {
+  id         String @id
+  name       String
+  party      String
+  electorate String
+}
+
+model Bill {
+  id         String   @id
+  title      String
+  summary    String
+  status     String
+  introduced DateTime
+  sponsor    String?
+}
+
+model News {
+  id        String   @id
+  title     String
+  source    String
+  url       String
+  published DateTime
+  topic     String?
+}
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

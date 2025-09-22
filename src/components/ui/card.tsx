@@ -1,16 +1,8 @@
-import * as React from "react";
-export function Card({ className="", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`rounded-2xl border border-white/5 bg-neutral-900/40 shadow-sm ${className}`} {...props} />;
-}
-export function CardHeader({ className="", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-5 ${className}`} {...props} />;
-}
-export function CardTitle({ className="", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`text-lg font-semibold ${className}`} {...props} />;
-}
-export function CardDescription({ className="", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`text-sm text-neutral-100 ${className}`} {...props} />;
-}
-export function CardContent({ className="", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-5 pt-0 ${className}`} {...props} />;
-}
+import React from "react";
+type Props = React.HTMLAttributes<HTMLDivElement>;
+const CardBase = ({ className="", ...rest }: Props) => {
+  const base = "rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_2px_0_0_rgba(255,255,255,0.05)_inset,0_12px_28px_-18px_rgba(0,0,0,0.7)]";
+  return <div className={`${base} ${className}`} {...rest} />;
+};
+export default CardBase;
+export { CardBase as Card };
