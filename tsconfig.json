@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+  "compilerOptions": {"baseUrl": ".", 
     "target": "ES2020",
     "lib": [
       "dom",
@@ -9,12 +9,8 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "baseUrl": "src",
-    "paths": {
-      "@/*": [
-        "*"
-      ]
-    },
+    "baseUrl": ".",
+    "paths": { "@/*": ["./*"] },
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -26,7 +22,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "next-env.d.ts",

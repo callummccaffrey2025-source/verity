@@ -3,27 +3,26 @@
 @tailwind utilities;
 
 /* Theme tokens */
-:root {
-  --bg: #0b0f14;      /* ink */
-  --fg: #e5e7eb;      /* slate-200 */
-  --muted: #9ca3af;   /* slate-400 */
-  --card: rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.10);
-  --accent: #10b981;  /* emerald */
+:root{
+  --bg:#0B0F0E;
+  --card:#0F1513;
+  --text:#E5F7F0;
+  --muted:#8BA9A0;
+  --accent:#10B981;
 }
 
-/* Base */
-html, body { height: 100%; }
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-a { color: var(--accent); }
-h1,h2,h3 { letter-spacing: -0.01em; }
+html,body,#__next{height:100%;}
+body{background:var(--bg);color:var(--text);}
+a{color:var(--accent);}
 
-/* Optional helpers */
-.card { @apply rounded-2xl p-6; background: var(--card); border: 1px solid var(--border); }
-.btn  { @apply rounded-xl px-4 py-2 font-medium; background: var(--accent); color: var(--bg); }
+/* Utility helpers */
+.shadow-brand{ box-shadow:0 8px 24px rgba(16,185,129,0.25); }
+.card{ background:var(--card); border:1px solid rgba(16,185,129,0.12); border-radius:1rem; }
+
+/* Tailwind @apply requires Tailwind to run (fixed via correct PostCSS) */
+.nav-link{ @apply text-sm font-medium text-white/80 hover:text-white transition; }
+.page-title{ @apply text-2xl md:text-3xl font-semibold tracking-tight; }
+.subtle{ color:var(--muted); }
+.btn{ @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-semibold; background:linear-gradient(90deg,#10B981 0%,#065F46 100%); color:white; }
+.btn-outline{ @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-semibold border; border-color:rgba(16,185,129,0.35); color:var(--text); }
+.skeleton{ @apply animate-pulse rounded-lg bg-white/10; }

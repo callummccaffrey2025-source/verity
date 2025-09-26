@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Pill from "@/components/ui/Pill";
+import Pill from '@/components/ui/pill';
 
 export default function Hero(){
   return (

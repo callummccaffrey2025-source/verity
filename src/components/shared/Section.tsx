@@ -1,10 +1,8 @@
-export default function Section({title,ctaHref,ctaText="See all",children}:{title:string;ctaHref?:string;ctaText?:string;children:React.ReactNode}){
+import type { ReactNode } from 'react';
+export default function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
-        {ctaHref && <a href={ctaHref} className="text-sm text-emerald hover:underline">{ctaText}</a>}
-      </div>
+      <h1 className="page-title">{title}</h1>
       {children}
     </section>
   );

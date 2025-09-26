@@ -6,7 +6,7 @@ export async function getBriefing(){
   ]);
   return {
     generatedAt: new Date().toISOString(),
-    headlines: topNews.map(n => ({ id:n.id, title:n.title, source:n.source, published:n.published, url:(n as any).url })),
-    bills: recentBills.map(b => ({ id:b.id, title:b.title, status:b.status, introduced:b.introduced })),
+    headlines: topNews.map((n: any) => ({ id:n.id, title:n.title, source:n.source, published:n.published, url:(n as any).url })),
+    bills: recentBills.map((b: any) => ({ id:b.id, title:b.title, status:b.status, introduced:b.introduced })),
   };
 }

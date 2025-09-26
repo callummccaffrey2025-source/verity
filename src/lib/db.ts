@@ -2,7 +2,7 @@ type MP = { id: string; name: string; party: string; electorate: string; };
 type Bill = { id: string; title: string; summary?: string; status?: string; introduced?: string; sponsor?: string; };
 type News = { id: string; title: string; outlet?: string; url?: string; };
 
-function loadJSON<T>(p: string, fallback: T): T { try { return require(p) as T; } catch { return fallback; } }
+function loadJSON<T>(p: string, fallback: T): T { try { return JSON.parse(require('fs').readFileSync(p, 'utf8')) as T; } catch { return fallback; } }
 const MPs   = loadJSON<MP[]>("./src/data/mps.json", []);
 const Bills = loadJSON<Bill[]>("./src/data/bills.json", []);
 const NewsA = loadJSON<News[]>("./src/data/sources.json", []);
