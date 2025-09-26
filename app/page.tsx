@@ -82,12 +82,13 @@ export default async function Home() {
                 placeholder="Postcode"
                 className="w-36 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-emerald-400/30"
               />
+              {/* temporarily hidden: 
               <Link
                 href="/mps"
                 className="rounded-xl border border-zinc-800 px-4 py-2 text-zinc-200 hover:border-zinc-700"
               >
                 Find your MP
-              </Link>
+              </Link> */}
             </div>
             <Link
               href="/signup"
@@ -129,6 +130,8 @@ export default async function Home() {
             <TrendingBills />
           </div>
 
+          {/* temporarily hidden: 
+
           <Link
             href="/mps"
             className="group rounded-2xl border border-zinc-800 p-5 hover:border-zinc-700 transition-colors"
@@ -138,7 +141,7 @@ export default async function Home() {
               Find your MP
             </div>
             <p className="mt-1 text-sm text-zinc-500">{mpsCount} MPs in database.</p>
-          </Link>
+          </Link> */}
         </section>
 
         {/* social proof + email capture */}

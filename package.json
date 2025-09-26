@@ -38,6 +38,7 @@
     "@supabase/auth-ui-shared": "^0.1.8",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.0",
+    "@vercel/analytics": "^1.5.0",
     "@vercel/og": "^0.8.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -47,6 +48,7 @@
     "marked": "^16.3.0",
     "next": "^15.5.3",
     "node-fetch": "^3.3.2",
+    "node-fetch-polyfill": "file:vendor/node-fetch-polyfill",
     "openai": "^5.20.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -56,6 +58,7 @@
     "swr": "^2.3.6",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "undici": "^7.16.0",
     "xml2js": "^0.6.2",
     "zod": "^3.25.76"
   },

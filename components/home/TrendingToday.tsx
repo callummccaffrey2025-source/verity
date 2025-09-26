@@ -70,14 +70,16 @@ export default async function TrendingToday() {
                 <span className="shrink-0 rounded-full border border-neutral-800 px-2 py-0.5 text-[11px] text-neutral-300">
                   {timeAgo(it.lastMovementAt)}
                 </span>
+              
+                <span aria-hidden="true" className="ml-3 shrink-0 text-neutral-500 group-hover:text-neutral-300">→</span>
               </div>
             );
+    
             return (
               <li key={it.id}>
                 {it.url ? (
-                  <a
-                    href={it.url}
-                    className="block hover:bg-neutral-900/60 focus:outline-none focus:ring-2 focus:ring-neutral-600 rounded-lg -mx-2 px-2"
+                  <a href={it.url}
+                    className="group block hover:bg-neutral-900/60 focus:outline-none focus:ring-2 focus:ring-neutral-600 rounded-lg -mx-2 px-2"
                   >
                     {content}
                   </a>

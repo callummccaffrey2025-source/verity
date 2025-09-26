@@ -1,66 +1,71 @@
-"use client";
-
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { useState, useRef } from 'react';
 
 export default function EmailCapture() {
-  const [email, setEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [ok, setOk] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const honeypot = useRef<HTMLInputElement | null>(null);
 
-  async function onSubmit(e: React.FormEvent) {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError("Enter a valid email.");
-      return;
-    }
-    setSubmitting(true);
+    setOk(false);
+
+    // simple client validation
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!valid) { setError('Enter a valid email.'); return; }
+
+    // honeypot — bots often fill hidden fields
+    if (honeypot.current?.value) { setOk(true); return; }
+
     try {
-      await fetch("/api/email-capture", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, source: "home_inline" }),
+      setLoading(true);
+      const res = await fetch('/api/email-capture', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email }),
       });
-      (window as any).plausible?.("EmailCaptureSubmit", { props: { source: "home" } });
-      router.push(`/signup?email=${encodeURIComponent(email)}&src=home_inline`);
+      if (!res.ok && res.status !== 204) throw new Error('Failed');
+      setOk(true);
+      setEmail('');
     } catch {
-      setError("Something went wrong. Please try again.");
-      setSubmitting(false);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    <form onSubmit={onSubmit} className="mt-6 flex gap-2" aria-label="Get bill alerts">
-      <div className="flex-1">
-        <label htmlFor="alerts-email" className="sr-only">
-          Email for bill alerts
-        </label>
-        <input
-          id="alerts-email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email for bill alerts"
-          className="w-full rounded-lg border border-zinc-800 bg-black px-4 py-2 text-zinc-200 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
-          aria-describedby={error ? "alerts-error" : undefined}
-          required
-        />
-        {error && (
-          <p id="alerts-error" className="mt-1 text-sm text-rose-400">
-            {error}
-          </p>
-        )}
-      </div>
+    <form onSubmit={onSubmit} className="flex w-full max-w-md items-center gap-2" aria-describedby="email-help">
+      <label htmlFor="email" className="sr-only">Email address</label>
+      <input
+        id="email"
+        type="email"
+        autoComplete="email"
+        placeholder="you@example.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        className="w-full rounded-lg border border-neutral-800 bg-neutral-900 px-3 py-2 text-neutral-100 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-neutral-600"
+        aria-invalid={!!error}
+        aria-describedby="email-help"
+      />
+      {/* Honeypot (hidden from users) */}
+      <input ref={honeypot} type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" />
       <button
         type="submit"
-        disabled={submitting}
-        className="rounded-lg bg-emerald-500/20 px-4 py-2 text-emerald-300 ring-1 ring-emerald-400/30 hover:bg-emerald-500/25 disabled:opacity-60"
-        data-cta="email_capture_submit"
+        disabled={loading}
+        className="shrink-0 rounded-lg border border-neutral-700 bg-neutral-100 px-4 py-2 text-neutral-900 hover:bg-white disabled:opacity-60"
       >
-        {submitting ? "Sending…" : "Get alerts"}
+        {loading ? 'Starting…' : 'Start free'}
       </button>
+      <div className="sr-only" aria-live="polite" id="email-help">
+        {ok ? 'Check your inbox — magic link sent.' : error ? error : 'Enter your email to start free.'}
+      </div>
+      {error ? <p className="mt-1 text-sm text-red-400">{error}</p> : null}
+      {ok ? <p className="mt-1 text-sm text-emerald-400">Check your inbox — magic link sent.</p> : null}
     </form>
   );
 }

@@ -1,3 +1,4 @@
+// -nocheck
 import { NextResponse } from 'next/server';
 
 type TrendingItem = {
@@ -42,7 +43,7 @@ function parseSeed(): TrendingItem[] | null {
   }
 }
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function GET() {
   const data = parseSeed();

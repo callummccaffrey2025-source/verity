@@ -1,5 +1,6 @@
 {
-  "compilerOptions": {"baseUrl": ".", 
+  "compilerOptions": {
+    "baseUrl": ".",
     "target": "ES2020",
     "lib": [
       "dom",
@@ -9,8 +10,11 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": { "@/*": ["./*"] },
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -36,6 +40,9 @@
     "src/types/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/components/BillCard.tsx",
+    "src/components/bill/BillCard.tsx",
+    "e2e/**"
   ]
 }

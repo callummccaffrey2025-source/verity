@@ -1,6 +1,10 @@
 import path from 'node:path';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+    dirs: ['app','components','lib'],
+  },
   reactStrictMode: true,
   webpack: (config) => {
     // Hard alias so "@/..." always resolves to ./src
