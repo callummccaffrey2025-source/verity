@@ -1,1 +1,16 @@
-{"projectId":"prj_okSlERMPppJX2EXn8E8fVgoB6Urs","orgId":"team_Ets9f4huL1aFLEKcTfZepNzu","projectName":"verity"}
+{
+  "projectId": "prj_okSlERMPppJX2EXn8E8fVgoB6Urs",
+  "orgId": "team_Ets9f4huL1aFLEKcTfZepNzu",
+  "projectName": "verity",
+  "settings": {
+    "createdAt": 1754908404977,
+    "framework": "nextjs",
+    "devCommand": null,
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
+    "directoryListing": false,
+    "nodeVersion": "22.x"
+  }
+}

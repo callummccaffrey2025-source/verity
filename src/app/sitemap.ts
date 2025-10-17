@@ -1,13 +1,12 @@
-import type { MetadataRoute } from 'next';
-
-export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-  const paths = ['/', '/news', '/bills', '/mps', '/pricing', '/join'];
-  const now = new Date().toISOString();
-  return paths.map(p => ({
+import type { MetadataRoute } from "next";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+  // TODO: source slugs from your data store. For now, include the alba demo.
+  const pages = ["/", "/mps", "/mps/alba"];
+  return pages.map((p) => ({
     url: `${base}${p}`,
-    lastModified: now,
-    changefreq: p === '/' ? 'hourly' : 'daily',
-    priority: p === '/' ? 1 : 0.6,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: p === "/" ? 1 : 0.6,
   }));
 }

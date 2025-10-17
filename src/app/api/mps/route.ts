@@ -1,15 +1,19 @@
-import { getSupabase } from '@/lib/supabase';
+import { NextResponse } from "next/server";
+import { env } from "@/lib/env";
+import { createClient } from "@/lib/supabase/server";
+import { MPS } from "@/app/_mock/mps";
+export const dynamic = "force-dynamic";
 export async function GET() {
   try {
-    const sb = getSupabase();
-    if (!sb) return Response.json({ items: [], note: 'no-supabase-env' });
-    const { data, error } = await sb.from('mps')
-      .select('id,name,party,electorate')
-      .order('name')
-      .limit(2000);
-    if (error) return Response.json({ items: [], error: error.message });
-    return Response.json({ items: data ?? [] });
-  } catch (e:any) {
-    return Response.json({ items: [], error: String(e?.message||e) });
+    if (env.USE_MOCK || !env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+      return NextResponse.json({ items: MPS, count: MPS.length });
+    }
+    const supa = createClient();
+    const { data, error } = await supa.from("mps").select("*").order("name");
+    if (error) throw error;
+    return NextResponse.json({ items: data ?? [], count: data?.length ?? 0 });
+  } catch (e) {
+    // fallback so the UI never goes blank in dev
+    return NextResponse.json({ items: MPS, count: MPS.length, fallback: true });
   }
 }

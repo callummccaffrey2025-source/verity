@@ -1,15 +1,23 @@
-import { getSupabase } from '@/lib/supabase';
+import { NextResponse } from "next/server";
+import { env } from "@/lib/env";
+import { createClient } from "@/lib/supabase/server";
+import { BILLS } from "@/app/_mock/bills";
+
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
-    const sb = getSupabase();
-    if (!sb) return Response.json({ items: [], note: 'no-supabase-env' });
-    const { data, error } = await sb.from('bills')
-      .select('id,title,status,updated_at')
-      .order('updated_at', { ascending:false })
-      .limit(200);
-    if (error) return Response.json({ items: [], error: error.message });
-    return Response.json({ items: data ?? [] });
-  } catch (e:any) {
-    return Response.json({ items: [], error: String(e?.message||e) });
+    if (env.USE_MOCK || !env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
+      return NextResponse.json({ items: BILLS, count: BILLS.length });
+    }
+    const supa = createClient();
+    const { data, error } = await supa
+      .from("bills")
+      .select("*")
+      .order("introduced", { ascending: false });
+    if (error) throw error;
+    return NextResponse.json({ items: data ?? [], count: data?.length ?? 0 });
+  } catch {
+    return NextResponse.json({ items: BILLS, count: BILLS.length, fallback: true });
   }
 }

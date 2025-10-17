@@ -1,19 +1,34 @@
-import { NextRequest } from 'next/server';
-import { getSupabase } from '@/lib/supabase';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const searchSchema = z.object({
+  q: z.string().min(1).max(200),
+  limit: z.number().min(1).max(50).optional()
+});
+
 export async function GET(req: NextRequest) {
-  try {
-    const q = (new URL(req.url)).searchParams.get('q')?.trim() || '';
-    const sb = getSupabase();
-    if (!sb || !q) return Response.json({ q, results: [] });
-    const [bills, mps] = await Promise.all([
-      sb.from('bills').select('id,title').ilike('title', `%${q}%`).limit(10),
-      sb.from('mps').select('id,name').ilike('name', `%${q}%`).limit(10),
-    ]);
-    if (bills.error) { console.error('search bills error:', bills.error.message); return Response.json({ q, results: [] }); }
-    if (mps.error)   { console.error('search mps error:',   mps.error.message);   return Response.json({ q, results: [] }); }
-    return Response.json({ q, results: [{ type:'bill', items: bills.data ?? [] }, { type:'mp', items: mps.data ?? [] }]});
-  } catch (e:any) {
-    console.error('search route crash:', e?.message || e);
-    return Response.json({ q: '', results: [] });
+  const { searchParams } = new URL(req.url);
+  const query = searchParams.get('q');
+  
+  const validation = searchSchema.safeParse({
+    q: query,
+    limit: parseInt(searchParams.get('limit') || '10')
+  });
+
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: 'Invalid query', details: validation.error },
+      { status: 400 }
+    );
   }
+
+  // TODO: Implement actual search against Supabase bills table
+  return NextResponse.json(
+    { results: [], query: validation.data.q },
+    { 
+      headers: {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+      }
+    }
+  );
 }

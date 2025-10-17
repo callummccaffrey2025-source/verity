@@ -1,15 +1,5 @@
-import type { Metadata } from 'next';
-import '../styles/globals.css';
-
-export const metadata: Metadata = {
-  title: 'Verity',
-  description: 'Civic intelligence for Australia',
-};
-
+import "./globals.css";
+export const metadata = { title: "Verity", description: "Government, decoded." };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <body>{children}</body>
-    </html>
-  );
+  return <html lang="en"><body className="bg-black text-white">{children}</body></html>;
 }

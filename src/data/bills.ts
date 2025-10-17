@@ -1,1 +1,1 @@
-export * from '@/lib/data/bills';
+export * from "@/lib/data/bills";

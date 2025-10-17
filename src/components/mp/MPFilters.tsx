@@ -1,3 +1,5 @@
+"use client";
+
 'use client';
 export type MPFilterState = { q:string; party:string[]; chamber:('House'|'Senate')[]; minAttendance?:number; };
 
