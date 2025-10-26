@@ -1,21 +1,18 @@
-import { createServerClient } from "@supabase/ssr";
-import { cookies } from "next/headers";
-import { env } from "@/lib/env";
+import { createClient as _createClient } from "@supabase/supabase-js";
 
-export function createClient() {
-  if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
-    throw new Error("Supabase env missing (SUPABASE_URL / SUPABASE_ANON_KEY).");
-  }
-  const store = cookies();
-  return createServerClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
-    cookies: {
-      get(name: string) { return store.get(name)?.value; },
-      set(name: string, value: string, options: any) {
-        try { store.set({ name, value, ...options }); } catch { /* noop for edge */ }
-      },
-      remove(name: string, options: any) {
-        try { store.set({ name, value: "", ...options }); } catch { /* noop */ }
-      },
-    },
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+/** Return a server-side Supabase client (no session persistence). */
+export function supabaseServer() {
+  if (!url || !anonKey) throw new Error("Supabase env vars missing");
+  return _createClient(url, anonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { "x-application": "verity-app" } },
   });
+}
+
+/** Compatibility: some code imports { createClient } from this module. */
+export function createClient() {
+  return supabaseServer();
 }

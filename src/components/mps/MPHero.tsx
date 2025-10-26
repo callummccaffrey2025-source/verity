@@ -27,4 +27,3 @@ export default function MPHero({ mp }: { mp: MP }) {
     </header>
   );
 }
-import Image from "next/image";

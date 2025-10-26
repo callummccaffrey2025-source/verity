@@ -1,7 +1,7 @@
 "use client";
 import ImageFallback from "@/components/media/ImageFallback";
 import { User, MapPin, Flag } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
+import { Badge } from "@/components/ui/badge";
 import type { MPBasic, MPRole } from "@/types/mp";
 
 export default function MPHeader({ mp, roles }: { mp: MPBasic; roles: MPRole[] }) {

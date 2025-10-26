@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { MPS } from "@/app/_mock/mps";
 export const dynamic = "force-dynamic";
 export async function GET(_req: Request, ctx: { params: { id: string } }) {
-  const id = ctx.params.slug;
+  const id = ctx.params.id;
   try {
     if (env.USE_MOCK || !env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
       const item = MPS.find(m => m.id === id);
