@@ -25,7 +25,12 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <main className="p-6 space-y-6">
-      <Link href="/legislation" className="text-sm text-emerald-400 hover:underline">← Back</Link>
+      <Link
+        href="/legislation"
+        className="text-sm text-emerald-400 hover:underline"
+      >
+        ← Back
+      </Link>
       <h1 className="text-3xl font-semibold">{bill.title ?? "Untitled bill"}</h1>
       <p className="text-zinc-400">
         {bill.chamber ?? "Unknown chamber"} • {bill.stage ?? "Unknown stage"}
