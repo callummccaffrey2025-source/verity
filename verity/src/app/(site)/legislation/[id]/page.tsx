@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { sbRest } from "@/lib/supabase";
 import type { Bill, BillSection } from "@/types/bills";
 
+import { BillSectionSearch } from "./BillSectionSearch";
+
 export const dynamic = "force-dynamic";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -45,10 +47,17 @@ export default async function Page({ params }: { params: { id: string } }) {
           Source
         </a>
       )}
-      <article className="prose prose-invert max-w-none">
+      <BillSectionSearch
+        sections={sections.map((section) => ({
+          id: section.id,
+          heading: section.heading,
+          text: section.text,
+        }))}
+      />
+      <article className="prose prose-invert max-w-none space-y-6">
         {hasSections ? (
           sections.map((section) => (
-            <section key={section.id} className="mb-6">
+            <section key={section.id}>
               {section.heading && <h3>{section.heading}</h3>}
               {section.text && <p>{section.text}</p>}
             </section>
