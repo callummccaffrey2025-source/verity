@@ -1,3 +1,9 @@
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "postinstall": "prisma migrate deploy",
+  "start": "next start"
+}
 {
   "name": "verity",
   "version": "0.1.0",
