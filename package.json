@@ -21,7 +21,8 @@
     "db:gen": "prisma generate",
     "db:seed": "node prisma/seed.mjs",
     "typecheck": "tsc --noEmit",
-    "testui": "playwright test --reporter=line"
+    "testui": "playwright test --reporter=line",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.2.8",
